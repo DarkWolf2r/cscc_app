@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "497886634309",
+    "project_id": "cscc-app-13e55",
+    "storage_bucket": "cscc-app-13e55.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497886634309:android:d3c8b2ebc453ca46bfde2c",
+        "android_client_info": {
+          "package_name": "com.example.cscc_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHLCn8qaDl6J2tjwN4jJoFNqlm-L2zXCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
