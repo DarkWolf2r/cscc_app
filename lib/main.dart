@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -44,11 +46,26 @@ class _AuthTestState extends State<AuthTest> {
     }
   }
 
+  void addTestData() async {
+    await FirebaseFirestore.instance.collection('test').add({
+      'name': 'Orla',
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+    print("Data added!");
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Firebase Auth Test")),
-      body: Center(child: Text("Check console for result")),
+      // body: Center(child: Text("Check console for result")),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: addTestData,
+          child: Text('Send to Firestore'),
+        ),
+      ),
+
     );
   }
 }
