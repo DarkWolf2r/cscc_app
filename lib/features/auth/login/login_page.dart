@@ -1,7 +1,9 @@
+import 'package:cscc_app/features/auth/login/forget_password.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cscc_app/features/auth/sign_up/sign_up_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -100,18 +102,6 @@ class _SignInPageState extends State<SignInPage> with RouteAware {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
-            // Positioned(
-            //   top: -55,
-            //   left: 0,
-            //   child: Opacity(
-            //     opacity: 0.4,
-            //     child: Image.asset(
-            //       'assets/images/imgg3.png',
-            //       width: 250,
-            //       height: 250,
-            //     ),
-            //   ),
-            // ),
             Positioned(
               top: 140,
               left: 20,
@@ -252,14 +242,12 @@ class _SignInPageState extends State<SignInPage> with RouteAware {
                         Align(
                           alignment: Alignment.centerRight,
                           child: InkWell(
-                            // onTap:
-                            //     () => Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder:
-                            //             (context) => const ForgetPassword(),
-                            //       ),
-                            //     ),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ForgetPassword(),
+                              ),
+                            ),
                             child: Text(
                               "Forgot Password ?   ",
                               style: GoogleFonts.lato(
@@ -413,15 +401,14 @@ class _SignInPageState extends State<SignInPage> with RouteAware {
                           ),
                         ),
                         GestureDetector(
-                          // onTap: () {
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder:
-                          //           (context) => SignUpPage(onSwitch: () {}),
-                          //     ),
-                          //   );
-                          // },
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignUpPage(),
+                              ),
+                            );
+                          },
                           child: Text(
                             "Sign Up",
                             style: GoogleFonts.lato(
