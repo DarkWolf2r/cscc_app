@@ -2,7 +2,7 @@
 // ignore_for_file: type=lint
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show defaultTargetPlatform, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -16,39 +16,17 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
         return ios;
-      case TargetPlatform.macOS:
-        return macos;
-      case TargetPlatform.windows:
-        return windows;
-      case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
         );
     }
   }
-
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDQiV8j1SKoZa1acscptkCKDP_5QYsBYQI',
-    appId: '1:497886634309:web:0f62c7813306778abfde2c',
-    messagingSenderId: '497886634309',
-    projectId: 'cscc-app-13e55',
-    authDomain: 'cscc-app-13e55.firebaseapp.com',
-    storageBucket: 'cscc-app-13e55.firebasestorage.app',
-    measurementId: 'G-EHRDSRYFKT',
-  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAHLCn8qaDl6J2tjwN4jJoFNqlm-L2zXCU',
@@ -65,24 +43,5 @@ class DefaultFirebaseOptions {
     projectId: 'cscc-app-13e55',
     storageBucket: 'cscc-app-13e55.firebasestorage.app',
     iosBundleId: 'com.example.csccApp',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBFXUKooQ7FjNwU068eAw7co_3IJqR4D6g',
-    appId: '1:497886634309:ios:a08c079f2132a242bfde2c',
-    messagingSenderId: '497886634309',
-    projectId: 'cscc-app-13e55',
-    storageBucket: 'cscc-app-13e55.firebasestorage.app',
-    iosBundleId: 'com.example.csccApp',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDQiV8j1SKoZa1acscptkCKDP_5QYsBYQI',
-    appId: '1:497886634309:web:90dd068693f9b763bfde2c',
-    messagingSenderId: '497886634309',
-    projectId: 'cscc-app-13e55',
-    authDomain: 'cscc-app-13e55.firebaseapp.com',
-    storageBucket: 'cscc-app-13e55.firebasestorage.app',
-    measurementId: 'G-12FK8R8KPV',
   );
 }

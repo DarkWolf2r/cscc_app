@@ -14,6 +14,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +25,10 @@ class MyApp extends StatelessWidget {
 }
 
 class AuthTest extends StatefulWidget {
+  const AuthTest({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _AuthTestState createState() => _AuthTestState();
 }
 
@@ -40,8 +45,10 @@ class _AuthTestState extends State<AuthTest> {
     try {
       UserCredential user = await _auth.createUserWithEmailAndPassword(
           email: "test@example.com", password: "123456");
+      // ignore: avoid_print
       print("User registered: ${user.user?.uid}");
     } catch (e) {
+      // ignore: avoid_print
       print("Error: $e");
     }
   }
@@ -51,6 +58,7 @@ class _AuthTestState extends State<AuthTest> {
       'name': 'Orla',
       'timestamp': FieldValue.serverTimestamp(),
     });
+    // ignore: avoid_print
     print("Data added!");
   }
 
