@@ -47,24 +47,25 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     );
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xFF5F9EA0),
+      backgroundColor: const Color(0xFF4A8BFF),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
-            // Positioned(
-            //   top: -55,
-            //   left: 0,
-            //   child: Opacity(
-            //     opacity: 0.4,
-            //     child: Image.asset(
-            //       'assets/imgg3.png',
-            //       width: 250,
-            //       height: 250,
-            //     ),
-            //   ),
-            // ),
+            Positioned(
+              top: -40,
+              right: 0,
+              left: 0,
+              child: Opacity(
+                opacity: 0.4,
+                child: Image.asset(
+                  'assets/cscc_logo-removebg2.png',
+                  width: 400,
+                  height: 400,
+                ),
+              ),
+            ),
             Positioned(
               top: 60,
               right: 0,
@@ -73,7 +74,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "TaskFlow",
+                    "CSCC",
                     style: GoogleFonts.lato(
                       textStyle: const TextStyle(
                         fontSize: 35,
@@ -108,82 +109,89 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 80),
-                    // Positioned(
-                    //   // top: 600,
-                    //   right: 0,
-                    //   child: Image.asset(
-                    //     'assets/images/imgg17.png',
-                    //     width: 220,
-                    //     height: 130,
-                    //   ),
-                    // ),
-                    const SizedBox(height: 20),
-                    Text(
-                      "Forget Password",
-                      style: GoogleFonts.lato(
-                        textStyle: const TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.w900,
-                          color: Color(0xFF5F9EA0),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "Enter your email to reset your password",
-                      style: GoogleFonts.lato(
-                        textStyle: const TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF5F9EA0),
-                        ),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 40),
-                    TextField(
-                      controller: _email,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.done,
-                      cursorColor: Color(0xFF5F9EA0),
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        hintText: "Enter your email",
-                        prefixIcon: const Icon(
-                          Icons.email,
-                          color: Color(0xFF5F9EA0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
-                        ),
-                        floatingLabelStyle: TextStyle(color: Color(0xFF5F9EA0)),
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF5F9EA0),
-                        foregroundColor: Colors.white,
-                        elevation: 2,
-                        minimumSize: const Size(double.infinity, 50),
-                      ),
-                      onPressed: _forgotPassword,
-                      child: Text(
-                        "Send Email",
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 80),
+                      // Positioned(
+                      //   // top: 600,
+                      //   right: 0,
+                      //   child: Image.asset(
+                      //     'assets/images/imgg17.png',
+                      //     width: 220,
+                      //     height: 130,
+                      //   ),
+                      // ),
+                      const SizedBox(height: 20),
+                      Text(
+                        "Forget Password",
                         style: GoogleFonts.lato(
-                          textStyle: TextStyle(fontSize: 18),
+                          textStyle: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w900,
+                            color: Color(0xFF4A8BFF),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      Text(
+                        "Enter your email to reset your password",
+                        style: GoogleFonts.lato(
+                          textStyle: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF4A8BFF),
+                          ),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 40),
+                      TextField(
+                        controller: _email,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.done,
+                        cursorColor: Color(0xFF4A8BFF),
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          hintText: "Enter your email",
+                          prefixIcon: const Icon(
+                            Icons.email,
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          floatingLabelStyle: TextStyle(
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF4A8BFF),
+                          foregroundColor: Colors.white,
+                          elevation: 2,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: _forgotPassword,
+                        child: Text(
+                          "Send Email",
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -193,13 +201,13 @@ class _ForgetPasswordState extends State<ForgetPassword> {
               child: IconButton(
                 icon: Row(
                   children: [
-                    Icon(Icons.arrow_left, color: Color(0xFF5F9EA0)),
+                    Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
                     SizedBox(width: 2),
                     Text(
                       "Back to Login",
                       style: GoogleFonts.lato(
                         textStyle: const TextStyle(
-                          color: Color(0xFF5F9EA0),
+                          color: Color(0xFF4A8BFF),
                           fontSize: 14,
                         ),
                       ),

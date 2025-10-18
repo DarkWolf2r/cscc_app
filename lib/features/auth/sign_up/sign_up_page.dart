@@ -142,246 +142,255 @@ class _SignUpPageState extends State<SignUpPage> {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 70),
-                    Text(
-                      "Sign Up",
-                      style: GoogleFonts.lato(
-                        textStyle: const TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.w900,
-                          color: Color(0xFF4A8BFF),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    TextField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      cursorColor: Color(0xFF4A8BFF),
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        hintText: "Enter your email",
-                        prefixIcon: const Icon(
-                          Icons.email,
-                          color: Color(0xFF4A8BFF),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                        ),
-                        floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: _passwordController,
-                      keyboardType: TextInputType.visiblePassword,
-                      textInputAction: TextInputAction.done,
-                      cursorColor: Color(0xFF4A8BFF),
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        hintText: "Enter your password",
-                        prefixIcon: const Icon(
-                          Icons.lock,
-                          color: Color(0xFF4A8BFF),
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 70),
+                      Text(
+                        "Sign Up",
+                        style: GoogleFonts.lato(
+                          textStyle: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w900,
                             color: Color(0xFF4A8BFF),
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                        ),
-                        floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
-                        filled: true,
-                        fillColor: Colors.grey[100],
                       ),
-                      obscureText: _obscurePassword,
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: _confirmPasswordController,
-                      keyboardType: TextInputType.visiblePassword,
-                      textInputAction: TextInputAction.done,
-                      cursorColor: Color(0xFF4A8BFF),
-                      decoration: InputDecoration(
-                        labelText: "Confirm Password",
-                        hintText: "Confirm your password",
-                        prefixIcon: const Icon(
-                          Icons.lock,
-                          color: Color(0xFF4A8BFF),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                        ),
-                        floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                      ),
-                      obscureText: _obscureConfirmPassword,
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4A8BFF),
-                        foregroundColor: Colors.white,
-                        elevation: 2,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: _signUp,
-                      child: Text(
-                        "Sign Up",
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    // const SizedBox(height: 30),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(child: Divider()),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            "Or login with",
-                            style: GoogleFonts.lato(
-                              textStyle: TextStyle(color: Colors.grey),
-                            ),
+                      const SizedBox(height: 40),
+                      TextField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        cursorColor: Color(0xFF4A8BFF),
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          hintText: "Enter your email",
+                          prefixIcon: const Icon(
+                            Icons.email,
+                            color: Color(0xFF4A8BFF),
                           ),
-                        ),
-                        Expanded(child: Divider()),
-                      ],
-                    ),
-                    const SizedBox(height: 25),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                           ),
-                          child: IconButton(
-                            icon: Image.asset(
-                              'assets/icons8-google.png',
-                              width: 35,
-                              height: 35,
-                            ),
-                            // onPressed: () async {
-                            //   try {
-                            //     UserCredential user = await signInWithGoogle();
-                            //     // ignore: avoid_print
-                            //     print("User: ${user.user?.displayName}");
-                            //   } catch (e) {
-                            //     // ignore: avoid_print
-                            //     print("Error: $e");
-                            //   }
-                            // },
-                            onPressed: () async {
-                              try {
-                                UserCredential user = await signInWithGoogle();
-                                // ignore: avoid_print
-                                print("User: ${user.user?.displayName}");
-                                Navigator.pushReplacementNamed(
-                                  // ignore: use_build_context_synchronously
-                                  context,
-                                  "/home",
-                                );
-                              } catch (e) {
-                                // ignore: avoid_print
-                                print("Error: $e");
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Google login failed: $e"),
-                                  ),
-                                );
-                              }
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          floatingLabelStyle: TextStyle(
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: _passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.done,
+                        cursorColor: Color(0xFF4A8BFF),
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          hintText: "Enter your password",
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
                             },
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: IconButton(
-                            icon: Image.asset(
-                              'assets/github.png',
-                              width: 35,
-                              height: 35,
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Color(0xFF4A8BFF),
                             ),
-                            onPressed: () async {
-                              try {
-                                await signInWithGitHub();
-                                Navigator.pushReplacementNamed(
-                                  // ignore: use_build_context_synchronously
-                                  context,
-                                  "/home",
-                                );
-                              } catch (e) {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("GitHub login failed: $e"),
-                                  ),
-                                );
-                              }
-                            },
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          floatingLabelStyle: TextStyle(
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                        ),
+                        obscureText: _obscurePassword,
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: _confirmPasswordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.done,
+                        cursorColor: Color(0xFF4A8BFF),
+                        decoration: InputDecoration(
+                          labelText: "Confirm Password",
+                          hintText: "Confirm your password",
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          floatingLabelStyle: TextStyle(
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                        ),
+                        obscureText: _obscureConfirmPassword,
+                      ),
+                      const SizedBox(height: 40),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF4A8BFF),
+                          foregroundColor: Colors.white,
+                          elevation: 2,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
+                        onPressed: _signUp,
+                        child: Text(
+                          "Sign Up",
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                      // const SizedBox(height: 30),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(child: Divider()),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              "Or login with",
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                          Expanded(child: Divider()),
+                        ],
+                      ),
+                      const SizedBox(height: 25),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            child: IconButton(
+                              icon: Image.asset(
+                                'assets/icons8-google.png',
+                                width: 35,
+                                height: 35,
+                              ),
+                              // onPressed: () async {
+                              //   try {
+                              //     UserCredential user = await signInWithGoogle();
+                              //     // ignore: avoid_print
+                              //     print("User: ${user.user?.displayName}");
+                              //   } catch (e) {
+                              //     // ignore: avoid_print
+                              //     print("Error: $e");
+                              //   }
+                              // },
+                              onPressed: () async {
+                                try {
+                                  UserCredential user =
+                                      await signInWithGoogle();
+                                  // ignore: avoid_print
+                                  print("User: ${user.user?.displayName}");
+                                  Navigator.pushReplacementNamed(
+                                    // ignore: use_build_context_synchronously
+                                    context,
+                                    "/home",
+                                  );
+                                } catch (e) {
+                                  // ignore: avoid_print
+                                  print("Error: $e");
+                                  // ignore: use_build_context_synchronously
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Google login failed: $e"),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            child: IconButton(
+                              icon: Image.asset(
+                                'assets/github.png',
+                                width: 35,
+                                height: 35,
+                              ),
+                              onPressed: () async {
+                                try {
+                                  await signInWithGitHub();
+                                  Navigator.pushReplacementNamed(
+                                    // ignore: use_build_context_synchronously
+                                    context,
+                                    "/home",
+                                  );
+                                } catch (e) {
+                                  // ignore: use_build_context_synchronously
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("GitHub login failed: $e"),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
