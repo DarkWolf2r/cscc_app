@@ -96,17 +96,32 @@ class _SignInPageState extends State<SignInPage> with RouteAware {
     );
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xFF5F9EA0),
+      backgroundColor: const Color(0xFF4A8BFF),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
             Positioned(
-              top: 140,
-              left: 20,
+              // top: 28,
+              top: -40,
+              right: 0,
+              left: 0,
+              child: Opacity(
+                opacity: 0.4,
+                child: Image.asset(
+                  'assets/cscc_logo-removebg2.png',
+                  width: 400,
+                  height: 400,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 130,
+              left: 0,
+              right: 0,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     "HELLO",
@@ -119,7 +134,7 @@ class _SignInPageState extends State<SignInPage> with RouteAware {
                     ),
                   ),
                   Text(
-                    "Welcome to TaskFlow",
+                    "Welcome to CSCC",
                     style: GoogleFonts.lato(
                       textStyle: const TextStyle(
                         fontSize: 16,
@@ -143,298 +158,298 @@ class _SignInPageState extends State<SignInPage> with RouteAware {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Text(
-                      "Sign In",
-                      style: GoogleFonts.lato(
-                        textStyle: const TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.w900,
-                          color: Color(0xFF5F9EA0),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    TextField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      cursorColor: Color(0xFF5F9EA0),
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        hintText: "Enter your email",
-                        prefixIcon: const Icon(
-                          Icons.email,
-                          color: Color(0xFF5F9EA0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
-                        ),
-                        floatingLabelStyle: TextStyle(color: Color(0xFF5F9EA0)),
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: _passwordController,
-                      keyboardType: TextInputType.visiblePassword,
-                      textInputAction: TextInputAction.done,
-                      cursorColor: Color(0xFF5F9EA0),
-                      decoration: InputDecoration(
-                        labelText: "Password",
-                        hintText: "Enter your password",
-                        prefixIcon: const Icon(
-                          Icons.lock,
-                          color: Color(0xFF5F9EA0),
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Color(0xFF5F9EA0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Text(
+                        "Sign In",
+                        style: GoogleFonts.lato(
+                          textStyle: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w900,
+                            color: Color(0xFF4A8BFF),
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
-                        ),
-                        floatingLabelStyle: TextStyle(color: Color(0xFF5F9EA0)),
-                        filled: true,
-                        fillColor: Colors.grey[100],
                       ),
-                      obscureText: _obscurePassword,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        // GestureDetector(
-                        //   onTap: _forgotPassword,
-                        //   TextButton(
-                        //     onPressed: _forgotPassword,
-                        //     child: Text(
-                        //       "Forgot Password ?   ",
-                        //       style: GoogleFonts.lato(
-                        //         textStyle: TextStyle(
-                        //           color: Color(0xFF5F9EA0),
-                        //           fontWeight: FontWeight.w900,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkWell(
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ForgetPassword(),
+                      const SizedBox(height: 40),
+                      TextField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        cursorColor: Color(0xFF4A8BFF),
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          hintText: "Enter your email",
+                          prefixIcon: const Icon(
+                            Icons.email,
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          floatingLabelStyle: TextStyle(
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: _passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.done,
+                        cursorColor: Color(0xFF4A8BFF),
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          hintText: "Enter your password",
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Color(0xFF4A8BFF),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          floatingLabelStyle: TextStyle(
+                            color: Color(0xFF4A8BFF),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                        ),
+                        obscureText: _obscurePassword,
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          // GestureDetector(
+                          //   onTap: _forgotPassword,
+                          //   TextButton(
+                          //     onPressed: _forgotPassword,
+                          //     child: Text(
+                          //       "Forgot Password ?   ",
+                          //       style: GoogleFonts.lato(
+                          //         textStyle: TextStyle(
+                          //           color: Color(0xFF5F9EA0),
+                          //           fontWeight: FontWeight.w900,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ForgetPassword(),
+                                ),
+                              ),
+                              child: Text(
+                                "Forgot Password ?   ",
+                                style: GoogleFonts.lato(
+                                  textStyle: TextStyle(
+                                    color: Color(0xFF4A8BFF),
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
                               ),
                             ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 40),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF4A8BFF),
+                          foregroundColor: Colors.white,
+                          elevation: 2,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: _signIn,
+                        child: Text(
+                          "Login",
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(child: Divider()),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
-                              "Forgot Password ?   ",
+                              "Or login with",
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                          Expanded(child: Divider()),
+                        ],
+                      ),
+                      const SizedBox(height: 25),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            child: IconButton(
+                              icon: Image.asset(
+                                'assets/icons8-google.png',
+                                width: 35,
+                                height: 35,
+                              ),
+                              // onPressed: () async {
+                              //   try {
+                              //     UserCredential user = await signInWithGoogle();
+                              //     // ignore: avoid_print
+                              //     print("User: ${user.user?.displayName}");
+                              //   } catch (e) {
+                              //     // ignore: avoid_print
+                              //     print("Error: $e");
+                              //   }
+                              // },
+                              onPressed: () async {
+                                try {
+                                  UserCredential user =
+                                      await signInWithGoogle();
+                                  // ignore: avoid_print
+                                  print("User: ${user.user?.displayName}");
+                                  Navigator.pushReplacementNamed(
+                                    // ignore: use_build_context_synchronously
+                                    context,
+                                    "/home",
+                                  );
+                                } catch (e) {
+                                  // ignore: avoid_print
+                                  print("Error: $e");
+                                  // ignore: use_build_context_synchronously
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Google login failed: $e"),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            child: IconButton(
+                              icon: Image.asset(
+                                'assets/github.png',
+                                width: 35,
+                                height: 35,
+                              ),
+                              onPressed: () async {
+                                try {
+                                  await signInWithGitHub();
+                                  Navigator.pushReplacementNamed(
+                                    // ignore: use_build_context_synchronously
+                                    context,
+                                    "/home",
+                                  );
+                                } catch (e) {
+                                  // ignore: use_build_context_synchronously
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("GitHub login failed: $e"),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Don't have account ? ",
+                            style: GoogleFonts.lato(
+                              textStyle: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignUpPage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "Sign Up",
                               style: GoogleFonts.lato(
                                 textStyle: TextStyle(
-                                  color: Color(0xFF5F9EA0),
+                                  color: Color(0xFF4A8BFF),
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF5F9EA0),
-                        foregroundColor: Colors.white,
-                        elevation: 2,
-                        minimumSize: const Size(double.infinity, 50),
+                        ],
                       ),
-                      onPressed: _signIn,
-                      child: Text(
-                        "Login",
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(child: Divider()),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            "Or login with",
-                            style: GoogleFonts.lato(
-                              textStyle: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                        ),
-                        Expanded(child: Divider()),
-                      ],
-                    ),
-                    const SizedBox(height: 25),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: IconButton(
-                            icon: Image.asset(
-                              'assets/icons8-google.png',
-                              width: 35,
-                              height: 35,
-                            ),
-                            // onPressed: () async {
-                            //   try {
-                            //     UserCredential user = await signInWithGoogle();
-                            //     // ignore: avoid_print
-                            //     print("User: ${user.user?.displayName}");
-                            //   } catch (e) {
-                            //     // ignore: avoid_print
-                            //     print("Error: $e");
-                            //   }
-                            // },
-                            onPressed: () async {
-                              try {
-                                UserCredential user = await signInWithGoogle();
-                                // ignore: avoid_print
-                                print("User: ${user.user?.displayName}");
-                                Navigator.pushReplacementNamed(
-                                  // ignore: use_build_context_synchronously
-                                  context,
-                                  "/home",
-                                );
-                              } catch (e) {
-                                // ignore: avoid_print
-                                print("Error: $e");
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Google login failed: $e"),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: IconButton(
-                            icon: Image.asset(
-                              'assets/github.png',
-                              width: 35,
-                              height: 35,
-                            ),
-                            onPressed: () async {
-                              try {
-                                await signInWithGitHub();
-                                Navigator.pushReplacementNamed(
-                                  // ignore: use_build_context_synchronously
-                                  context,
-                                  "/home",
-                                );
-                              } catch (e) {
-                                // ignore: use_build_context_synchronously
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("GitHub login failed: $e"),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't have account ? ",
-                          style: GoogleFonts.lato(
-                            textStyle: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SignUpPage(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Sign Up",
-                            style: GoogleFonts.lato(
-                              textStyle: TextStyle(
-                                color: Color(0xFF5F9EA0),
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-            // Positioned(
-            //   // top: 28,
-            //   top: 58,
-            //   right: 8,
-            //   child: Image.asset(
-            //     'assets/images/imgg2.png',
-            //     width: 200,
-            //     height: 200,
-            //   ),
-            // ),
           ],
         ),
       ),
