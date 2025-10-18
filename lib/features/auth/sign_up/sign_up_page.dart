@@ -80,33 +80,34 @@ class _SignUpPageState extends State<SignUpPage> {
     );
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xFF5F9EA0),
+      backgroundColor: const Color(0xFF4A8BFF),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
             Positioned(
-              top: -55,
+              top: -40,
+              right: 0,
               left: 0,
               child: Opacity(
                 opacity: 0.4,
                 child: Image.asset(
-                  'assets/images/imgg3.png',
-                  width: 250,
-                  height: 250,
+                  'assets/cscc_logo-removebg2.png',
+                  width: 400,
+                  height: 400,
                 ),
               ),
             ),
             Positioned(
-              top: 40,
+              top: 60,
               right: 0,
               left: 0,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "TaskFlow",
+                    "CSCC",
                     style: GoogleFonts.lato(
                       textStyle: const TextStyle(
                         fontSize: 35,
@@ -116,7 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   Text(
-                    "Organize your day, achieve\nyour goals and boost your productivity.",
+                    "Computer Science Community Club",
                     style: GoogleFonts.lato(
                       textStyle: const TextStyle(
                         fontSize: 12,
@@ -150,7 +151,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         textStyle: const TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.w900,
-                          color: Color(0xFF5F9EA0),
+                          color: Color(0xFF4A8BFF),
                         ),
                       ),
                     ),
@@ -159,23 +160,23 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
-                      cursorColor: Color(0xFF5F9EA0),
+                      cursorColor: Color(0xFF4A8BFF),
                       decoration: InputDecoration(
                         labelText: "Email",
                         hintText: "Enter your email",
                         prefixIcon: const Icon(
                           Icons.email,
-                          color: Color(0xFF5F9EA0),
+                          color: Color(0xFF4A8BFF),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                         ),
-                        floatingLabelStyle: TextStyle(color: Color(0xFF5F9EA0)),
+                        floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
                         filled: true,
                         fillColor: Colors.grey[100],
                       ),
@@ -185,13 +186,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: _passwordController,
                       keyboardType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.done,
-                      cursorColor: Color(0xFF5F9EA0),
+                      cursorColor: Color(0xFF4A8BFF),
                       decoration: InputDecoration(
                         labelText: "Password",
                         hintText: "Enter your password",
                         prefixIcon: const Icon(
                           Icons.lock,
-                          color: Color(0xFF5F9EA0),
+                          color: Color(0xFF4A8BFF),
                         ),
                         suffixIcon: IconButton(
                           onPressed: () {
@@ -203,18 +204,18 @@ class _SignUpPageState extends State<SignUpPage> {
                             _obscurePassword
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: Color(0xFF5F9EA0),
+                            color: Color(0xFF4A8BFF),
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                         ),
-                        floatingLabelStyle: TextStyle(color: Color(0xFF5F9EA0)),
+                        floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
                         filled: true,
                         fillColor: Colors.grey[100],
                       ),
@@ -225,23 +226,23 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: _confirmPasswordController,
                       keyboardType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.done,
-                      cursorColor: Color(0xFF5F9EA0),
+                      cursorColor: Color(0xFF4A8BFF),
                       decoration: InputDecoration(
                         labelText: "Confirm Password",
                         hintText: "Confirm your password",
                         prefixIcon: const Icon(
                           Icons.lock,
-                          color: Color(0xFF5F9EA0),
+                          color: Color(0xFF4A8BFF),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Color(0xFF5F9EA0)),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                         ),
-                        floatingLabelStyle: TextStyle(color: Color(0xFF5F9EA0)),
+                        floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
                         filled: true,
                         fillColor: Colors.grey[100],
                       ),
@@ -250,10 +251,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     const SizedBox(height: 40),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF5F9EA0),
+                        backgroundColor: const Color(0xFF4A8BFF),
                         foregroundColor: Colors.white,
                         elevation: 2,
                         minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                       ),
                       onPressed: _signUp,
                       child: Text(
@@ -288,7 +292,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black12,
@@ -341,7 +345,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black12,
@@ -387,13 +391,13 @@ class _SignUpPageState extends State<SignUpPage> {
               child: IconButton(
                 icon: Row(
                   children: [
-                    Icon(Icons.arrow_left, color: Color(0xFF5F9EA0)),
+                    Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
                     SizedBox(width: 2),
                     Text(
                       "Back to Login",
                       style: GoogleFonts.lato(
                         textStyle: const TextStyle(
-                          color: Color(0xFF5F9EA0),
+                          color: Color(0xFF4A8BFF),
                           fontSize: 14,
                         ),
                       ),
