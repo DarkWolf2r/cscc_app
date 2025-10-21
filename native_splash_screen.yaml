@@ -1,4 +1,10 @@
 flutter_native_splash:
-
-  color: "#ffffff"
-  image: assets/cscc_logo.jpg
+  color: "#ffffff"                
+  fullscreen: true
+  image: assets/splash.png
+android_12:
+  fullscreen: true
+  color: "#42a5f5"
+  # color_dark: "#042a49"
+ 
+  image: assets/images/logo/blank.png   

@@ -4,7 +4,7 @@ import 'firebase_options.dart';
 import 'package:cscc_app/features/auth/login/login_page.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(); 
   // final FirebaseFirestore firestore = FirebaseFirestore.instance;
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
