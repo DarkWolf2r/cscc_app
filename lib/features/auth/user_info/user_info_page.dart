@@ -34,7 +34,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
     "Communication",
     "Robotics",
   ];
-  int selectedIndex = 0;
+  
   bool isSelected = false;
   void validateUsername() async {
     final usersMap = await FirebaseFirestore.instance.collection("users").get();
@@ -60,94 +60,123 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 26, horizontal: 14),
-              child: Text(
-                'Enter the username',
-                style: TextStyle(color: Colors.blueGrey),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 26, horizontal: 14),
+                child: Text(
+                  'Enter the username',
+                  style: TextStyle(color: Colors.blueGrey),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15),
-              child: Form(
-                child: TextFormField(
-                  onChanged: (username) {
-                    validateUsername();
-                  },
-                  autovalidateMode: AutovalidateMode.always,
-                  validator: (usremane) {
-                    return isValidate ? null : "Username Already Taken";
-                  },
-                  key: formkey,
-                  controller: usernameController,
-                  decoration: InputDecoration(
-                    suffixIcon: isValidate
-                        ? const Icon(Icons.verified_user_outlined)
-                        : const Icon(Icons.cancel),
-                    suffixIconColor: isValidate ? Colors.green : Colors.red,
-                    hintText: 'insert user name',
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Form(
+                  child: TextFormField(
+                    onChanged: (username) {
+                      validateUsername();
+                    },
+                    autovalidateMode: AutovalidateMode.always,
+                    validator: (usremane) {
+                      return isValidate ? null : "Username Already Taken";
+                    },
+                    key: formkey,
+                    controller: usernameController,
+                    decoration: InputDecoration(
+                      suffixIcon: isValidate
+                          ? const Icon(Icons.verified_user_outlined)
+                          : const Icon(Icons.cancel),
+                      suffixIconColor: isValidate ? Colors.green : Colors.red,
+                      hintText: 'insert user name',
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            DropdownButton<String>(
-              value: typeValue,
-              icon: const Icon(Icons.arrow_drop_down),
-              items: const [
-                DropdownMenuItem(value: 'Membre', child: Text('Membre')),
-                DropdownMenuItem(
-                  value: 'Membre de bureau',
-                  child: Text('Membre de bureau'),
-                ),
-                DropdownMenuItem(value: 'President', child: Text('President')),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  typeValue = value!;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: 600,
-                child: ListView.builder(
-                  itemCount: departementValue.length,
-                  itemBuilder: (context, index) {
-                    final department = departementValue[index];
-                    return Padding(
-                      padding: EdgeInsetsGeometry.all(8),
-                      child: ChoiceChip(
-                        label: Text(department),
-                        selected: isSelected,
-                        onSelected: (value) {
-                          setState(() {
-                            isSelected = value;
-                          });
-                        },
-                      ),
-                    );
-                  },
+              const SizedBox(height: 20),
+              DropdownButton<String>(
+                value: typeValue,
+                icon: const Icon(Icons.arrow_drop_down),
+                items: const [
+                  DropdownMenuItem(value: 'Membre', child: Text('Membre')),
+                  DropdownMenuItem(
+                    value: 'Membre de bureau',
+                    child: Text('Membre de bureau'),
+                  ),
+                  DropdownMenuItem(value: 'President', child: Text('President')),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    typeValue = value!;
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+          
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  height: 500,
+                  child: ListView.builder(
+                    itemCount: departementValue.length,
+                    itemBuilder: (context, index) {
+                      final department = departementValue[index];
+                      return Padding(
+                        padding: EdgeInsetsGeometry.all(8),
+                        child: ChoiceChip(
+                          label: Text(department),
+                          selected: userDepartement.contains(department),
+                          onSelected: (value) {
+                            setState(() {
+                              if (value) {
+                                userDepartement.add(department);
+                              } else {
+                                userDepartement.remove(department);
+                              }
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
+               Padding(
+              padding: const EdgeInsets.only(bottom: 30, left: 8, right: 8),
+              child: FlatButton(
+                text: "CONTINUE",
+                onPressed: () async {
+                  // add users data inside datebase
+                  isValidate && userDepartement.isNotEmpty
+                      ? await ref
+                          .read(userDataServiceProvider)
+                          .addUserDataToFirestore(
+                            type: typeValue,
+                            department: userDepartement,
+                            displayName: widget.displayName,
+                            username: usernameController.text,
+                            email: widget.email,
+                            description: "",
+                            profilePic: widget.profilePic,
+                          )
+                      : null;
+                },
+                colour: isValidate ? Colors.green : Colors.green.shade100,
+              ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );
