@@ -3,6 +3,7 @@ import 'package:cscc_app/cores/widgets/my_text_field.dart';
 import 'package:cscc_app/features/auth/login/forget_password.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:cscc_app/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,12 +20,98 @@ class SignInPage extends ConsumerStatefulWidget {
   ConsumerState<SignInPage> createState() => SignInPageState();
 }
 
+<<<<<<< HEAD
 class SignInPageState extends ConsumerState<SignInPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool obscurePassword = true;
   @override
+=======
+class _SignInPageState extends State<SignInPage> with RouteAware {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _obscurePassword = true;
+
+  Future<void> _signIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // ScaffoldMessenger.of(
+      //   // ignore: use_build_context_synchronously
+      //   context,
+      // ).showSnackBar(const SnackBar(content: Text("Signed in successfully")));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MobileScreenLayout(),
+        ),
+      );  
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(
+        // ignore: use_build_context_synchronously
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message ?? "Error signing in")));
+    }
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    final googleProvider = GoogleAuthProvider();
+    googleProvider.addScope('email');
+    return await _auth.signInWithProvider(googleProvider);
+  }
+
+  // Future<void> signInWithGoogle(BuildContext context) async {
+  //   try {
+  //     final googleProvider = GoogleAuthProvider();
+  //     googleProvider.addScope('email');
+
+  // final userCredential = await FirebaseAuth.instance.signInWithProvider(
+  // googleProvider,
+  // );
+
+  //     if (userCredential.user != null) {
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder:
+  //               (context) => HomePage(
+  //                 onToggleTheme: () {
+  //                   print("Theme toggled!");
+  //                 },
+  //               ),
+  //         ),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     debugPrint("Error signing in with Google: $e");
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text("Sign in failed: $e")));
+  //   }
+  // }
+
+  Future<UserCredential> signInWithGitHub() async {
+    try {
+      GithubAuthProvider githubProvider = GithubAuthProvider();
+
+      githubProvider.addScope('read:user');
+      githubProvider.addScope('user:email');
+
+      return await FirebaseAuth.instance.signInWithProvider(githubProvider);
+    } catch (e) {
+      throw Exception("GitHub sign in failed: $e");
+    }
+  }
+
+  Future<void> signOutUser() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+>>>>>>> 5574b4f (connect between sign in button and the home page)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
