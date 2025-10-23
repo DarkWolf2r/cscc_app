@@ -224,7 +224,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         ),
                         onPressed: () async {
                           await ref
-                              .read(authServiceProvider)
+                              .watch(authServiceProvider)
                               .signUp(
                                 key,
                                 context,

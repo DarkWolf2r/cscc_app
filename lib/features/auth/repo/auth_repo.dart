@@ -60,7 +60,9 @@ class AuthService {
   ) async {
     final isValid = formkey.currentState?.validate();
     if (!isValid!) return;
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const VerifyEmailPage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyEmailPage(
+      auth: auth
+    )));
   
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(

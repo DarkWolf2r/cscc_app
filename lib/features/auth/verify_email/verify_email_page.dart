@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class VerifyEmailPage extends StatefulWidget {
-  const VerifyEmailPage({super.key});
+  final FirebaseAuth auth;
+  const VerifyEmailPage({super.key, required this.auth});
 
   @override
   State<VerifyEmailPage> createState() => _VerifyEmailPageState();
@@ -18,7 +19,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    isEmailVerified = widget.auth.currentUser!.emailVerified;
 
     if (!isEmailVerified) {
       sendVerificationEmail();
