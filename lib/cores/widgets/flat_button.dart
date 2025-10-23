@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FlatButton extends StatelessWidget {
   final String text;
@@ -14,22 +14,18 @@ class FlatButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: colour,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(16),
-        ),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: colour,
+        foregroundColor: Colors.white,
+        elevation: 2,
+        minimumSize: const Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
-      child: TextButton(
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 13,
-          ),
-        ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: GoogleFonts.lato(textStyle: TextStyle(fontSize: 18)),
       ),
     );
   }

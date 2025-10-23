@@ -10,9 +10,8 @@ import 'package:cscc_app/features/auth/login/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); 
-  // final FirebaseFirestore firestore = FirebaseFirestore.instance;
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
@@ -21,9 +20,10 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context , WidgetRef ref) {
     return MaterialApp(
+
       debugShowCheckedModeBanner: false,
-      home:SignInPage() 
-      
+      home:SignInPage(),
+      theme: ThemeData.dark(),
       // StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder: (context, snapshot) {
