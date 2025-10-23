@@ -1,118 +1,155 @@
-// // ignore_for_file: public_member_api_docs, sort_constructors_first
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:cscc_app/cores/widgets/flat_button.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cscc_app/cores/widgets/flat_button.dart';
+import 'package:cscc_app/cores/widgets/my_text_field.dart';
+import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final formkey = GlobalKey<FormState>();
 
-// final formkey = GlobalKey<FormState>();
+class UserInfoPage extends ConsumerStatefulWidget {
+  final String email;
+  final String? profilePic;
+  final String displayName;
+  const UserInfoPage({
+    super.key,
+    this.profilePic,
+    required this.displayName,
+    required this.email,
+  });
 
-// class UserInfoPage extends ConsumerStatefulWidget {
-//   final String displayName;
-//   final String profilePic;
-//   final String email;
+  @override
+  ConsumerState<UserInfoPage> createState() => _UserInfoPageState();
+}
 
-//   const UserInfoPage({
-//     super.key,
-//     required this.displayName,
-//     required this.profilePic,
-//     required this.email,
-//   });
+class _UserInfoPageState extends ConsumerState<UserInfoPage> {
+  final TextEditingController usernameController = TextEditingController();
+  bool isValidate = true;
+  String typeValue = 'Membre';
+  List<String> userDepartement = [];
+  List<String> departementValue = [
+    "Developpement",
+    "Security",
+    "Communication",
+    "Robotics",
+  ];
+  int selectedIndex = 0;
+  bool isSelected = false;
+  void validateUsername() async {
+    final usersMap = await FirebaseFirestore.instance.collection("users").get();
 
-//   @override
-//   ConsumerState<UserInfoPage> createState() => _UserInfoPageState();
-// }
+    final users = usersMap.docs.map((user) => user).toList();
+    //
+    String? targetdUsername;
+    //
+    for (var user in users) {
+      if (usernameController.text == user.data()["username"]) {
+        targetdUsername = user.data()["username"];
+        isValidate = false;
+        setState(() {});
+      }
+      if (usernameController.text != targetdUsername) {
+        isValidate = true;
+        setState(() {});
+      }
+    }
+  }
 
-// class _UserInfoPageState extends ConsumerState<UserInfoPage> {
-//   final TextEditingController usernameController = TextEditingController();
-//   bool isValidate = true;
-//   void validateUsername() async {
-//     final usersMap = await FirebaseFirestore.instance.collection("users").get();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 26, horizontal: 14),
+              child: Text(
+                'Enter the username',
+                style: TextStyle(color: Colors.blueGrey),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: Form(
+                child: TextFormField(
+                  onChanged: (username) {
+                    validateUsername();
+                  },
+                  autovalidateMode: AutovalidateMode.always,
+                  validator: (usremane) {
+                    return isValidate ? null : "Username Already Taken";
+                  },
+                  key: formkey,
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    suffixIcon: isValidate
+                        ? const Icon(Icons.verified_user_outlined)
+                        : const Icon(Icons.cancel),
+                    suffixIconColor: isValidate ? Colors.green : Colors.red,
+                    hintText: 'insert user name',
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            DropdownButton<String>(
+              value: typeValue,
+              icon: const Icon(Icons.arrow_drop_down),
+              items: const [
+                DropdownMenuItem(value: 'Membre', child: Text('Membre')),
+                DropdownMenuItem(
+                  value: 'Membre de bureau',
+                  child: Text('Membre de bureau'),
+                ),
+                DropdownMenuItem(value: 'President', child: Text('President')),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  typeValue = value!;
+                });
+              },
+            ),
+            const SizedBox(height: 20),
 
-//     final users = usersMap.docs.map((user) => user).toList();
-//     //
-//     String? targetdUsername;
-//     //
-//     for (var user in users) {
-//       if (usernameController.text == user.data()["username"]) {
-//         targetdUsername = user.data()["username"];
-//         isValidate = false;
-//         setState(() {});
-//       }
-//       if (usernameController.text != targetdUsername) {
-//         isValidate = true;
-//         setState(() {});
-//       }
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SafeArea(
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.stretch,
-//           children: [
-//             const Padding(
-//                 padding: EdgeInsets.symmetric(vertical: 26, horizontal: 14),
-//                 child: Text(
-//                   'Enter the username',
-//                   style: TextStyle(color: Colors.blueGrey),
-//                 )),
-//             Padding(
-//               padding: const EdgeInsets.only(left: 15, right: 15),
-//               child: Form(
-//                 child: TextFormField(
-//                   onChanged: (username) {
-//                     validateUsername();
-//                   },
-//                   autovalidateMode: AutovalidateMode.always,
-//                   validator: (usremane) {
-//                     return  isValidate?  null : "Username Already Taken" ;
-//                   },
-//                   key: formkey,
-//                   controller: usernameController,
-//                   decoration: InputDecoration(
-//                     suffixIcon: isValidate
-//                         ? const Icon(Icons.verified_user_outlined)
-//                         : const Icon(Icons.cancel),
-//                     suffixIconColor: isValidate ? Colors.green : Colors.red,
-//                     hintText: 'insert user name',
-//                     border: const OutlineInputBorder(
-//                       borderSide: BorderSide(color: Colors.blue),
-//                     ),
-//                     enabledBorder: const OutlineInputBorder(
-//                       borderSide: BorderSide(color: Colors.blue),
-//                     ),
-//                     focusedBorder: const OutlineInputBorder(
-//                       borderSide: BorderSide(color: Colors.green),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             const Spacer(),
-//             Padding(
-//               padding: const EdgeInsets.only(bottom: 30, left: 10, right: 10),
-//               child: FlatButton(
-//                   text: 'CONTINUE',
-//                   onPressed: () async {
-//                     isValidate
-//                         ? await ref
-//                             .read(userDataServiceProvider)
-//                             .addUserDataToFirestore(
-//                                 displayName: widget.displayName,
-//                                 username: usernameController.text,
-//                                 email: widget.email,
-//                                 profilePic: widget.profilePic,
-//                                 description: "")
-//                         : null;
-//                   },
-//                   colour: isValidate ? Colors.green : Colors.green.shade100),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: 600,
+                child: ListView.builder(
+                  itemCount: departementValue.length,
+                  itemBuilder: (context, index) {
+                    final department = departementValue[index];
+                    return Padding(
+                      padding: EdgeInsetsGeometry.all(8),
+                      child: ChoiceChip(
+                        label: Text(department),
+                        selected: isSelected,
+                        onSelected: (value) {
+                          setState(() {
+                            isSelected = value;
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

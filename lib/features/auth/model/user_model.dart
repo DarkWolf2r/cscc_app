@@ -5,20 +5,20 @@ class UserModel {
   final String displayName;
   final String username;
   final String email;
-  final String profilePic;
+  final String? profilePic;
   final List<String> departement;
   final String userId;
-  final String description;
+  final String? description;
   final String type;
 
   UserModel(
       {required this.displayName,
       required this.username,
       required this.email,
-      required this.profilePic,
+      this.profilePic,
       required this.departement,
       required this.userId,
-      required this.description,
+      this.description,
       required this.type});
 
   Map<String, dynamic> toMap() {
@@ -46,5 +46,4 @@ class UserModel {
       type: map['type'] as String,
     );
   }
-
 }

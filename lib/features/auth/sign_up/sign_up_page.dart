@@ -314,16 +314,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 width: 35,
                                 height: 35,
                               ),
-                              // onPressed: () async {
-                              //   try {
-                              //     UserCredential user = await signInWithGoogle();
-                              //     // ignore: avoid_print
-                              //     print("User: ${user.user?.displayName}");
-                              //   } catch (e) {
-                              //     // ignore: avoid_print
-                              //     print("Error: $e");
-                              //   }
-                              // },
+                              
                               onPressed: () async {
                                 try {
                                   UserCredential user =

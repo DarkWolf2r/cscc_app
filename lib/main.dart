@@ -22,39 +22,40 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
 
       debugShowCheckedModeBanner: false,
-      home:SignInPage(),
-      theme: ThemeData.dark(),
-      // StreamBuilder(
-      //   stream: FirebaseAuth.instance.authStateChanges(),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     } else if (!snapshot.hasData) {
-      //       return SignInPage();
-      //     }
-      //     return StreamBuilder(
-      //       stream: FirebaseFirestore.instance
-      //           .collection("users")
-      //           .doc(FirebaseAuth.instance.currentUser!.uid)
-      //           .snapshots(),
-      //       builder: (context, snapshot) {
-      //         final user = FirebaseAuth.instance.currentUser;
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (!snapshot.hasData) {
+            return SignInPage();
+          }
+          return StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("users")
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              final user = FirebaseAuth.instance.currentUser; 
+              if (!snapshot.hasData || !snapshot.data!.exists) {
+                return UserInfoPage(
+                    displayName: user!.displayName!,
+                    profilePic: user.photoURL ?? "",
+                    email: user.email!);
+              } 
+              else {
+                return HomePage();
+              }
+            },
+          );
 
-      //         if (!snapshot.hasData || !snapshot.data!.exists) {
-      //           return UserInfoPage(
-      //               displayName: user!.displayName!,
-      //               profilePic: user.photoURL!,
-      //               email: user.email!);
-      //         } 
-      //         else {
-      //           return HomePage();
-      //         }
-      //       },
-      //     );
-      //   },
-      // ),
+        },
+      ),
+    //  SignInPage(),
+      theme: ThemeData.dark(),
+      
     );
   }
 }

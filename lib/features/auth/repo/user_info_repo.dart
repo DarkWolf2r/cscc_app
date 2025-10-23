@@ -12,19 +12,20 @@ class UserDataService {
   UserDataService({required this.auth, required this.firestore});
 
   addUserDataToFirestore(
-      {required String displayName,
+      {
+      required String displayName ,  
       required String username,
       required String email,
-      required String profilePic,
+      String? profilePic,
       String? description,
       required List<String> department,
       required String type
       }) async {
     UserModel user = UserModel(
-        displayName: displayName,
+       displayName: displayName,
         username: username,
         email: email,
-        profilePic: profilePic,
+        profilePic: profilePic ?? "",
         userId: auth.currentUser!.uid,
         description: description ?? "",
         type: type, 

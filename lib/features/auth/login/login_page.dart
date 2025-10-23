@@ -5,23 +5,28 @@ import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cscc_app/features/auth/sign_up/sign_up_page.dart';
 
+final key = GlobalKey<FormState>();
+
 // ignore: must_be_immutable
-class SignInPage extends ConsumerWidget {
-  SignInPage({super.key});
+class SignInPage extends ConsumerStatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    bool obscurePassword = true;
-    @override
-    final key = GlobalKey<FormState>();
+  ConsumerState<SignInPage> createState() => SignInPageState();
+}
+
+class SignInPageState extends ConsumerState<SignInPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  bool obscurePassword = true;
+  @override
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFF4A8BFF),
@@ -183,7 +188,7 @@ class SignInPage extends ConsumerWidget {
                     FlatButton(
                       text: "login",
                       onPressed: () async {
-                        await ref
+                         await ref
                             .read(authServiceProvider)
                             .signInWithEmailAndPassword(
                               emailController.text.trim(),
