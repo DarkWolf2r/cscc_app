@@ -65,24 +65,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     }
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    final googleProvider = GoogleAuthProvider();
-    googleProvider.addScope('email');
-    return await _auth.signInWithProvider(googleProvider);
-  }
-
-  Future<UserCredential> signInWithGitHub() async {
-    try {
-      GithubAuthProvider githubProvider = GithubAuthProvider();
-
-      githubProvider.addScope('read:user');
-      githubProvider.addScope('user:email');
-
-      return await FirebaseAuth.instance.signInWithProvider(githubProvider);
-    } catch (e) {
-      throw Exception("GitHub sign in failed: $e");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,6 +158,17 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           color: Colors.grey,
                           fontSize: 16,
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          final emailRegex = RegExp(
+                              r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+                          if (!emailRegex.hasMatch(value)) {
+                            return 'Please enter a valid email address';
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                           labelText: "Email",
                           hintText: "Enter your email",
@@ -254,6 +247,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           color: Colors.grey,
                           fontSize: 16,
                         ),
+                        validator: (confirmPassword) {
+                          if (confirmPassword != _passwordController.text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                           labelText: "Confirm Password",
                           hintText: "Confirm your password",
