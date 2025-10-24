@@ -52,36 +52,51 @@ class AuthService {
     await FirebaseAuth.instance.signOut();
   }
 
-  Future sendEmailToVerify(
-    
-    BuildContext context,
-    String email,
-    String password,
-    
-  ) async {
-    final isValidate = formkey.currentState?.validate() ?? false;
-    if (!isValidate) return;
-     try {
-      await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } on FirebaseAuthException catch (e) {
-      // ignore: use_build_context_synchronously
-      throw Exception(e.message);
-    }
-    // try {
-    //   await auth.currentUser!.sendEmailVerification();
-    // } catch (e) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text("Error sending verification email")),
+ Future<UserCredential?> sendEmailToVerify(
+  BuildContext context,
+  String email,
+  String password,
+) async {
+  try {
+    // Create user account
+    final userCredential = await auth.createUserWithEmailAndPassword(
+      email: email.trim(),
+      password: password.trim(),
+    );
+
+    // Send verification email
+    await userCredential.user?.sendEmailVerification();
+
+    // Navigate to verification page
+    // if (context.mounted) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => VerifyEmailPage(
+    //         auth: auth,
+    //         user: userCredential.user,
+    //       ),
+    //     ),
     //   );
     // }
 
-    return ;
+    return userCredential;
+  } on FirebaseAuthException catch (e) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? "Sign up failed")),
+      );
+    }
+    return null;
+  } catch (e) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.toString()}")),
+      );
+    }
+    return null;
   }
+} }
 
-  Future<void> signUp2(String email, String password) async {
-   
-  }
-}
+  Future<void> signUp2(String email, String password) async {}
+

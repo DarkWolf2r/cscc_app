@@ -16,7 +16,7 @@ class UserDataService {
   UserDataService({required this.auth, required this.firestore});
 
   addUserDataToFirestore({
-    required String displayName,
+   
     required String username,
     required String email,
     String? profilePic,
@@ -25,14 +25,13 @@ class UserDataService {
     required String type,
   }) async {
     UserModel user = UserModel(
-      displayName: displayName,
       username: username,
       email: email,
-      profilePic: profilePic ?? "",
       userId: auth.currentUser!.uid,
       description: description ?? "",
       type: type,
       departement: department,
+      profilePic: profilePic ?? "",
     );
     await firestore
         .collection("users")

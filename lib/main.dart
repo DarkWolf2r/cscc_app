@@ -38,9 +38,7 @@ class MyApp extends ConsumerWidget {
               final user = FirebaseAuth.instance.currentUser;
               if (!snapshot.hasData || !snapshot.data!.exists) {
                 return UserInfoPage(
-                  displayName: user!.displayName!,
-                  profilePic: user.photoURL ?? "",
-                  email: user.email!,
+                  email: user!.email! ,
                 );
               } else {
                 return HomePage();

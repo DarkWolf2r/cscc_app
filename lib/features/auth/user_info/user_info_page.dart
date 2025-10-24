@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
 // import 'package:cscc_app/cores/widgets/flat_button.dart';
@@ -11,13 +12,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final formkey = GlobalKey<FormState>();
 
 class UserInfoPage extends ConsumerStatefulWidget {
+
   final String email;
-  final String? profilePic;
-  final String displayName;
-  const UserInfoPage({
-    super.key,
-    this.profilePic,
-    required this.displayName,
+  const UserInfoPage({super.key, 
     required this.email,
   });
 
@@ -166,11 +163,11 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                           .addUserDataToFirestore(
                             type: typeValue,
                             department: userDepartement,
-                            displayName: widget.displayName,
-                            username: usernameController.text,
                             email: widget.email,
+                            username: usernameController.text,
+                            profilePic: "",
                             description: "",
-                            profilePic: widget.profilePic,
+                            
                           )
                       : null;
                 },

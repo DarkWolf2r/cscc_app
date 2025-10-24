@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:cscc_app/features/auth/verify_email/verify_email_page.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,7 +24,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       TextEditingController();
   bool _obscurePassword = true;
   final bool _obscureConfirmPassword = true;
-  bool isValidate =   false ;
+  bool isValidate = false;
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -117,15 +118,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           fontSize: 16,
                         ),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          final emailRegex = RegExp(
-                            r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
-                          );
-                          if (!emailRegex.hasMatch(value)) {
-                            return 'Please enter a valid email address';
-                          }
+                          value != null && !EmailValidator.validate(value)
+                              ? 'Enter a valid email'
+                              : null;
                           return null;
                         },
                         decoration: InputDecoration(
@@ -240,6 +235,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       ),
                       const SizedBox(height: 40),
                       ElevatedButton(
+                        
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF4A8BFF),
                           foregroundColor: Colors.white,
@@ -249,32 +245,19 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        
-                        onPressed:
-                        
-                        // key.currentState!.validate() ? 
-                          () async {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => VerifyEmailPage(
-                                      auth: FirebaseAuth.instance,
-                                      user: FirebaseAuth.instance.currentUser,
-                                      email: _emailController.text.trim(),
-                                      password: _passwordController.text.trim(),
-                                    ),
-                                  ),
-                                );
-                                await ref
-                                    .read(authServiceProvider)
-                                    .sendEmailToVerify(
-                                      context,
-                                      _emailController.text.trim(),
-                                      _passwordController.text.trim(),
-                                    );
-                              } ,
-                              //:null ,    
-                                             
+
+                        onPressed: (key.currentState?.validate() ?? false) ? () async {
+                          await ref
+                              .read(authServiceProvider)
+                              .sendEmailToVerify(
+                                context,
+                                _emailController.text.trim(),
+                                _passwordController.text.trim(),
+                              );
+                          
+                          
+                        }:(){},
+
                         child: Text(
                           "Sign Up",
                           style: GoogleFonts.lato(

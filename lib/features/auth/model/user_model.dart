@@ -2,7 +2,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class UserModel {
-  final String displayName;
+  
   final String username;
   final String email;
   final String? profilePic;
@@ -12,7 +12,7 @@ class UserModel {
   final String type;
 
   UserModel(
-      {required this.displayName,
+      {
       required this.username,
       required this.email,
       this.profilePic,
@@ -23,7 +23,7 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'displayName': displayName,
+      
       'username': username,
       'email': email,
       'profilePic': profilePic,
@@ -36,7 +36,7 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      displayName: map['displayName'] as String,
+      
       username: map['username'] as String,
       email: map['email'] as String,
       profilePic: map['profilePic'] as String,
