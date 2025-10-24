@@ -14,9 +14,10 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
+  final bool _obscureConfirmPassword = true;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -168,8 +169,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       TextField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
                         cursorColor: Color(0xFF4A8BFF),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                         decoration: InputDecoration(
                           labelText: "Email",
                           hintText: "Enter your email",
@@ -196,8 +200,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       TextField(
                         controller: _passwordController,
                         keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
                         cursorColor: Color(0xFF4A8BFF),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                         decoration: InputDecoration(
                           labelText: "Password",
                           hintText: "Enter your password",
@@ -238,8 +245,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       TextField(
                         controller: _confirmPasswordController,
                         keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
                         cursorColor: Color(0xFF4A8BFF),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                         decoration: InputDecoration(
                           labelText: "Confirm Password",
                           hintText: "Confirm your password",
@@ -282,11 +292,10 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                      // const SizedBox(height: 30),
                       const SizedBox(height: 20),
                       Row(
                         children: [
-                          Expanded(child: Divider()),
+                          Expanded(child: Divider(color: Colors.grey)),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
@@ -296,7 +305,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                           ),
-                          Expanded(child: Divider()),
+                          Expanded(child: Divider(color: Colors.grey)),
                         ],
                       ),
                       const SizedBox(height: 25),
@@ -322,7 +331,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 width: 35,
                                 height: 35,
                               ),
-                              
+
                               onPressed: () async {
                                 try {
                                   UserCredential user =

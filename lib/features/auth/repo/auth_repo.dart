@@ -1,27 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 
- final authServiceProvider = Provider((ref) =>
-     AuthService(
-       auth: FirebaseAuth.instance,
-       googleProvider: GoogleAuthProvider(),
-     ));
+final authServiceProvider = Provider(
+  (ref) => AuthService(
+    auth: FirebaseAuth.instance,
+    googleProvider: GoogleAuthProvider(),
+  ),
+);
 
 class AuthService {
-   FirebaseAuth auth;
-   GoogleAuthProvider googleProvider;
+  FirebaseAuth auth;
+  GoogleAuthProvider googleProvider;
 
-  AuthService({
-    required this.auth,
-    required this.googleProvider,
-  });
+  AuthService({required this.auth, required this.googleProvider});
 
- 
-
- Future<UserCredential> signInWithGoogle() async {
-   googleProvider.addScope('email');
-   return await auth.signInWithProvider(googleProvider);
+  Future<UserCredential> signInWithGoogle() async {
+    googleProvider.addScope('email');
+    return await auth.signInWithProvider(googleProvider);
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
@@ -30,6 +26,7 @@ class AuthService {
       password: password.trim(),
     );
   }
+
   Future<UserCredential> signInWithGitHub() async {
     try {
       GithubAuthProvider githubProvider = GithubAuthProvider();
@@ -46,6 +43,4 @@ class AuthService {
   Future<void> signOutUser() async {
     await FirebaseAuth.instance.signOut();
   }
-
-
 }

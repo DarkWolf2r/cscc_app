@@ -3,13 +3,10 @@ import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-<<<<<<< HEAD
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
-=======
-class MobileScreenLayout extends StatelessWidget {
-  const MobileScreenLayout({super.key});
->>>>>>> 5574b4f (connect between sign in button and the home page)
+  // class MobileScreenLayout extends StatelessWidget {
+  //   const MobileScreenLayout({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,8 +24,7 @@ class MobileScreenLayout extends StatelessWidget {
     );
   }
 }
-<<<<<<< HEAD
-=======
+
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
 // // import 'package:instagram_clone_flutter/utils/colors.dart';
@@ -124,4 +120,3 @@ class MobileScreenLayout extends StatelessWidget {
 //     );
 //   }
 // }
->>>>>>> 5574b4f (connect between sign in button and the home page)
