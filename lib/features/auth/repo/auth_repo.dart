@@ -52,4 +52,29 @@ class AuthService {
   }
 
 
+  Future<void> signUp(
+    GlobalKey<FormState> formkey,
+    BuildContext context,
+    String email,
+    String password,
+    String confirmPassword,
+  ) async {
+    final isValid = formkey.currentState?.validate();
+    if (!isValid!) return;
+    Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyEmailPage(
+      auth: auth
+    )));
+  
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? "Error creating account")),
+      );
+    }
+  }
 }
