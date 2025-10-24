@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,6 +20,69 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       TextEditingController();
   bool _obscurePassword = true;
   final bool _obscureConfirmPassword = true;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _signUp() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in all fields")),
+      );
+      return;
+    }
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Passwords do not match!")));
+      return;
+    }
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Account created successfully")),
+      );
+      // add user to firestore
+      await _firestore.collection('users').doc(_auth.currentUser?.uid).set({
+        'uid': _auth.currentUser?.uid,
+        'email': email,
+        'followers': [],
+        'following': [],
+      });
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? "Error creating account")),
+      );
+    }
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    final googleProvider = GoogleAuthProvider();
+    googleProvider.addScope('email');
+    return await _auth.signInWithProvider(googleProvider);
+  }
+
+  Future<UserCredential> signInWithGitHub() async {
+    try {
+      GithubAuthProvider githubProvider = GithubAuthProvider();
+
+      githubProvider.addScope('read:user');
+      githubProvider.addScope('user:email');
+
+      return await FirebaseAuth.instance.signInWithProvider(githubProvider);
+    } catch (e) {
+      throw Exception("GitHub sign in failed: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,12 +171,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                        // key: key,
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
-                        validator: (email) =>
-                          email != null && !EmailValidator.validate(email)
-                          ? 'Enter a valid email'
-                          : null,
-                        textInputAction: TextInputAction.next,
                         cursorColor: Color(0xFF4A8BFF),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                         decoration: InputDecoration(
                           labelText: "Email",
                           hintText: "Enter your email",
@@ -143,8 +205,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           ? 'Enter a password with at least 6 characters'
                           : null,
                         keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
                         cursorColor: Color(0xFF4A8BFF),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                         decoration: InputDecoration(
                           labelText: "Password",
                           hintText: "Enter your password",
@@ -184,12 +249,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                         
                         controller: _confirmPasswordController,
                         keyboardType: TextInputType.visiblePassword,
-                        validator: (confirmPassword) =>
-                          confirmPassword != null && confirmPassword != _passwordController.text
-                          ? 'Passwords do not match'
-                          : null,
-                        textInputAction: TextInputAction.done,
                         cursorColor: Color(0xFF4A8BFF),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                         decoration: InputDecoration(
                           labelText: "Confirm Password",
                           hintText: "Confirm your password",
@@ -240,11 +304,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           ),
                         ),
                       ),
-                      // const SizedBox(height: 30),
                       const SizedBox(height: 20),
                       Row(
                         children: [
-                          Expanded(child: Divider()),
+                          Expanded(child: Divider(color: Colors.grey)),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
@@ -254,7 +317,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                               ),
                             ),
                           ),
-                          Expanded(child: Divider()),
+                          Expanded(child: Divider(color: Colors.grey)),
                         ],
                       ),
                       const SizedBox(height: 25),
@@ -280,7 +343,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 width: 35,
                                 height: 35,
                               ),
-                  
+
                               onPressed: () async {
                                 await ref
                                     .read(authServiceProvider)

@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/widgets/flat_button.dart';
-import 'package:cscc_app/cores/widgets/my_text_field.dart';
 import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
+// import 'package:cscc_app/cores/widgets/flat_button.dart';
+// import 'package:cscc_app/cores/widgets/my_text_field.dart';
+// import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

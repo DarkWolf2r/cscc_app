@@ -9,7 +9,7 @@ import 'firebase_options.dart';
 import 'package:cscc_app/features/auth/login/login_page.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); 
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(ProviderScope(child: MyApp()));
 }
@@ -18,17 +18,14 @@ class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context , WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(child: CircularProgressIndicator());
           } else if (!snapshot.hasData) {
             return SignInPage();
           }
@@ -38,25 +35,22 @@ class MyApp extends ConsumerWidget {
                 .doc(FirebaseAuth.instance.currentUser!.uid)
                 .snapshots(),
             builder: (context, snapshot) {
-              final user = FirebaseAuth.instance.currentUser; 
+              final user = FirebaseAuth.instance.currentUser;
               if (!snapshot.hasData || !snapshot.data!.exists) {
                 return UserInfoPage(
-                    displayName: user!.displayName!,
-                    profilePic: user.photoURL ?? "",
-                    email: user.email!);
-              } 
-              else {
+                  displayName: user!.displayName!,
+                  profilePic: user.photoURL ?? "",
+                  email: user.email!,
+                );
+              } else {
                 return HomePage();
               }
             },
           );
-
         },
       ),
-    //  SignInPage(),
+      //  SignInPage(),
       theme: ThemeData.dark(),
-      
     );
   }
 }
-
