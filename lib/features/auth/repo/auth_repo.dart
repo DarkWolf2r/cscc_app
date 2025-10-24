@@ -1,3 +1,4 @@
+import 'package:cscc_app/features/auth/login/login_page.dart';
 import 'package:cscc_app/features/auth/user_info/user_info_page.dart';
 import 'package:cscc_app/features/auth/verify_email/verify_email_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -51,30 +52,36 @@ class AuthService {
     await FirebaseAuth.instance.signOut();
   }
 
-
-  Future<void> signUp(
-    GlobalKey<FormState> formkey,
+  Future sendEmailToVerify(
+    
     BuildContext context,
     String email,
     String password,
-    String confirmPassword,
+    
   ) async {
-    final isValid = formkey.currentState?.validate();
-    if (!isValid!) return;
-    Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyEmailPage(
-      auth: auth
-    )));
-  
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    final isValidate = formkey.currentState?.validate() ?? false;
+    if (!isValidate) return;
+     try {
+      await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
     } on FirebaseAuthException catch (e) {
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? "Error creating account")),
-      );
+      throw Exception(e.message);
     }
+    // try {
+    //   await auth.currentUser!.sendEmailVerification();
+    // } catch (e) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text("Error sending verification email")),
+    //   );
+    // }
+
+    return ;
+  }
+
+  Future<void> signUp2(String email, String password) async {
+   
   }
 }

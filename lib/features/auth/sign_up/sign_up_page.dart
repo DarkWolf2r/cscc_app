@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
+import 'package:cscc_app/features/auth/verify_email/verify_email_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 final key = GlobalKey<FormState>();
+
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
 
@@ -20,52 +23,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       TextEditingController();
   bool _obscurePassword = true;
   final bool _obscureConfirmPassword = true;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  Future<void> _signUp() async {
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
-    final confirmPassword = _confirmPasswordController.text.trim();
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please fill in all fields")),
-      );
-      return;
-    }
-    if (password != confirmPassword) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Passwords do not match!")));
-      return;
-    }
-    try {
-      await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Account created successfully")),
-      );
-      // add user to firestore
-      await _firestore.collection('users').doc(_auth.currentUser?.uid).set({
-        'uid': _auth.currentUser?.uid,
-        'email': email,
-        'followers': [],
-        'following': [],
-      });
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? "Error creating account")),
-      );
-    }
-  }
-
-
+  bool isValidate =   false ;
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -150,7 +108,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       ),
                       const SizedBox(height: 40),
                       TextFormField(
-                       // key: key,
+                        // key: key,
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         cursorColor: Color(0xFF4A8BFF),
@@ -163,7 +121,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             return 'Please enter your email';
                           }
                           final emailRegex = RegExp(
-                              r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+                            r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
+                          );
                           if (!emailRegex.hasMatch(value)) {
                             return 'Please enter a valid email address';
                           }
@@ -184,19 +143,21 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                           ),
-                          floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
+                          floatingLabelStyle: TextStyle(
+                            color: Color(0xFF4A8BFF),
+                          ),
                           filled: true,
                           fillColor: Colors.grey[100],
                         ),
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
-                       // key: key,
+                        // key: key,
                         controller: _passwordController,
                         validator: (password) =>
-                          password != null && password.length < 6
-                          ? 'Enter a password with at least 6 characters'
-                          : null,
+                            password != null && password.length < 6
+                            ? 'Enter a password with at least 6 characters'
+                            : null,
                         keyboardType: TextInputType.visiblePassword,
                         cursorColor: Color(0xFF4A8BFF),
                         style: const TextStyle(
@@ -231,7 +192,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                           ),
-                          floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
+                          floatingLabelStyle: TextStyle(
+                            color: Color(0xFF4A8BFF),
+                          ),
                           filled: true,
                           fillColor: Colors.grey[100],
                         ),
@@ -239,7 +202,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
-                        
                         controller: _confirmPasswordController,
                         keyboardType: TextInputType.visiblePassword,
                         cursorColor: Color(0xFF4A8BFF),
@@ -268,7 +230,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                           ),
-                          floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
+                          floatingLabelStyle: TextStyle(
+                            color: Color(0xFF4A8BFF),
+                          ),
                           filled: true,
                           fillColor: Colors.grey[100],
                         ),
@@ -285,17 +249,32 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        onPressed: () async {
-                          await ref
-                              .watch(authServiceProvider)
-                              .signUp(
-                                key,
-                                context,
-                              _emailController.text.trim(),
-                               _passwordController.text.trim(), 
-                               _confirmPasswordController.text.trim()
-                               );
-                        },
+                        
+                        onPressed:
+                        
+                        // key.currentState!.validate() ? 
+                          () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VerifyEmailPage(
+                                      auth: FirebaseAuth.instance,
+                                      user: FirebaseAuth.instance.currentUser,
+                                      email: _emailController.text.trim(),
+                                      password: _passwordController.text.trim(),
+                                    ),
+                                  ),
+                                );
+                                await ref
+                                    .read(authServiceProvider)
+                                    .sendEmailToVerify(
+                                      context,
+                                      _emailController.text.trim(),
+                                      _passwordController.text.trim(),
+                                    );
+                              } ,
+                              //:null ,    
+                                             
                         child: Text(
                           "Sign Up",
                           style: GoogleFonts.lato(
