@@ -1,5 +1,6 @@
 import 'package:cscc_app/features/auth/user_info/user_info_page.dart';
 import 'package:cscc_app/home_page.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +12,12 @@ import 'package:cscc_app/features/auth/login/login_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await FirebaseAppCheck.instance.activate(
+    providerAndroid: AndroidPlayIntegrityProvider(),
+    providerApple: AppleDeviceCheckProvider(),
+  );
+  
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -37,9 +44,7 @@ class MyApp extends ConsumerWidget {
             builder: (context, snapshot) {
               final user = FirebaseAuth.instance.currentUser;
               if (!snapshot.hasData || !snapshot.data!.exists) {
-                return UserInfoPage(
-                  email: user!.email! ,
-                );
+                return UserInfoPage(email: user!.email!);
               } else {
                 return HomePage();
               }
