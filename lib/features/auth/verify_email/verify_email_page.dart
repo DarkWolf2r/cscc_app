@@ -10,20 +10,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:cscc_app/home_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class VerifyEmailPage extends ConsumerStatefulWidget {
+class VerifyEmailPage extends StatefulWidget {
   final String email;
 
   const VerifyEmailPage({super.key, required this.email});
 
   @override
-  ConsumerState<VerifyEmailPage> createState() => _VerifyEmailPageState();
+  State<VerifyEmailPage> createState() => _VerifyEmailPageState();
 }
 
-class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
+class _VerifyEmailPageState extends State<VerifyEmailPage> {
   bool isEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
+  Timer? resendTimer;
   @override
   void initState() {
     super.initState();
@@ -38,12 +40,18 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
 
   ///
   Future<void> sendVerificationEmail() async {
-    setState(() {
-      //  _isVerifying = true;
-    });
     try {
       final user = FirebaseAuth.instance.currentUser;
       await user?.sendEmailVerification();
+      setState(() {
+        canResendEmail = false;
+      });
+      resendTimer = Timer.periodic(
+        Duration(seconds: 10),
+        (_) => setState(() {
+          canResendEmail = true;
+        }),
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Verification email sent to ${widget.email}'),
@@ -57,11 +65,7 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
           backgroundColor: Colors.red,
         ),
       );
-    } finally {
-      // setState(() {
-      //   _isVerifying = false;
-      //  });
-    }
+    } finally {}
   }
 
   Future<void> checkEmailVerification() async {
@@ -72,7 +76,12 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
         isEmailVerified = user?.emailVerified ?? false;
       });
       if (isEmailVerified) {
-        print( " VERIFICATION : ${isEmailVerified}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Email verified successfully!"),
+            backgroundColor: Colors.green,
+          ),
+        );
         timer?.cancel();
         Navigator.pushReplacement(
           context,
@@ -91,21 +100,11 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
       //   Navigator.pushReplacement(context,
       //       MaterialPageRoute(builder: (context) => const Homescreen()));
     } catch (e) {
-      print('Error checking email verification: $e');
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error : ${e.toString()} ")));
     }
   }
-
-  ///
-  // Future<void> checkEmailVerified() async {
-  //   await FirebaseAuth.instance.currentUser?.reload();
-  //   setState(() {
-  //     isEmailVerified =
-  //         FirebaseAuth.instance.currentUser?.emailVerified ?? false;
-  //   });
-  //   if (isEmailVerified) {
-  //     timer?.cancel();
-  //   }
-  // }
 
   @override
   void dispose() {
@@ -116,210 +115,184 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor: const Color(0xFF4A8BFF),
+
+      body: Stack(
         children: [
-          Center(
-            child: Text(
-              "Please verify your email address to continue.${widget.email}",
+          Positioned(
+            top: -40,
+            right: 0,
+            left: 0,
+            child: Opacity(
+              opacity: 0.4,
+              child: Image.asset(
+                'assets/cscc_logo-removebg2.png',
+                width: 400,
+                height: 400,
+              ),
             ),
           ),
-          SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () async {
-              await ref.read(authServiceProvider).signOutUser();
-            },
-            child: Text("Back"),
+          Positioned(
+            top: 60,
+            right: 0,
+            left: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "CSCC",
+                  style: GoogleFonts.lato(
+                    textStyle: const TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  "Team",
+                  style: GoogleFonts.lato(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () async {
-              await FirebaseAuth.instance.currentUser?.sendEmailVerification();
-            },
-            // canResendEmail ? sendVerificationEmail : null,
-            child: Text("Resend Email"),
+          Positioned(
+            top: 250,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              padding: const EdgeInsets.fromLTRB(24, 5, 24, 24),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF4F4F4),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 80),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Email Verification",
+                    style: GoogleFonts.lato(
+                      textStyle: const TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w900,
+                        color: Color(0xFF4A8BFF),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "Check your email to verify your account !",
+                    style: GoogleFonts.lato(
+                      textStyle: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF4A8BFF),
+                      ),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 40),
+                  Text(
+                    "You can send another verification email after 10seconds!",
+                    style: GoogleFonts.lato(
+                      textStyle: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF4A8BFF),
+                      ),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: canResendEmail
+                          ? const Color(0xFF4A8BFF)
+                          : Colors.transparent,
+                      foregroundColor: Colors.white,
+                      elevation: 2,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    onPressed: canResendEmail
+                        ? () {
+                            sendVerificationEmail();
+                          }
+                        : () {},
+                    child: Text(
+                      "Resend Email",
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: 250,
+            left: 5,
+            child: IconButton(
+              icon: Row(
+                children: [
+                  Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
+                  SizedBox(width: 2),
+                  Text(
+                    "Back to Sign Up",
+                    style: GoogleFonts.lato(
+                      textStyle: const TextStyle(
+                        color: Color(0xFF4A8BFF),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                FocusScope.of(context).unfocus();
+              },
+            ),
           ),
         ],
       ),
-      // body: Center(
-      //   child: isEmailVerified ?
-      //        FlatButton(
-      //           text: "Continue",
-      //           onPressed: () {
-      //             ref
-      //                 .read(authServiceProvider)
-      //                 .signUp2(widget.email, widget.password);
-      //             Navigator.push(
-      //               context,
-      //               MaterialPageRoute(builder: (context) => HomePage()),
-      //             );
-      //           },
-      //           colour: Colors.blueAccent,
-      //         )
-      //       : Column(
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           children: [
-      //             Text("A verification email has been sent to your email."),
-      //             SizedBox(height: 24),
-      //             ElevatedButton(
-      //               onPressed: () async {
-      //                 ref
-      //                     .read(authServiceProvider)
-      //                     .sendEmailToVerify(
-      //                       context,
-      //                       widget.email,
-      //                       widget.password,
-      //                     );
 
-      //                 setState(() {
-      //                   canResendEmail = false;
-      //                 });
-      //                 await Future.delayed(Duration(seconds: 30));
-      //                 setState(() {
-      //                   canResendEmail = true;
-      //                 });
-      //               },
-      //               // canResendEmail ? sendVerificationEmail : null,
-      //               child: Text("Resend Email"),
-      //             ),
-      //             SizedBox(height: 8),
-      //             TextButton(
-      //               onPressed: () async {
-      //                 await FirebaseAuth.instance.signOut();
-      //               },
-      //               child: Text("Cancel"),
-      //             ),
-      //           ],
-      //         ),
+      // body: Column(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Center(
+      //       child: Text(
+      //         "Please verify your email address to continue.${widget.email}",
+      //       ),
+      //     ),
+      //     SizedBox(height: 24),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         await ref.read(authServiceProvider).signOutUser();
+      //       },
+      //       child: Text("Back"),
+      //     ),
+      //     const SizedBox(height: 20),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+      //       },
+      //       // canResendEmail ? sendVerificationEmail : null,
+      //       child: Text("Resend Email"),
+      //     ),
+      //   ],
       // ),
     );
   }
 }
-// ...existing code...
-// import 'dart:async';
-// import 'package:cscc_app/cores/widgets/flat_button.dart';
-// import 'package:cscc_app/features/auth/repo/auth_repo.dart';
-// import 'package:cscc_app/home_page.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-// class VerifyEmailPage extends ConsumerStatefulWidget {
-//   final FirebaseAuth auth;
-//   final User? user;
-//   final String email;
-//   final String password;
-
-//   const VerifyEmailPage({
-//     super.key,
-//     required this.auth,
-//     required this.user,
-//     required this.email,
-//     required this.password,
-//   });
-
-//   @override
-//   ConsumerState<VerifyEmailPage> createState() => _VerifyEmailPageState();
-// }
-
-// class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
-//   bool isEmailVerified = false;
-//   bool canResendEmail = false;
-//   Timer? timer;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     isEmailVerified =
-//         widget.user?.emailVerified ??
-//         widget.auth.currentUser?.emailVerified ??
-//         false;
-
-//     if (!isEmailVerified &&
-//         (widget.user != null || widget.auth.currentUser != null)) {
-//       sendVerificationEmail();
-//       timer = Timer.periodic(
-//         const Duration(seconds: 5),
-//         (_) => checkEmailVerified(),
-//       );
-//     }
-//   }
-
-//   @override
-//   void dispose() {
-//     timer?.cancel();
-//     super.dispose();
-//   }
-
-//   Future<void> checkEmailVerified() async {
-//     final current = widget.auth.currentUser;
-//     if (current == null) return;
-//     await current.reload();
-//     setState(() {
-//       isEmailVerified = widget.auth.currentUser?.emailVerified ?? false;
-//     });
-//     if (isEmailVerified) timer?.cancel();
-//   }
-
-//   Future<void> sendVerificationEmail() async {
-//     try {
-//       final user = widget.user ?? widget.auth.currentUser;
-//       if (user == null) {
-//         ScaffoldMessenger.of(
-//           context,
-//         ).showSnackBar(const SnackBar(content: Text("No user available")));
-//         return;
-//       }
-//       await user.sendEmailVerification();
-//       setState(() => canResendEmail = false);
-//       await Future.delayed(const Duration(seconds: 30));
-//       setState(() => canResendEmail = true);
-//     } catch (_) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text("Error sending verification email")),
-//       );
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: isEmailVerified
-//             ? FlatButton(
-//                 text: "Continue",
-//                 onPressed: () {
-//                   ref
-//                       .read(authServiceProvider)
-//                       .signUp2(widget.email, widget.password);
-//                   Navigator.push(context,
-//                       MaterialPageRoute(builder: (context) => HomePage()));
-//                 },
-//                 colour: Colors.blueAccent,
-//               )
-//             // ? const Text("Email verified! You can now access the app.")
-//             : Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   const Text(
-//                     "A verification email has been sent to your email.",
-//                   ),
-//                   const SizedBox(height: 24),
-//                   ElevatedButton(
-//                     onPressed: canResendEmail ? sendVerificationEmail : null,
-//                     child: const Text("Resend Email"),
-//                   ),
-//                   const SizedBox(height: 8),
-//                   TextButton(
-//                     onPressed: () async {
-//                       await widget.auth.signOut();
-//                       Navigator.of(context).popUntil((route) => route.isFirst);
-//                     },
-//                     child: const Text("Cancel"),
-//                   ),
-//                 ],
-//               ),
-//       ),
-//     );
-//   }
-// }
