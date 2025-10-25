@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,18 +13,14 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword> {
   final _email = TextEditingController();
-
+  final _forgotPasswordKey = GlobalKey<FormState>();
   Future<void> _forgotPassword() async {
-    final email = _email.text.trim();
-    if (email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter your email first")),
-      );
-      return;
-    }
-
+     
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: _email.text.trim(),
+      );
+     
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -109,44 +106,45 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 80),
-                      // Positioned(
-                      //   // top: 600,
-                      //   right: 0,
-                      //   child: Image.asset(
-                      //     'assets/images/imgg17.png',
-                      //     width: 220,
-                      //     height: 130,
-                      //   ),
-                      // ),
-                      const SizedBox(height: 20),
-                      Text(
-                        "Forget Password",
-                        style: GoogleFonts.lato(
-                          textStyle: const TextStyle(
-                            fontSize: 35,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xFF4A8BFF),
-                          ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 80),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Forget Password",
+                      style: GoogleFonts.lato(
+                        textStyle: const TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.w900,
+                          color: Color(0xFF4A8BFF),
                         ),
                       ),
-                      Text(
-                        "Enter your email to reset your password",
-                        style: GoogleFonts.lato(
-                          textStyle: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF4A8BFF),
-                          ),
+                    ),
+                    Text(
+                      "Enter your email to reset your password",
+                      style: GoogleFonts.lato(
+                        textStyle: const TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF4A8BFF),
                         ),
-                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 40),
-                      TextField(
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 40),
+                    Form(
+                      key: _forgotPasswordKey,
+                      child: TextFormField(
                         controller: _email,
                         keyboardType: TextInputType.emailAddress,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          } else if (!EmailValidator.validate(value)) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
                         cursorColor: Color(0xFF4A8BFF),
                         style: const TextStyle(
                           color: Colors.grey,
@@ -174,27 +172,32 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           fillColor: Colors.grey[100],
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF4A8BFF),
-                          foregroundColor: Colors.white,
-                          elevation: 2,
-                          minimumSize: const Size(double.infinity, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        onPressed: _forgotPassword,
-                        child: Text(
-                          "Send Email",
-                          style: GoogleFonts.lato(
-                            textStyle: TextStyle(fontSize: 18),
-                          ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4A8BFF),
+                        foregroundColor: Colors.white,
+                        elevation: 2,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                    ],
-                  ),
+                      onPressed:
+                          _forgotPasswordKey.currentState?.validate() ?? false
+                          ? () {
+                              _forgotPassword();
+                            }
+                          : () {},
+                      child: Text(
+                        "Send Email",
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

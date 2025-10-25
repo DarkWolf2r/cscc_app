@@ -35,6 +35,7 @@ class MyTextField extends StatelessWidget {
       focusNode: focusNode,
       controller: contoller,
       obscureText: obscureText,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       cursorColor: Color(0xFF4A8BFF),
       style: const TextStyle(color: Colors.grey, fontSize: 16),
       decoration: InputDecoration(
