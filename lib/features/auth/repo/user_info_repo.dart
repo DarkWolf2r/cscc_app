@@ -28,10 +28,10 @@ class UserDataService {
       username: username,
       email: email,
       userId: auth.currentUser!.uid,
-      description: description ?? "",
+      description: description,
       type: type,
       departement: department,
-      profilePic: profilePic ?? "",
+      profilePic: profilePic ,
     );
     await firestore
         .collection("users")
