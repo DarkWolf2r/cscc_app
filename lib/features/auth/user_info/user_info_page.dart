@@ -9,7 +9,7 @@ import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final formkey = GlobalKey<FormState>();
+
 
 class UserInfoPage extends ConsumerStatefulWidget {
 
@@ -25,6 +25,7 @@ class UserInfoPage extends ConsumerStatefulWidget {
 class _UserInfoPageState extends ConsumerState<UserInfoPage> {
   final TextEditingController usernameController = TextEditingController();
   bool isValidate = true;
+  final userInfoKey = GlobalKey<FormState>();
   String typeValue = 'Membre';
   List<String> userDepartement = [];
   List<String> departementValue = [
@@ -82,7 +83,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                     validator: (usremane) {
                       return isValidate ? null : "Username Already Taken";
                     },
-                    key: formkey,
+                    key: userInfoKey,
                     controller: usernameController,
                     decoration: InputDecoration(
                       suffixIcon: isValidate

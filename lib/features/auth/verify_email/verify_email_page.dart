@@ -72,12 +72,13 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
         isEmailVerified = user?.emailVerified ?? false;
       });
       if (isEmailVerified) {
+        print( " VERIFICATION : ${isEmailVerified}");
         timer?.cancel();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => UserInfoPage(
-                email: widget.email ,
-          )),
+          MaterialPageRoute(
+            builder: (context) => UserInfoPage(email: widget.email),
+          ),
         );
       }
 
@@ -126,7 +127,7 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
           SizedBox(height: 24),
           ElevatedButton(
             onPressed: () async {
-             await ref.read(authServiceProvider).signOutUser();
+              await ref.read(authServiceProvider).signOutUser();
             },
             child: Text("Back"),
           ),

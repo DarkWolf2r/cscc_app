@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cscc_app/features/auth/sign_up/sign_up_page.dart';
 
-final key = GlobalKey<FormState>();
+
 
 // ignore: must_be_immutable
 class SignInPage extends ConsumerStatefulWidget {
@@ -24,7 +24,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool obscurePassword = true;
-
+ final signInKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -83,7 +83,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
             Positioned(
               top: 230,
               child: Form(
-                key: key,
+                key: signInKey,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
@@ -198,14 +198,17 @@ class SignInPageState extends ConsumerState<SignInPage> {
                         //
                         FlatButton(
                           text: "login",
-                          onPressed: () async {
+                          onPressed:  signInKey.currentState?.validate() ?? false ? () async {
+                            
                             await ref
                                 .read(authServiceProvider)
                                 .signInWithEmailAndPassword(
+                              
                                   emailController.text.trim(),
                                   passwordController.text.trim(),
+                                  context,
                                 );
-                          },
+                          }:(){},
                           colour: const Color(0xFF4A8BFF),
                         ),
 

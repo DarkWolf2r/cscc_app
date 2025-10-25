@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final key = GlobalKey<FormState>();
+
 
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
@@ -24,7 +24,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       TextEditingController();
   bool _obscurePassword = true;
   final bool _obscureConfirmPassword = true;
-  bool isValidate = false;
+
+  final signUpKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -93,7 +94,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               ),
               child: SingleChildScrollView(
                 child: Form(
-                  key: key,
+                  key: signUpKey,
                   child: Column(
                     children: [
                       const SizedBox(height: 70),
@@ -246,7 +247,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           ),
                         ),
 
-                        onPressed: (key.currentState?.validate() ?? false) ? () async {
+                        onPressed: (signUpKey.currentState?.validate() ?? false) ? () async {
                           await ref
                               .read(authServiceProvider)
                               .sendEmailToVerify(
