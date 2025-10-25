@@ -1,4 +1,5 @@
 import 'package:cscc_app/features/auth/user_info/user_info_page.dart';
+import 'package:cscc_app/features/auth/verify_email/verify_email_page.dart';
 import 'package:cscc_app/home_page.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,11 +14,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  await FirebaseAppCheck.instance.activate(
-    providerAndroid: AndroidPlayIntegrityProvider(),
-    providerApple: AppleDeviceCheckProvider(),
-  );
-  
+  // await FirebaseAppCheck.instance.activate(
+  //   providerAndroid: AndroidPlayIntegrityProvider(),
+  //   providerApple: AppleDeviceCheckProvider(),
+  // );
+
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -35,22 +36,24 @@ class MyApp extends ConsumerWidget {
             return Center(child: CircularProgressIndicator());
           } else if (!snapshot.hasData) {
             return SignInPage();
-          }
-          return StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("users")
+          } else if (!(snapshot.data!.emailVerified)) {
+            return VerifyEmailPage(email: snapshot.data!.email!);
+          } else {
+            return StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("users")
                 .doc(FirebaseAuth.instance.currentUser!.uid)
                 .snapshots(),
             builder: (context, snapshot) {
               final user = FirebaseAuth.instance.currentUser;
-              if (!snapshot.hasData || !snapshot.data!.exists) {
+               if (!snapshot.hasData || !snapshot.data!.exists) {
                 return UserInfoPage(email: user!.email!);
-              } else {
-                return HomePage();
               }
+              return HomePage();
             },
           );
-        },
+        }
+      }
       ),
       //  SignInPage(),
       theme: ThemeData.dark(),

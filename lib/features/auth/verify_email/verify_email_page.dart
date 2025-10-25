@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:cscc_app/features/auth/sign_up/sign_up_page.dart';
+import 'package:cscc_app/features/auth/user_info/user_info_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,17 +12,9 @@ import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:cscc_app/home_page.dart';
 
 class VerifyEmailPage extends ConsumerStatefulWidget {
-  
-  final User? user;
   final String email;
-  final String password;
-  const VerifyEmailPage({
-    super.key,
-    
-    this.user,
-    required this.email,
-    required this.password,
-  });
+
+  const VerifyEmailPage({super.key, required this.email});
 
   @override
   ConsumerState<VerifyEmailPage> createState() => _VerifyEmailPageState();
@@ -32,26 +25,81 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
   bool canResendEmail = false;
   Timer? timer;
   @override
-  // void initState() {
-  //   super.initState();
-  //   isEmailVerified = FirebaseAuth.instance.currentUser?.emailVerified ?? false;
-  //   if (!isEmailVerified) {
-  //     ref.read(authServiceProvider).sendEmailToVerify(context, widget.email, widget.password);
-  //       timer = Timer.periodic(Duration(seconds: 5), (_) => checkEmailVerified());
+  void initState() {
+    super.initState();
+    sendVerificationEmail();
+    if (!isEmailVerified) {
+      timer = Timer.periodic(
+        Duration(seconds: 5),
+        (_) => checkEmailVerification(),
+      );
+    }
+  }
 
-  //   }
-  // }
+  ///
+  Future<void> sendVerificationEmail() async {
+    setState(() {
+      //  _isVerifying = true;
+    });
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      await user?.sendEmailVerification();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Verification email sent to ${widget.email}'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to send verification email: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      // setState(() {
+      //   _isVerifying = false;
+      //  });
+    }
+  }
 
-  // @override
-  // void dispose() {
-  //   timer?.cancel();
-  //   super.dispose();
-  // }
+  Future<void> checkEmailVerification() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      await user?.reload();
+      setState(() {
+        isEmailVerified = user?.emailVerified ?? false;
+      });
+      if (isEmailVerified) {
+        timer?.cancel();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => UserInfoPage(
+                email: widget.email ,
+          )),
+        );
+      }
 
+      // Save verification state
+      //    final prefs = await SharedPreferences.getInstance();
+      //   await prefs.setBool('isEmailVerified', true);
+      //  await prefs.setString('userEmail', user?.email ?? '');
+
+      // Navigate to home screen
+      //   Navigator.pushReplacement(context,
+      //       MaterialPageRoute(builder: (context) => const Homescreen()));
+    } catch (e) {
+      print('Error checking email verification: $e');
+    }
+  }
+
+  ///
   // Future<void> checkEmailVerified() async {
   //   await FirebaseAuth.instance.currentUser?.reload();
   //   setState(() {
-  //     isEmailVerified = FirebaseAuth.instance.currentUser?.emailVerified ?? false;
+  //     isEmailVerified =
+  //         FirebaseAuth.instance.currentUser?.emailVerified ?? false;
   //   });
   //   if (isEmailVerified) {
   //     timer?.cancel();
@@ -59,13 +107,41 @@ class _VerifyEmailPageState extends ConsumerState<VerifyEmailPage> {
   // }
 
   @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("Please verify your email address to continue."),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Text(
+              "Please verify your email address to continue.${widget.email}",
+            ),
+          ),
+          SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: () async {
+             await ref.read(authServiceProvider).signOutUser();
+            },
+            child: Text("Back"),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+            },
+            // canResendEmail ? sendVerificationEmail : null,
+            child: Text("Resend Email"),
+          ),
+        ],
       ),
       // body: Center(
-      //   child: isEmailVerified ? 
+      //   child: isEmailVerified ?
       //        FlatButton(
       //           text: "Continue",
       //           onPressed: () {

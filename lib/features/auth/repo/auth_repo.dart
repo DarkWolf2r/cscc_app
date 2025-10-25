@@ -64,34 +64,22 @@ class AuthService {
       password: password.trim(),
     );
 
-    // Send verification email
-    await userCredential.user?.sendEmailVerification();
-
     // Navigate to verification page
-    // if (context.mounted) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => VerifyEmailPage(
-    //         auth: auth,
-    //         user: userCredential.user,
-    //       ),
-    //     ),
-    //   );
-    // }
+    if (context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VerifyEmailPage(      
+           email: email,
+          ),
+        ),
+      );
+    }
 
-    return userCredential;
   } on FirebaseAuthException catch (e) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message ?? "Sign up failed")),
-      );
-    }
-    return null;
-  } catch (e) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${e.toString()}")),
       );
     }
     return null;
