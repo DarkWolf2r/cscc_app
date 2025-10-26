@@ -35,13 +35,22 @@ class MyTextField extends StatelessWidget {
       focusNode: focusNode,
       controller: contoller,
       obscureText: obscureText,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+
+      // InputBorder? focusedBorder,
       cursorColor: Color(0xFF4A8BFF),
       style: const TextStyle(color: Colors.grey, fontSize: 16),
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         labelText: labelText,
         hintText: hintText,
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderSide: BorderSide(color: Colors.red),
+        ),
         prefixIcon: Icon(prefixIcon, color: Color(0xFF4A8BFF)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -52,7 +61,7 @@ class MyTextField extends StatelessWidget {
           borderSide: BorderSide(color: Color(0xFF4A8BFF)),
         ),
         floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
-        filled: true,
+        // filled: true,
         fillColor: Colors.grey[100],
       ),
     );

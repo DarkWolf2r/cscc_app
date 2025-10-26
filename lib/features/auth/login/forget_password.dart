@@ -16,12 +16,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   final _email = TextEditingController();
   final _forgotPasswordKey = GlobalKey<FormState>();
   Future<void> _forgotPassword() async {
-     
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: _email.text.trim(),
       );
-     
+
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -46,190 +45,195 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFF4A8BFF),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Stack(
-          children: [
-            Positioned(
-              top: -40,
-              right: 0,
-              left: 0,
-              child: Opacity(
-                opacity: 0.4,
-                child: Image.asset(
-                  'assets/cscc_logo-removebg2.png',
-                  width: 400,
-                  height: 400,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 60,
-              right: 0,
-              left: 0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "CSCC",
-                    style: GoogleFonts.lato(
-                      textStyle: const TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "Team",
-                    style: GoogleFonts.lato(
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 153,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.fromLTRB(24, 5, 24, 24),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF4F4F4),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height / 0.9,
+          child: Stack(
+            children: [
+              Positioned(
+                top: -40,
+                right: 0,
+                left: 0,
+                child: Opacity(
+                  opacity: 0.4,
+                  child: Image.asset(
+                    'assets/cscc_logo-removebg2.png',
+                    width: 400,
+                    height: 400,
                   ),
                 ),
+              ),
+              Positioned(
+                top: 60,
+                right: 0,
+                left: 0,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 80),
-                    const SizedBox(height: 20),
                     Text(
-                      "Forget Password",
+                      "CSCC",
                       style: GoogleFonts.lato(
                         textStyle: const TextStyle(
                           fontSize: 35,
-                          fontWeight: FontWeight.w900,
-                          color: Color(0xFF4A8BFF),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                     Text(
-                      "Enter your email to reset your password",
+                      "Team",
                       style: GoogleFonts.lato(
                         textStyle: const TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF4A8BFF),
+                          fontSize: 16,
+                          color: Colors.white,
                         ),
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 40),
-                    Form(
-                      key: _forgotPasswordKey,
-                      child: TextFormField(
-                        controller: _email,
-                        keyboardType: TextInputType.emailAddress,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          } else if (!EmailValidator.validate(value)) {
-                            return 'Please enter a valid email';
-                          }
-                          return null;
-                        },
-                        cursorColor: Color(0xFF4A8BFF),
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: "Email",
-                          hintText: "Enter your email",
-                          prefixIcon: const Icon(
-                            Icons.email,
-                            color: Color(0xFF4A8BFF),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                          ),
-                          floatingLabelStyle: TextStyle(
-                            color: Color(0xFF4A8BFF),
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[100],
-                        ),
-                      ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 200,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 0.7,
+                  padding: const EdgeInsets.fromLTRB(24, 5, 24, 24),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4A8BFF),
-                        foregroundColor: Colors.white,
-                        elevation: 2,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed:
-                          _forgotPasswordKey.currentState?.validate() ?? false
-                          ? () {
-                              _forgotPassword();
-                            }
-                          : () {},
-                      child: Text(
-                        "Send Email",
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 80),
+                      const SizedBox(height: 20),
+                      Text(
+                        "Forget Password",
                         style: GoogleFonts.lato(
-                          textStyle: TextStyle(fontSize: 18),
+                          textStyle: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.w900,
+                            color: Color(0xFF4A8BFF),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              top: 160,
-              left: 5,
-              child: IconButton(
-                icon: Row(
-                  children: [
-                    Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
-                    SizedBox(width: 2),
-                    Text(
-                      "Back to Login",
-                      style: GoogleFonts.lato(
-                        textStyle: const TextStyle(
-                          color: Color(0xFF4A8BFF),
-                          fontSize: 14,
+                      Text(
+                        "Enter your email to reset your password",
+                        style: GoogleFonts.lato(
+                          textStyle: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF4A8BFF),
+                          ),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 40),
+                      Form(
+                        key: _forgotPasswordKey,
+                        child: TextFormField(
+                          controller: _email,
+                          keyboardType: TextInputType.emailAddress,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!EmailValidator.validate(value)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                          cursorColor: Color(0xFF4A8BFF),
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            hintText: "Enter your email",
+                            prefixIcon: const Icon(
+                              Icons.email,
+                              color: Color(0xFF4A8BFF),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                              borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                              borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                            ),
+                            floatingLabelStyle: TextStyle(
+                              color: Color(0xFF4A8BFF),
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey[100],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF4A8BFF),
+                          foregroundColor: Colors.white,
+                          elevation: 2,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed:
+                            _forgotPasswordKey.currentState?.validate() ?? false
+                            ? () {
+                                _forgotPassword();
+                              }
+                            : () {},
+                        child: Text(
+                          "Send Email",
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignInPage()),
-                );
-                },
               ),
-            ),
-          ],
+              Positioned(
+                top: 200,
+                left: 5,
+                child: IconButton(
+                  icon: Row(
+                    children: [
+                      Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
+                      SizedBox(width: 2),
+                      Text(
+                        "Back to Login",
+                        style: GoogleFonts.lato(
+                          textStyle: const TextStyle(
+                            color: Color(0xFF4A8BFF),
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInPage()),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

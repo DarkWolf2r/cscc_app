@@ -59,6 +59,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFF4A8BFF),
       body: SingleChildScrollView(
         child: SizedBox(
@@ -120,7 +121,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                   height: MediaQuery.of(context).size.height,
                   padding: const EdgeInsets.fromLTRB(24, 5, 24, 24),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF4F4F4),
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
