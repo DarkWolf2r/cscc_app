@@ -1,15 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+import 'dart:io';
 
-import 'package:cscc_app/features/auth/sign_up/sign_up_page.dart';
+import 'package:cscc_app/features/auth/login/login_page.dart';
 import 'package:cscc_app/features/auth/user_info/user_info_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:cscc_app/cores/widgets/flat_button.dart';
-import 'package:cscc_app/features/auth/repo/auth_repo.dart';
-import 'package:cscc_app/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class VerifyEmailPage extends StatefulWidget {
@@ -23,29 +19,31 @@ class VerifyEmailPage extends StatefulWidget {
 
 class _VerifyEmailPageState extends State<VerifyEmailPage> {
   bool isEmailVerified = false;
-  bool canResendEmail = false;
+  bool canResendEmail = true;
   Timer? timer;
   Timer? resendTimer;
-  @override
-  void initState() {
-    super.initState();
-    sendVerificationEmail();
-    if (!isEmailVerified) {
-      timer = Timer.periodic(
-        Duration(seconds: 5),
-        (_) => checkEmailVerification(),
-      );
-    }
-  }
+
+  // void initState() {
+  //   super.initState();
+  //   checkEmailVerification();
+  //   // if (!isEmailVerified) {
+  //   //   timer = Timer.periodic(
+  //   //     Duration(seconds: 10),
+  //   //     (_) => checkEmailVerification(),
+  //   //   );
+  //   // }
+  // }
 
   ///
   Future<void> sendVerificationEmail() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
       await user?.sendEmailVerification();
+
       setState(() {
         canResendEmail = false;
       });
+
       resendTimer = Timer.periodic(
         Duration(seconds: 10),
         (_) => setState(() {
@@ -58,6 +56,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           backgroundColor: Colors.green,
         ),
       );
+      checkEmailVerification();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -65,7 +64,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           backgroundColor: Colors.red,
         ),
       );
-    } finally {}
+    }
   }
 
   Future<void> checkEmailVerification() async {
@@ -89,8 +88,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             builder: (context) => UserInfoPage(email: widget.email),
           ),
         );
+      } else if (!isEmailVerified) {
+        checkEmailVerification();
       }
-
       // Save verification state
       //    final prefs = await SharedPreferences.getInstance();
       //   await prefs.setBool('isEmailVerified', true);
@@ -109,6 +109,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   @override
   void dispose() {
     timer?.cancel();
+    resendTimer?.cancel();
     super.dispose();
   }
 
@@ -230,7 +231,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                           }
                         : () {},
                     child: Text(
-                      "Resend Email",
+                      "Send Email Verification",
                       style: GoogleFonts.lato(
                         textStyle: TextStyle(fontSize: 18),
                       ),
@@ -260,8 +261,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 ],
               ),
               onPressed: () {
-                Navigator.pop(context);
-                FocusScope.of(context).unfocus();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignInPage()),
+                );
               },
             ),
           ),

@@ -24,16 +24,20 @@ class AuthService {
     return await auth.signInWithProvider(googleProvider);
   }
 
-  Future<void> signInWithEmailAndPassword(String email, String password , BuildContext context) async {
+  Future<void> signInWithEmailAndPassword(
+    String email,
+    String password,
+    BuildContext context,
+  ) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? "Sign in failed")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message ?? "Sign in failed")));
     }
   }
 
@@ -54,18 +58,18 @@ class AuthService {
     await FirebaseAuth.instance.signOut();
   }
 
-  Future<UserCredential?> sendEmailToVerify(
+  Future<void> sendEmailToVerify(
     BuildContext context,
     String email,
     String password,
   ) async {
     try {
       // Create user account
-      final userCredential = await auth.createUserWithEmailAndPassword(
+      await auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
-
+      
       // Navigate to verification page
       if (context.mounted) {
         Navigator.push(
@@ -81,7 +85,6 @@ class AuthService {
           context,
         ).showSnackBar(SnackBar(content: Text(e.message ?? "Sign up failed")));
       }
-      return null;
     }
   }
 }
