@@ -33,7 +33,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
     "Robotics",
   ];
   String randomNumber = const Uuid().v4();
-    TextEditingController? descriptionController = TextEditingController();
+  TextEditingController? descriptionController = TextEditingController();
   bool isSelected = false;
   bool isPictureSelected = false;
   void validateUsername() async {
@@ -349,15 +349,16 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                         child: FlatButton(
                           text: "CONTINUE",
                           onPressed: () async {
-                            // String? profilePic ;
-                            // if (isPictureSelected) {
-                              
-                            //    setState(() async {
-                            //       profilePic= await putFileInStorage(
-                            //     picture, randomNumber, "image");
-                            //    });
-                            // }
-                              
+                            String profilePic = "";
+                            if (isPictureSelected) {
+                              profilePic = await putFileInStorage(
+                                picture,
+                                randomNumber,
+                                "image",
+                              );
+                              setState(() {});
+                            }
+                            print("\nPICTURE :$profilePic\n");
                             // add users data inside datebase
                             isValidate && userDepartement.isNotEmpty
                                 ? await ref
@@ -367,11 +368,11 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                                         department: userDepartement,
                                         email: widget.email,
                                         username: usernameController.text,
-                                        profilePic: 
-                                       // profilePic ?? 
-                                     //   "assets/profile.png", 
-                                     "" ,
-                                        description: descriptionController?.text ?? "",
+                                        profilePic: profilePic,
+
+                                        //   "assets/profile.png",
+                                        description:
+                                            descriptionController?.text ?? "",
                                       )
                                 : null;
                           },

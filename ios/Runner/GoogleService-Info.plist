@@ -2,18 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>102890835302-nj1jqlse0hilgn8tr5qhcavn677dm6vj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.102890835302-nj1jqlse0hilgn8tr5qhcavn677dm6vj</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>102890835302-e1t174e1pms5eok8grdnl4lg2mei16t3.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBFXUKooQ7FjNwU068eAw7co_3IJqR4D6g</string>
+	<string>AIzaSyAEyNEsc-U_4CUW968kU-wNpYLtEIFNVwA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>497886634309</string>
+	<string>102890835302</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.csccApp</string>
+	<string>com.example.authenticationApp</string>
 	<key>PROJECT_ID</key>
-	<string>cscc-app-13e55</string>
+	<string>authoto-c8042</string>
 	<key>STORAGE_BUCKET</key>
-	<string>cscc-app-13e55.firebasestorage.app</string>
+	<string>authoto-c8042.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:497886634309:ios:a08c079f2132a242bfde2c</string>
+	<string>1:102890835302:ios:e2c5148a2b22cb0edecca7</string>
 </dict>
 </plist>

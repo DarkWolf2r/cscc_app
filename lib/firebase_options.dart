@@ -2,7 +2,7 @@
 // ignore_for_file: type=lint
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, TargetPlatform;
+    show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -16,11 +16,32 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
+    if (kIsWeb) {
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
+    }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
         return ios;
+      case TargetPlatform.macOS:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -29,19 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAHLCn8qaDl6J2tjwN4jJoFNqlm-L2zXCU',
-    appId: '1:497886634309:android:d3c8b2ebc453ca46bfde2c',
-    messagingSenderId: '497886634309',
-    projectId: 'cscc-app-13e55',
-    storageBucket: 'cscc-app-13e55.firebasestorage.app',
+    apiKey: 'AIzaSyCBs3kSSZruRMk6TPgndpK9NuRHSJ0jKwg',
+    appId: '1:102890835302:android:978f4ab29397ac8cdecca7',
+    messagingSenderId: '102890835302',
+    projectId: 'authoto-c8042',
+    storageBucket: 'authoto-c8042.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBFXUKooQ7FjNwU068eAw7co_3IJqR4D6g',
-    appId: '1:497886634309:ios:a08c079f2132a242bfde2c',
-    messagingSenderId: '497886634309',
-    projectId: 'cscc-app-13e55',
-    storageBucket: 'cscc-app-13e55.firebasestorage.app',
+    apiKey: 'AIzaSyAEyNEsc-U_4CUW968kU-wNpYLtEIFNVwA',
+    appId: '1:102890835302:ios:132de4f2f321eab3decca7',
+    messagingSenderId: '102890835302',
+    projectId: 'authoto-c8042',
+    storageBucket: 'authoto-c8042.appspot.com',
+    androidClientId: '102890835302-e1t174e1pms5eok8grdnl4lg2mei16t3.apps.googleusercontent.com',
+    iosClientId: '102890835302-qv3vcmdp33ci4280ff7mo2vpdoaaa65n.apps.googleusercontent.com',
     iosBundleId: 'com.example.csccApp',
   );
 }
