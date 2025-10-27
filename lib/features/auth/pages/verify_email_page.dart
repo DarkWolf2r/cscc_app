@@ -2,8 +2,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cscc_app/features/auth/login/login_page.dart';
-import 'package:cscc_app/features/auth/user_info/user_info_page.dart';
+import 'package:cscc_app/features/auth/pages/login_page.dart';
+import 'package:cscc_app/features/auth/pages/user_info_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,7 +1,6 @@
-import 'package:cscc_app/cores/dark_theme/theme_page.dart';
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/cores/widgets/my_text_field.dart';
-import 'package:cscc_app/features/auth/login/forget_password.dart';
+import 'package:cscc_app/features/auth/pages/forget_password.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cscc_app/features/auth/sign_up/sign_up_page.dart';
+import 'package:cscc_app/features/auth/pages/sign_up_page.dart';
 
 // ignore: must_be_immutable
 class SignInPage extends ConsumerStatefulWidget {
