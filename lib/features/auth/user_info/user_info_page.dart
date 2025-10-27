@@ -21,10 +21,11 @@ class UserInfoPage extends ConsumerStatefulWidget {
 
 class _UserInfoPageState extends ConsumerState<UserInfoPage> {
   final TextEditingController usernameController = TextEditingController();
-  bool isValidate = true;
-  File? picture;
+  bool isValidate = false;
+  Image picture = Image.asset('assets/profile.png');
   final userInfoKey = GlobalKey<FormState>();
   String typeValue = 'Membre';
+  String bureauType = 'Membre de Bureau';
   List<String> userDepartement = [];
   List<String> departementValue = [
     "Developpement",
@@ -32,10 +33,16 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
     "Communication",
     "Robotics",
   ];
+  List<String> membreDeBureauList = [
+    "Chef Developement",
+    "Chef Security",
+    "Chef Robotic",
+    "Chef Communication",
+  ];
+  bool isPressed = false;
   String randomNumber = const Uuid().v4();
   TextEditingController? descriptionController = TextEditingController();
-  bool isSelected = false;
-  bool isPictureSelected = false;
+
   void validateUsername() async {
     final usersMap = await FirebaseFirestore.instance.collection("users").get();
 
@@ -63,7 +70,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
       backgroundColor: const Color(0xFF4A8BFF),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height / 0.9,
+          height: MediaQuery.of(context).size.height / 0.85,
           child: Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.center,
@@ -143,52 +150,47 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 0,
-                        ),
-                        child: Text(
-                          'Enter the username',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xFF4A8BFF),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Form(
-                          child: TextFormField(
-                            onChanged: (username) {
-                              validateUsername();
-                            },
-                            autovalidateMode: AutovalidateMode.always,
-                            validator: (usremane) {
-                              return isValidate
-                                  ? null
-                                  : "Username Already Taken";
-                            },
-                            key: userInfoKey,
-                            controller: usernameController,
-                            decoration: InputDecoration(
-                              suffixIcon: isValidate
-                                  ? const Icon(Icons.verified_user_outlined)
-                                  : const Icon(Icons.cancel),
-                              suffixIconColor: isValidate
-                                  ? Colors.green
-                                  : Colors.red,
-                              hintText: 'insert user name',
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.green),
-                              ),
+                      // const Padding(
+                      //   padding: EdgeInsets.symmetric(
+                      //     vertical: 20,
+                      //     horizontal: 0,
+                      //   ),
+                      //   child: Text(
+                      //     'Enter the username',
+                      //     style: TextStyle(
+                      //       fontSize: 15,
+                      //       fontWeight: FontWeight.w900,
+                      //       color: Color(0xFF4A8BFF),
+                      //     ),
+                      //   ),
+                      // ),
+                      Form(
+                        child: TextFormField(
+                          onChanged: (username) {
+                            validateUsername();
+                          },
+                          autovalidateMode: AutovalidateMode.always,
+                          validator: (usremane) {
+                            return isValidate ? null : "Username Already Taken";
+                          },
+                          key: userInfoKey,
+                          controller: usernameController,
+                          decoration: InputDecoration(
+                            suffixIcon: isValidate
+                                ? const Icon(Icons.verified_user_outlined)
+                                : const Icon(Icons.cancel),
+                            suffixIconColor: isValidate
+                                ? Colors.green
+                                : Colors.red,
+                            hintText: 'insert user name',
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green),
                             ),
                           ),
                         ),
@@ -196,7 +198,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                       const SizedBox(height: 20),
 
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             "Select you Type : ",
@@ -206,20 +208,21 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                               color: Color(0xFF4A8BFF),
                             ),
                           ),
+                          const SizedBox(width: 20),
                           DropdownButton<String>(
                             dropdownColor: Colors.white,
                             style: TextStyle(color: Colors.black),
                             iconEnabledColor: Colors.black,
                             value: typeValue,
                             icon: const Icon(Icons.arrow_drop_down),
-                            items: const [
+                            items: <DropdownMenuItem<String>>[
                               DropdownMenuItem(
                                 value: 'Membre',
                                 child: Text('Membre'),
                               ),
                               DropdownMenuItem(
-                                value: 'Membre de bureau',
-                                child: Text('Membre de bureau'),
+                                value: 'Membre du bureau',
+                                child: Text('Membre du bureau'),
                               ),
                               DropdownMenuItem(
                                 value: 'President',
@@ -243,37 +246,32 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                           color: Color(0xFF4A8BFF),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      SizedBox(
+                        height: 70,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: departementValue.length,
 
-                        child: SizedBox(
-                          height: 70,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: departementValue.length,
-                            itemBuilder: (context, index) {
-                              final department = departementValue[index];
-                              return Padding(
-                                padding: EdgeInsetsGeometry.all(8),
-                                child: ChoiceChip(
-                                  selectedColor: Colors.greenAccent,
-                                  label: Text(department),
-                                  selected: userDepartement.contains(
-                                    department,
-                                  ),
-                                  onSelected: (value) {
-                                    setState(() {
-                                      if (value) {
-                                        userDepartement.add(department);
-                                      } else {
-                                        userDepartement.remove(department);
-                                      }
-                                    });
-                                  },
-                                ),
-                              );
-                            },
-                          ),
+                          itemBuilder: (context, index) {
+                            final department = departementValue[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: ChoiceChip(
+                                selectedColor: Colors.greenAccent,
+                                label: Text(department),
+                                selected: userDepartement.contains(department),
+                                onSelected: (value) {
+                                  setState(() {
+                                    if (value) {
+                                      userDepartement.add(department);
+                                    } else {
+                                      userDepartement.remove(department);
+                                    }
+                                  });
+                                },
+                              ),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -309,78 +307,81 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                         maxLines: 4,
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        'Add a profile picture : ',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w900,
-                          color: Color(0xFF4A8BFF),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() async {
-                            picture = await pickImage();
-                            isPictureSelected = true;
-                          });
-                        },
-                        child: Text("Upload"),
-                      ),
-                      // isPictureSelected
-                      //     ? Padding(
-                      //         padding: const EdgeInsets.only(
-                      //           top: 12,
-                      //           bottom: 12,
-                      //         ),
-                      //         child: Image.file(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Add a profile picture : ',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFF4A8BFF),
+                                ),
+                              ),
 
-                      //           picture!,
-                      //           height: 160,
-                      //           width: 400,
-                      //           // scale: 1,
-                      //         ),
-                      //       )
-                      //     : const SizedBox(),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 30,
-                          left: 8,
-                          right: 8,
-                        ),
-                        child: FlatButton(
-                          text: "CONTINUE",
-                          onPressed: () async {
-                            String profilePic = "";
-                            if (isPictureSelected) {
-                              profilePic = await putFileInStorage(
-                                picture,
-                                randomNumber,
-                                "image",
-                              );
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 12,
+                                  bottom: 12,
+                                ),
+                                child: SizedBox(
+                                  height: 80,
+                                  width: 80,
+                                  child: picture,
+                                ),
+                              ),
+                            ],
+                          ),
+                          FlatButton(
+                            colour: Colors.blueAccent,
+                            onPressed: () async {
+                              picture = await pickImage();
+
                               setState(() {});
-                            }
-                            print("\nPICTURE :$profilePic\n");
-                            // add users data inside datebase
-                            isValidate && userDepartement.isNotEmpty
-                                ? await ref
-                                      .read(userDataServiceProvider)
-                                      .addUserDataToFirestore(
-                                        type: typeValue,
-                                        department: userDepartement,
-                                        email: widget.email,
-                                        username: usernameController.text,
-                                        profilePic: profilePic,
+                            },
+                            text: "SELECT",
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      FlatButton(
+                      //  isPressed: isPressed,
+                        text: "CONTINUE",
+                        onPressed: () async {
+                          // setState(() {
+                          //   isPressed = !isPressed;
+                          // });
+                          String profilePic = "";
 
-                                        //   "assets/profile.png",
-                                        description:
-                                            descriptionController?.text ?? "",
-                                      )
-                                : null;
-                          },
-                          colour: isValidate
-                              ? Colors.green
-                              : Colors.green.shade100,
-                        ),
+                          profilePic = await putFileInStorage(
+                            picture,
+                            randomNumber,
+                            "image",
+                          );
+                          setState(() {});
+
+                          // add users data inside datebase
+                          isValidate && userDepartement.isNotEmpty
+                              ? await ref
+                                    .read(userDataServiceProvider)
+                                    .addUserDataToFirestore(
+                                      type: typeValue,
+                                      department: userDepartement,
+                                      email: widget.email,
+                                      username: usernameController.text,
+                                      profilePic: profilePic,
+
+                                      description:
+                                          descriptionController?.text ?? "",
+                                    )
+                              : () {};
+                        },
+                        colour: isValidate && userDepartement.isNotEmpty
+                            ? Colors.blueAccent
+                            : Colors.blueGrey,
                       ),
                     ],
                   ),

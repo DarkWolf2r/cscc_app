@@ -29,8 +29,18 @@ class AuthService {
     String password,
     BuildContext context,
   ) async {
+    if ((auth.currentUser != null) && !(auth.currentUser!.emailVerified)) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Your email is not verified yet ! tap to verify you email")));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => VerifyEmailPage(email: email)),
+      );
+      return;
+    }
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
@@ -69,7 +79,7 @@ class AuthService {
         email: email.trim(),
         password: password.trim(),
       );
-      
+
       // Navigate to verification page
       if (context.mounted) {
         Navigator.push(
@@ -88,5 +98,3 @@ class AuthService {
     }
   }
 }
-
-Future<void> signUp2(String email, String password) async {}

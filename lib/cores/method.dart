@@ -1,13 +1,14 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<File> pickImage() async {
+Future<Image> pickImage() async {
   XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
   File image = File(file!.path);
 
-  return image;
+  return Image.file(image);
 }
 
 Future<String> putFileInStorage(file, number, fileType) async {

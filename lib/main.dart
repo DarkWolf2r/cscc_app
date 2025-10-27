@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
          theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: appThemeState.themeMode,
-     
+      
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {

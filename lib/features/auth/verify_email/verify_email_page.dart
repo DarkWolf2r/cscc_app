@@ -23,16 +23,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   Timer? timer;
   Timer? resendTimer;
 
-  // void initState() {
-  //   super.initState();
-  //   checkEmailVerification();
-  //   // if (!isEmailVerified) {
-  //   //   timer = Timer.periodic(
-  //   //     Duration(seconds: 10),
-  //   //     (_) => checkEmailVerification(),
-  //   //   );
-  //   // }
-  // }
+  @override
+  void initState() {
+    super.initState();
+    checkEmailVerification();
+  }
 
   ///
   Future<void> sendVerificationEmail() async {

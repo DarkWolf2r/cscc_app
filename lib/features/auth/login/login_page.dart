@@ -120,7 +120,6 @@ class SignInPageState extends ConsumerState<SignInPage> {
                         const SizedBox(height: 40),
                         MyTextField(
                           keyboardType: TextInputType.emailAddress,
-
                           validator: (email) {
                             if (email == null || email.isEmpty) {
                               return 'Please enter your email';
@@ -197,6 +196,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                         const SizedBox(height: 40),
                         //
                         FlatButton(
+                          
                           text: "login",
                           onPressed: signInKey.currentState?.validate() ?? false
                               ? () async {
