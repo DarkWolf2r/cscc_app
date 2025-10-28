@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/method.dart';
 
@@ -21,7 +23,7 @@ class UserInfoPage extends ConsumerStatefulWidget {
 class _UserInfoPageState extends ConsumerState<UserInfoPage> {
   final TextEditingController usernameController = TextEditingController();
   bool isValidate = false;
-  Image picture = Image.asset('assets/profile.png');
+  File? picture;
   final userInfoKey = GlobalKey<FormState>();
   String typeValue = 'Membre';
   String bureauType = 'Membre de Bureau';
@@ -329,7 +331,13 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                                 child: SizedBox(
                                   height: 80,
                                   width: 80,
-                                  child: picture,
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        picture?.path.isEmpty ?? true
+                                        ? const AssetImage('assets/profile.png')
+                                              as ImageProvider
+                                        : FileImage(File(picture!.path)),
+                                  ),
                                 ),
                               ),
                             ],
@@ -347,16 +355,13 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                       ),
                       const SizedBox(height: 20),
                       FlatButton(
-                      //  isPressed: isPressed,
+                        //  isPressed: isPressed,
                         text: "CONTINUE",
                         onPressed: () async {
-                          // setState(() {
-                          //   isPressed = !isPressed;
-                          // });
-                          String profilePic = "";
+                          String profilePic;
 
                           profilePic = await putFileInStorage(
-                            picture,
+                            picture!,
                             randomNumber,
                             "image",
                           );
@@ -367,12 +372,12 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                               ? await ref
                                     .read(userDataServiceProvider)
                                     .addUserDataToFirestore(
+                                      context: context,
                                       type: typeValue,
                                       department: userDepartement,
                                       email: widget.email,
                                       username: usernameController.text,
                                       profilePic: profilePic,
-
                                       description:
                                           descriptionController?.text ?? "",
                                     )

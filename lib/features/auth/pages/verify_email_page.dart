@@ -23,12 +23,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   Timer? timer;
   Timer? resendTimer;
 
-  @override
-  void initState() {
-    super.initState();
-    checkEmailVerification();
-  }
-
   ///
   Future<void> sendVerificationEmail() async {
     try {
@@ -70,6 +64,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         isEmailVerified = user?.emailVerified ?? false;
       });
       if (isEmailVerified) {
+        showDialog(
+          context: context,
+          builder: (context) => Center(child: CircularProgressIndicator()),
+        );
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Email verified successfully!"),
@@ -84,7 +82,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           ),
         );
       } else if (!isEmailVerified) {
-        sleep(Duration(seconds: 5));
+        sleep(Duration(seconds: 10));
         checkEmailVerification();
       }
       // Save verification state
