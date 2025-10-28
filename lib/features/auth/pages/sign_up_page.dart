@@ -24,10 +24,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-      
-      ),
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -365,7 +362,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   onPressed: () async {
                                     await ref
                                         .read(authServiceProvider)
-                                        .signInWithGitHub();
+                                        .signInWithGitHub(context);
                                   },
                                 ),
                               ),

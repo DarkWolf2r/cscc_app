@@ -1,4 +1,3 @@
-
 import 'package:cscc_app/features/auth/pages/verify_email_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,10 +27,19 @@ class AuthService {
     String password,
     BuildContext context,
   ) async {
+    showDialog(
+      context: context,
+      builder: (context) => Center(child: CircularProgressIndicator()),
+    );
     if ((auth.currentUser != null) && !(auth.currentUser!.emailVerified)) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Your email is not verified yet ! tap to verify you email")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Your email is not verified yet ! tap to verify you email",
+          ),
+        ),
+      );
+      Navigator.of(context).pop();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => VerifyEmailPage(email: email)),
@@ -48,15 +56,21 @@ class AuthService {
         context,
       ).showSnackBar(SnackBar(content: Text(e.message ?? "Sign in failed")));
     }
+    Navigator.of(context).pop();
   }
 
-  Future<UserCredential> signInWithGitHub() async {
+  Future<UserCredential> signInWithGitHub(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) => Center(child: CircularProgressIndicator()),
+    );
     try {
       GithubAuthProvider githubProvider = GithubAuthProvider();
 
       githubProvider.addScope('read:user');
       githubProvider.addScope('user:email');
 
+      Navigator.of(context).pop();
       return await FirebaseAuth.instance.signInWithProvider(githubProvider);
     } catch (e) {
       throw Exception("GitHub sign in failed: $e");
@@ -72,13 +86,17 @@ class AuthService {
     String email,
     String password,
   ) async {
+    showDialog(
+      context: context,
+      builder: (context) => Center(child: CircularProgressIndicator()),
+    );
     try {
       // Create user account
       await auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
-
+      Navigator.of(context).pop();
       // Navigate to verification page
       if (context.mounted) {
         Navigator.push(

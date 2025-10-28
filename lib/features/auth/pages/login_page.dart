@@ -283,7 +283,9 @@ class SignInPageState extends ConsumerState<SignInPage> {
                                 onPressed: () {
                                   ref
                                       .read(authServiceProvider)
-                                      .signInWithGitHub();
+                                      .signInWithGitHub(
+                                        context
+                                      );
                                 },
                               ),
                             ),
