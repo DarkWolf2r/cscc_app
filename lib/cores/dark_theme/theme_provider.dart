@@ -5,14 +5,14 @@ import 'package:flutter_riverpod/legacy.dart';
 final appThemeProvider = ChangeNotifierProvider((ref) => AppThemeState());
 
 class AppThemeState with ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.system;
-  ThemeMode get themeMode => _themeMode;
+  ThemeMode themeMode = ThemeMode.system;
+  ThemeMode get _themeMode => themeMode;
 
   ThemeData _themeData = lightTheme;
   ThemeData get themeData => _themeData;
 
- set themeMode(ThemeMode mode) {
-    _themeMode = mode;
+ set _themeMode(ThemeMode mode) {
+    themeMode = mode;
     notifyListeners();
   }
   // set themeData(ThemeData theme) {
@@ -29,7 +29,7 @@ class AppThemeState with ChangeNotifier {
     notifyListeners();
   }
   void useSystemTheme() {
-    _themeMode = ThemeMode.system;
+    themeMode = ThemeMode.system;
     notifyListeners();
   }
 }
