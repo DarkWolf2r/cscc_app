@@ -1,14 +1,10 @@
-// import 'package:flutter/material.dart';
-// import 'package:cscc_app/screens/home_screen.dart';
-// import 'package:cscc_app/screens/search_screen.dart';
-// import 'package:cscc_app/screens/add_post_screen.dart';
-// import 'package:cscc_app/screens/notification_screen.dart';
-// import 'package:cscc_app/screens/profile_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:cscc_app/features/screens/add_post_screen.dart';
 
-// const List<Widget> homeScreenItems = [
-//   HomeScreen(),
-//   SearchScreen(),
-//   AddPostScreen(),
-//   NotificationScreen(),
-//   ProfileScreen(),
-// ];
+const List<Widget> homeScreenItems = [
+  Text("Home Page"),
+  Text("Search Page"),
+  AddPostScreen(),
+  Text("Favorites Page"),
+  Text("Profile Page"),
+];

@@ -1,25 +1,111 @@
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
-import 'package:flutter/material.dart';
+// import 'package:cscc_app/global_variable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:cscc_app/cores/colors.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
-  // class MobileScreenLayout extends StatelessWidget {
-  //   const MobileScreenLayout({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => HomePageState();
+}
+
+class HomePageState extends ConsumerState<HomePage> {
+  // const HomePageState({super.key});
+  int _page = 0;
+  late PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pageController.dispose();
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      _page = page;
+    });
+  }
+
+  void navigationTapped(int page) {
+    pageController.jumpToPage(page);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // WidgetRef ref
+    final authService = ref.read(authServiceProvider);
+
     return Scaffold(
-      appBar: AppBar(title: Text('HOME PAGE')),
-      body: Center(
-        child: FlatButton(
-          text: "SIGN OUT",
-          onPressed: () {
-            ref.read(authServiceProvider).signOutUser();
-          },
-          colour: Colors.black,
-        ),
+      backgroundColor: Colors.white10,
+      // appBar: AppBar(
+      //   actions: [
+      //     FlatButton(
+      //       text: "SIGN OUT",
+      //       onPressed: () {
+      //         authService.signOutUser();
+      //       },
+      //       colour: Colors.white,
+      //     ),
+      //   ],
+      // ),
+      body: PageView(
+        // children: homeScreenItems,
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        physics: const NeverScrollableScrollPhysics(),
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+        backgroundColor: Colors.white,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: (_page == 0) ? primaryColor : Colors.grey,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search,
+              color: (_page == 1) ? primaryColor : Colors.grey,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_circle,
+              color: (_page == 2) ? primaryColor : Colors.grey,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.favorite,
+              color: (_page == 3) ? primaryColor : Colors.grey,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              color: (_page == 4) ? primaryColor : Colors.grey,
+            ),
+            label: '',
+            // backgroundColor: Color(0xFF4A8BFF),
+          ),
+        ],
+        onTap: navigationTapped,
+        currentIndex: _page,
       ),
     );
   }
