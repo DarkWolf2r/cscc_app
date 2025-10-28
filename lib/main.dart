@@ -26,7 +26,7 @@ class MyApp extends ConsumerWidget {
     final appThemeState = ref.watch(appThemeProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // theme: lightTheme,
+      theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: appThemeState.themeMode,
       
@@ -60,10 +60,10 @@ class MyApp extends ConsumerWidget {
         },
       ),
 
-      // theme: ThemeData.dark(),
+      // // theme: ThemeData.dark(),
 
       
-      theme: ThemeData.dark(),
+      // theme: ThemeData.dark(),
     );
   }
 }
