@@ -1,14 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cscc_app/cores/widgets/flat_button.dart';
+import 'package:cscc_app/features/auth/provider/providers.dart';
 import 'package:cscc_app/features/profile/setting_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     List<String> departement = ['Development', 'Security', 'Robotic'];
+    // final userProvider = ref.read(currentUserProvider).value;
     return Scaffold(
       backgroundColor: const Color(0xFF4A8BFF),
       //   appBar: AppBar(title: const Text('Profile'), centerTitle: true),
@@ -64,13 +68,17 @@ class ProfilePage extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   radius: 70,
+                                  // backgroundImage: CachedNetworkImageProvider(
+                                  //   userProvider!.profilePic!
+                                  // ),
                                   backgroundImage: AssetImage(
                                     "assets/profile.png",
                                   ),
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  "Tarek  Ch",
+                                  "Tarek Ch",
+                                  //userProvider.username,
                                   style: TextStyle(
                                     fontFamily: GoogleFonts.lato().fontFamily,
                                     fontSize: 24,
@@ -90,7 +98,8 @@ class ProfilePage extends StatelessWidget {
                               // mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "MEMBRE",
+                                  "Membre",
+                                  // userProvider.type.toUpperCase(),
                                   style: TextStyle(
                                     fontFamily: GoogleFonts.lato().fontFamily,
                                     fontSize: 24,
@@ -145,7 +154,8 @@ class ProfilePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              "Passionate about technology and innovation, I am a dedicated member of the CSCC community. I enjoy collaborating on projects that challenge my skills and allow me to grow both personally and professionally.",
+                              "Hrer ewr erwe dfgdf g gerggerg ergw wwe ewr rw  erwerew erw rwerew re erwe wer dfg sdfs fdggj jkdgj jdkg dkfgkk dfgdjfkgdks ksdfjg rgwj wejekwe",
+                              //   userProvider.description ?? "I'am A CSCC Membre !",
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey[800],
