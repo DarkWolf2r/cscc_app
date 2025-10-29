@@ -1,5 +1,7 @@
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
+import 'package:cscc_app/features/screens/add_post_screen.dart';
+import 'package:cscc_app/home_screen_items.dart';
 // import 'package:cscc_app/global_variable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,25 +49,14 @@ class HomePageState extends ConsumerState<HomePage> {
 
     return Scaffold(
       backgroundColor: Colors.white10,
-      // appBar: AppBar(
-      //   actions: [
-      //     FlatButton(
-      //       text: "SIGN OUT",
-      //       onPressed: () {
-      //         authService.signOutUser();
-      //       },
-      //       colour: Colors.white,
-      //     ),
-      //   ],
-      // ),
       body: PageView(
-        // children: homeScreenItems,
+        children: homeScreenItems,
         controller: pageController,
         onPageChanged: onPageChanged,
         physics: const NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
@@ -107,6 +98,23 @@ class HomePageState extends ConsumerState<HomePage> {
         onTap: navigationTapped,
         currentIndex: _page,
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primaryColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        child: const Icon(Icons.add, color: Colors.white, size: 32),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (context) => FractionallySizedBox(
+              heightFactor: 0.95,
+              child: const AddPostScreen(),
+            ),
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
