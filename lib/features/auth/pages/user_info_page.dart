@@ -7,9 +7,12 @@ import 'package:cscc_app/cores/method.dart';
 
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:popover/popover.dart';
 import 'package:uuid/uuid.dart';
 
 class UserInfoPage extends ConsumerStatefulWidget {
@@ -218,7 +221,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                             icon: const Icon(Icons.arrow_drop_down),
                             items: <DropdownMenuItem<String>>[
                               DropdownMenuItem(
-                                value: 'Membre',
+                                value: "Membre",
                                 child: Text('Membre'),
                               ),
                               DropdownMenuItem(
@@ -230,6 +233,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                                 child: Text('President'),
                               ),
                             ],
+                            borderRadius: BorderRadius.circular(12),
                             onChanged: (value) {
                               setState(() {
                                 typeValue = value!;
@@ -355,13 +359,12 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                       ),
                       const SizedBox(height: 20),
                       FlatButton(
-                        //  isPressed: isPressed,
                         text: "CONTINUE",
                         onPressed: () async {
-                          String profilePic;
+                          String? profilePic;
 
                           profilePic = await putFileInStorage(
-                            picture!,
+                            picture ?? File.fromUri(Uri()),
                             randomNumber,
                             "image",
                           );
