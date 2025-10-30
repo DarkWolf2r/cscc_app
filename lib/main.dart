@@ -4,9 +4,7 @@ import 'package:cscc_app/cores/dark_theme/theme_provider.dart';
 import 'package:cscc_app/features/auth/pages/login_page.dart';
 import 'package:cscc_app/features/auth/pages/user_info_page.dart';
 import 'package:cscc_app/features/auth/pages/verify_email_page.dart';
-import 'package:cscc_app/features/departement/departement_page.dart';
-import 'package:cscc_app/features/profile/profile_page.dart';
-import 'package:cscc_app/features/profile/setting_page.dart';
+
 
 // import 'package:cscc_app/features/departement/departement_page.dart';
 // import 'package:cscc_app/features/profile/profile_page.dart';

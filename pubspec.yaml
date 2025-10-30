@@ -48,13 +48,11 @@ dependencies:
   uuid: ^4.5.1
   cached_network_image: ^3.4.1
   intl: ^0.20.2
-  popover: ^0.4.0
-<<<<<<< HEAD
+  
   path_provider: ^2.1.5
-  auto_size_text: ^3.0.0
-=======
+  
   timeago: ^3.7.1
->>>>>>> cd88f7d (home page 1)
+  url_launcher: ^6.3.2
   
 
   
