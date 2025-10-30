@@ -1,4 +1,3 @@
-// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/features/auth/provider/providers.dart';
@@ -13,8 +12,6 @@ class ProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<String> departement = ['Development', 'Security', 'Robotic'];
-
     return ref
         .watch(currentUserProvider)
         .when(
@@ -78,14 +75,15 @@ class ProfilePage extends ConsumerWidget {
                                           children: [
                                             CircleAvatar(
                                               radius: 70,
-                                              backgroundImage: NetworkImage(
-                                                data.profilePic!,
-                                              ),
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                    data.profilePic!,
+                                                  ),
                                             ),
                                             const SizedBox(height: 10),
                                             Text(
                                               data.username,
-                                              //userProvider.username,
+
                                               style: TextStyle(
                                                 fontFamily: GoogleFonts.lato()
                                                     .fontFamily,
@@ -104,17 +102,16 @@ class ProfilePage extends ConsumerWidget {
                                           top: 20.0,
                                         ),
                                         child: Column(
-                                          //  crossAxisAlignment: CrossAxisAlignment.center,
-                                          // mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Text(
                                               data.type.toUpperCase(),
+                                              maxLines: 2,
                                               style: TextStyle(
                                                 fontFamily: GoogleFonts.lato()
                                                     .fontFamily,
-                                                fontSize: 24,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w800,
-                                                color: Colors.blue,
+                                                color: Colors.black,
                                               ),
                                             ),
                                             const SizedBox(height: 10),
@@ -128,13 +125,34 @@ class ProfilePage extends ConsumerWidget {
                                                 ),
                                               ),
                                             const SizedBox(height: 30),
-                                            Text(
-                                              "1 Year in CSCC ",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.blue[600],
-                                              ),
+
+                                            Row(
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () {},
+                                                  icon: Image.asset(
+                                                    'assets/github.png',
+                                                    width: 35,
+                                                    height: 35,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {},
+                                                  icon: Image.asset(
+                                                    'assets/icons8-google.png',
+                                                    width: 35,
+                                                    height: 35,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {},
+                                                  icon: Image.asset(
+                                                    'assets/linkedin.png',
+                                                    width: 35,
+                                                    height: 35,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -143,8 +161,50 @@ class ProfilePage extends ConsumerWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
+
+                                ///////
                                 Container(
-                                  height: 200,
+                                  height: 60,
+                                  width: MediaQuery.sizeOf(context).width,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Followers : ",
+                                          style: TextStyle(
+                                            fontFamily:
+                                                GoogleFonts.lato().fontFamily,
+                                            fontSize: 26,
+                                            fontWeight: FontWeight.w800,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          data.followers == 0
+                                              ? "No followers yet"
+                                              : data.followers.toString(),
+                                          style: TextStyle(
+                                            fontFamily:
+                                                GoogleFonts.lato().fontFamily,
+                                            fontSize: 26,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                ///
+                                const SizedBox(height: 10),
+                                Container(
+                                  //  height: 200,
                                   width: MediaQuery.sizeOf(context).width,
                                   decoration: BoxDecoration(
                                     color: Colors.grey.shade100,
@@ -166,8 +226,11 @@ class ProfilePage extends ConsumerWidget {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          data.description ??
-                                              "I'am A CSCC Membre !",
+                                          data.description?.isNotEmpty == true
+                                              ? data.description!
+                                              : "I am a CSCC Membre ! ",
+                                          softWrap: true,
+                                          overflow: TextOverflow.visible,
                                           style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.grey[800],
@@ -180,43 +243,6 @@ class ProfilePage extends ConsumerWidget {
                                 const SizedBox(height: 10),
 
                                 ///
-                                Container(
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade100,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: Image.asset(
-                                          'assets/github.png',
-                                          width: 35,
-                                          height: 35,
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: Image.asset(
-                                          'assets/icons8-google.png',
-                                          width: 35,
-                                          height: 35,
-                                        ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: Image.asset(
-                                          'assets/linkedin.png',
-                                          width: 35,
-                                          height: 35,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                                 const SizedBox(height: 10),
                                 FlatButton(
                                   text: "Settings ->",
@@ -255,7 +281,7 @@ class ProfilePage extends ConsumerWidget {
               style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
             ),
           ),
-          loading: () => CircularProgressIndicator(),
+          loading: () => Center(child: CircularProgressIndicator()),
         );
   }
 }

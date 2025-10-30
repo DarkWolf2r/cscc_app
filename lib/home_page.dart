@@ -50,10 +50,10 @@ class HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white10,
       body: PageView(
-        children: homeScreenItems,
         controller: pageController,
         onPageChanged: onPageChanged,
         physics: const NeverScrollableScrollPhysics(),
+        children: homeScreenItems,
       ),
       bottomNavigationBar: CupertinoTabBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -67,7 +67,7 @@ class HomePageState extends ConsumerState<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.search,
+              Icons.android,
               color: (_page == 1) ? primaryColor : Colors.grey,
             ),
             label: '',

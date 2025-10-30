@@ -7,12 +7,12 @@ import 'package:cscc_app/cores/method.dart';
 
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:popover/popover.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class UserInfoPage extends ConsumerStatefulWidget {
@@ -25,7 +25,7 @@ class UserInfoPage extends ConsumerStatefulWidget {
 
 class _UserInfoPageState extends ConsumerState<UserInfoPage> {
   final TextEditingController usernameController = TextEditingController();
-  bool isValidate = false;
+  bool isValidate = true;
   File? picture;
   final userInfoKey = GlobalKey<FormState>();
   String typeValue = 'Membre';
@@ -43,7 +43,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
     "Chef Robotic",
     "Chef Communication",
   ];
-  bool isPressed = false;
+
   String randomNumber = const Uuid().v4();
   TextEditingController? descriptionController = TextEditingController();
 
@@ -362,7 +362,19 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                         text: "CONTINUE",
                         onPressed: () async {
                           String? profilePic;
-
+                          if (picture == null) {
+                            final byteData = await rootBundle.load(
+                              'assets/profile.png',
+                            );
+                            final tempDir = await getTemporaryDirectory();
+                            final file = File(
+                              '${tempDir.path}/default_profile.png',
+                            );
+                            await file.writeAsBytes(
+                              byteData.buffer.asUint8List(),
+                            );
+                            picture = file;
+                          }
                           profilePic = await putFileInStorage(
                             picture ?? File.fromUri(Uri()),
                             randomNumber,

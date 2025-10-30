@@ -16,16 +16,18 @@ class UserDataService {
   FirebaseFirestore firestore;
   UserDataService({required this.auth, required this.firestore});
 
-   addUserDataToFirestore({
+  addUserDataToFirestore({
     required String username,
     required String email,
     String? profilePic,
     String? description,
+    int followers = 0 ,
     required List<String> department,
     required String type,
     required BuildContext context,
   }) async {
     UserModel user = UserModel(
+      followers: followers ,
       username: username,
       email: email,
       userId: auth.currentUser!.uid,
@@ -43,7 +45,7 @@ class UserDataService {
         .collection("users")
         .doc(auth.currentUser!.uid)
         .set(user.toMap());
-    Navigator.of(context).pop();
+    Navigator.pop(context);
   }
 
   Future<UserModel> fetchCurrentUserData() async {

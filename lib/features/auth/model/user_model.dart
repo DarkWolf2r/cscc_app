@@ -6,8 +6,8 @@ class UserModel {
   final String userId;
   final String? description;
   final String type;
-  final List<String> followers;
-  final List<String> following;
+  int followers = 0;
+  
 
   UserModel({
     required this.username,
@@ -17,8 +17,8 @@ class UserModel {
     required this.userId,
     this.description,
     required this.type,
-    this.followers = const [],
-    this.following = const [],
+    required this.followers,
+    
   });
 
   Map<String, dynamic> toMap() {
@@ -31,7 +31,7 @@ class UserModel {
       'description': description,
       'type': type,
       'followers': followers,
-      'following': following,
+      
     };
   }
 
@@ -40,12 +40,11 @@ class UserModel {
       username: map['username'] ?? '',
       email: map['email'] ?? '',
       profilePic: map['profilePic'],
-      departement: List<String>.from(map['departement'] ?? []),
+      departement: List<String>.from(map['departement']),
       userId: map['userId'] ?? '',
       description: map['description'],
       type: map['type'] ?? '',
-      followers: List<String>.from(map['followers'] ?? []),
-      following: List<String>.from(map['following'] ?? []),
+      followers: map['followers'] ,     
     );
   }
 }
