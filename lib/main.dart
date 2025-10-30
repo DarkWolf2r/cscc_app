@@ -7,6 +7,9 @@ import 'package:cscc_app/features/auth/pages/verify_email_page.dart';
 import 'package:cscc_app/features/departement/departement_page.dart';
 import 'package:cscc_app/features/profile/profile_page.dart';
 import 'package:cscc_app/features/profile/setting_page.dart';
+
+// import 'package:cscc_app/features/departement/departement_page.dart';
+// import 'package:cscc_app/features/profile/profile_page.dart';
 import 'package:cscc_app/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +25,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: primaryColor,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
     ),
   );
   runApp(ProviderScope(child: MyApp()));
@@ -36,8 +39,27 @@ class MyApp extends ConsumerWidget {
     final appThemeState = ref.watch(appThemeProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      // theme: lightTheme,
+      // darkTheme: darkTheme,
+
+      // theme: lightTheme,
+      // darkTheme: darkTheme,
+      theme: lightTheme.copyWith(
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: primaryColor,
+            statusBarIconBrightness: Brightness.light,
+          ),
+        ),
+      ),
+      darkTheme: darkTheme.copyWith(
+        appBarTheme: const AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: primaryColor,
+            statusBarIconBrightness: Brightness.light,
+          ),
+        ),
+      ),
       themeMode: appThemeState.themeMode,
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),

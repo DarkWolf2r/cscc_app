@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/widgets/post_card.dart';
 import 'package:flutter/material.dart';
+// import 'package:timeago/timeago.dart' as timeago;
+// import 'package:flutter_svg/flutter_svg.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -15,51 +17,83 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).colorScheme.surface,
-      //   centerTitle: false,
-      //   // title: SvgPicture.asset(
-      //   //   'assets/ic_instagram.svg',
-      //   //   color: primaryColor,
-      //   //   height: 32,
-      //   // ),
-      //   actions: [
-      //     IconButton(
-      //       icon: const Icon(Icons.messenger_outline, color: primaryColor),
-      //       onPressed: () {},
-      //     ),
-      //   ],
-      // ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('posts')
-            .orderBy('datePublished', descending: true)
-            .snapshots(),
-        builder:
-            (
-              context,
-              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
-            ) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: primaryColor,
+            floating: true,
+            snap: true,
+            elevation: 0,
+            // title: SvgPicture.asset(
+            //   'assets/ic_instagram.svg',
+            //   color: primaryColor,
+            //   height: 32,
+            // ),
+            title: Text(
+              "CSCC",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.favorite_border, color: Colors.white),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: const Icon(Icons.messenger_outline, color: Colors.white),
+                onPressed: () {},
+              ),
+            ],
+          ),
 
-              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return const Center(
-                  child: Text(
-                    "No posts yet",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                );
-              }
+          // -------- Posts List --------
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              // color: Theme.of(context).colorScheme.surface,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('posts')
+                    .orderBy('datePublished', descending: true)
+                    .snapshots(),
+                builder:
+                    (
+                      context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                      snapshot,
+                    ) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
 
-              return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (ctx, index) =>
-                    PostCard(snap: snapshot.data!.docs[index].data()),
-              );
-            },
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            "No posts yet",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        );
+                      }
+
+                      return ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (ctx, index) =>
+                            PostCard(snap: snapshot.data!.docs[index].data()),
+                      );
+                    },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
