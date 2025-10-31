@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCBs3kSSZruRMk6TPgndpK9NuRHSJ0jKwg',
-    appId: '1:102890835302:android:978f4ab29397ac8cdecca7',
+    appId: '1:102890835302:android:21715ad3361ea8e4decca7',
     messagingSenderId: '102890835302',
     projectId: 'authoto-c8042',
     storageBucket: 'authoto-c8042.appspot.com',
@@ -67,4 +67,5 @@ class DefaultFirebaseOptions {
     iosClientId: '102890835302-qv3vcmdp33ci4280ff7mo2vpdoaaa65n.apps.googleusercontent.com',
     iosBundleId: 'com.example.csccApp',
   );
+
 }
