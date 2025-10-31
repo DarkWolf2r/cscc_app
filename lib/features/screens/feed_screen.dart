@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/widgets/post_card.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 // import 'package:timeago/timeago.dart' as timeago;
 // import 'package:flutter_svg/flutter_svg.dart';
 
@@ -29,12 +30,22 @@ class _FeedScreenState extends State<FeedScreen> {
             //   color: primaryColor,
             //   height: 32,
             // ),
+            // title: Text(
+            //   "CSCC",
+            //   style: TextStyle(
+            //     color: Colors.white,
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 24,
+            //   ),
+            // ),
             title: Text(
               "CSCC",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
+              style: GoogleFonts.lato(
+                textStyle: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                ),
               ),
             ),
             actions: [
@@ -52,7 +63,7 @@ class _FeedScreenState extends State<FeedScreen> {
           // -------- Posts List --------
           SliverToBoxAdapter(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.only(bottom: 15, right: 10, left: 10),
               // color: Theme.of(context).colorScheme.surface,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
