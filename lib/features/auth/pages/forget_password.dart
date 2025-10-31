@@ -100,7 +100,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   height: MediaQuery.of(context).size.height / 0.7,
                   padding: const EdgeInsets.fromLTRB(24, 5, 24, 24),
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
@@ -188,12 +188,13 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        onPressed:
-                            _forgotPasswordKey.currentState?.validate() ?? false
-                            ? () {
-                                _forgotPassword();
-                              }
-                            : () {},
+                        onPressed: () {
+                          if (_forgotPasswordKey.currentState?.validate() ??
+                              false) {
+                            _forgotPassword();
+                          }
+                        },
+
                         child: Text(
                           "Send Email",
                           style: GoogleFonts.lato(

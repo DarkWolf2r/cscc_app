@@ -195,19 +195,19 @@ class SignInPageState extends ConsumerState<SignInPage> {
                         const SizedBox(height: 40),
                         //
                         FlatButton(
-                          
                           text: "login",
-                          onPressed: signInKey.currentState?.validate() ?? false
-                              ? () async {
-                                  await ref
-                                      .read(authServiceProvider)
-                                      .signInWithEmailAndPassword(
-                                        emailController.text.trim(),
-                                        passwordController.text.trim(),
-                                        context,
-                                      );
-                                }
-                              : () {},
+                          onPressed: () async {
+                            if (signInKey.currentState?.validate() ?? false) {
+                              await ref
+                                  .read(authServiceProvider)
+                                  .signInWithEmailAndPassword(
+                                    emailController.text.trim(),
+                                    passwordController.text.trim(),
+                                    context,
+                                  );
+                            }
+                          },
+
                           colour: const Color(0xFF4A8BFF),
                         ),
 
@@ -283,9 +283,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                                 onPressed: () {
                                   ref
                                       .read(authServiceProvider)
-                                      .signInWithGitHub(
-                                        context
-                                      );
+                                      .signInWithGitHub(context,ref);
                                 },
                               ),
                             ),

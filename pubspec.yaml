@@ -49,12 +49,9 @@ dependencies:
   cached_network_image: ^3.4.1
   intl: ^0.20.2
   popover: ^0.4.0
-<<<<<<< HEAD
   path_provider: ^2.1.5
-  auto_size_text: ^3.0.0
-=======
-  timeago: ^3.7.1
->>>>>>> cd88f7d (home page 1)
+  change_app_package_name: ^1.5.0
+  
   
 
   

@@ -1,24 +1,23 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cscc_app/cores/method.dart';
-
-import 'package:cscc_app/cores/widgets/flat_button.dart';
-import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
-// import 'package:popover/popover.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:cscc_app/cores/method.dart';
+import 'package:cscc_app/cores/widgets/flat_button.dart';
+import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
+
 class UserInfoPage extends ConsumerStatefulWidget {
-  final String email;
-  const UserInfoPage({super.key, required this.email});
+  final String? email;
+  final String? github;
+
+  const UserInfoPage(this.email, this.github, {super.key});
 
   @override
   ConsumerState<UserInfoPage> createState() => _UserInfoPageState();
@@ -26,45 +25,48 @@ class UserInfoPage extends ConsumerStatefulWidget {
 
 class _UserInfoPageState extends ConsumerState<UserInfoPage> {
   final TextEditingController usernameController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+
   bool isValidate = true;
   File? picture;
-  final userInfoKey = GlobalKey<FormState>();
   String typeValue = 'Membre';
-  String bureauType = 'Membre de Bureau';
+  String bureauType = '';
+  final userInfoKey = GlobalKey<FormState>();
+  String randomNumber = const Uuid().v4();
+
   List<String> userDepartement = [];
-  List<String> departementValue = [
+
+  final List<String> departementValue = [
     "Developpement",
     "Security",
     "Communication",
     "Robotics",
   ];
-  List<String> membreDeBureauList = [
+
+  final List<String> membreDeBureauList = [
     "Chef Developement",
     "Chef Security",
     "Chef Robotic",
     "Chef Communication",
+    "Chef Logistic",
+    "Chef Events",
+    "VP Intern",
+    "VP Extern",
+
   ];
 
-  String randomNumber = const Uuid().v4();
-  TextEditingController? descriptionController = TextEditingController();
+  Future<void> validateUsername() async {
+    final usersSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .get();
+    final usernames = usersSnapshot.docs
+        .map((u) => u["username"] as String)
+        .toList();
 
-  void validateUsername() async {
-    final usersMap = await FirebaseFirestore.instance.collection("users").get();
-
-    final users = usersMap.docs.map((user) => user).toList();
-    //
-    String? targetdUsername;
-    //
-    for (var user in users) {
-      if (usernameController.text == user.data()["username"]) {
-        targetdUsername = user.data()["username"];
-        isValidate = false;
-        setState(() {});
-      }
-      if (usernameController.text != targetdUsername) {
-        isValidate = true;
-        setState(() {});
-      }
+    if (usernames.contains(usernameController.text.trim())) {
+      setState(() => isValidate = false);
+    } else {
+      setState(() => isValidate = true);
     }
   }
 
@@ -75,7 +77,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
       backgroundColor: const Color(0xFF4A8BFF),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height / 0.85,
+          height: MediaQuery.of(context).size.height / 0.6,
           child: Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.center,
@@ -93,34 +95,28 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                   ),
                 ),
               ),
+
               Positioned(
                 top: 60,
                 right: 0,
                 left: 0,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       "CSCC",
                       style: GoogleFonts.lato(
-                        textStyle: const TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                     Text(
                       "Team",
                       style: GoogleFonts.lato(
-                        textStyle: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
+                        fontSize: 16,
+                        color: Colors.white,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -130,7 +126,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                 top: 200,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height / 0.6,
                   padding: const EdgeInsets.fromLTRB(24, 5, 24, 24),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
@@ -140,57 +136,37 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                     ),
                   ),
                   child: Column(
-                    //  mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20),
                       Text(
                         "User Informations",
-
                         style: GoogleFonts.lato(
-                          textStyle: const TextStyle(
-                            fontSize: 35,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xFF4A8BFF),
-                          ),
+                          fontSize: 35,
+                          fontWeight: FontWeight.w900,
+                          color: const Color(0xFF4A8BFF),
                         ),
                       ),
-                      // const Padding(
-                      //   padding: EdgeInsets.symmetric(
-                      //     vertical: 20,
-                      //     horizontal: 0,
-                      //   ),
-                      //   child: Text(
-                      //     'Enter the username',
-                      //     style: TextStyle(
-                      //       fontSize: 15,
-                      //       fontWeight: FontWeight.w900,
-                      //       color: Color(0xFF4A8BFF),
-                      //     ),
-                      //   ),
-                      // ),
+                      const SizedBox(height: 20),
+
+                      // Username field
                       Form(
+                        key: userInfoKey,
                         child: TextFormField(
-                          onChanged: (username) {
-                            validateUsername();
-                          },
+                          onChanged: (_) => validateUsername(),
                           autovalidateMode: AutovalidateMode.always,
-                          validator: (usremane) {
-                            return isValidate ? null : "Username Already Taken";
-                          },
-                          key: userInfoKey,
+                          validator: (_) =>
+                              isValidate ? null : "Username already taken",
                           controller: usernameController,
                           decoration: InputDecoration(
-                            suffixIcon: isValidate
-                                ? const Icon(Icons.verified_user_outlined)
-                                : const Icon(Icons.cancel),
-                            suffixIconColor: isValidate
-                                ? Colors.green
-                                : Colors.red,
-                            hintText: 'insert user name',
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                            suffixIcon: Icon(
+                              isValidate
+                                  ? Icons.verified_user_outlined
+                                  : Icons.cancel,
+                              color: isValidate ? Colors.green : Colors.red,
                             ),
+                            hintText: 'Insert username',
+                            border: const OutlineInputBorder(),
                             enabledBorder: const OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.blue),
                             ),
@@ -200,14 +176,15 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                           ),
                         ),
                       ),
+
                       const SizedBox(height: 20),
 
+                      // Type selection
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            "Select you Type : ",
-                            style: TextStyle(
+                            "Select your Type : ",
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w900,
                               color: Color(0xFF4A8BFF),
@@ -215,12 +192,9 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                           ),
                           const SizedBox(width: 20),
                           DropdownButton<String>(
-                            dropdownColor: Colors.white,
-                            style: TextStyle(color: Colors.black),
-                            iconEnabledColor: Colors.black,
                             value: typeValue,
                             icon: const Icon(Icons.arrow_drop_down),
-                            items: <DropdownMenuItem<String>>[
+                            items: const [
                               DropdownMenuItem(
                                 value: "Membre",
                                 child: Text('Membre'),
@@ -234,30 +208,69 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                                 child: Text('President'),
                               ),
                             ],
-                            borderRadius: BorderRadius.circular(12),
                             onChanged: (value) {
                               setState(() {
                                 typeValue = value!;
+                                if (typeValue != "Membre du bureau") {
+                                  bureauType = '';
+                                }
                               });
                             },
                           ),
                         ],
                       ),
+
+                      // Bureau role (only if "Membre du bureau")
+                      if (typeValue == "Membre du bureau") ...[
+                        const SizedBox(height: 15),
+                        const Text(
+                          "Select your Bureau Role : ",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w900,
+                            color: Color(0xFF4A8BFF),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        DropdownButton<String>(
+                          dropdownColor: Theme.of(context).colorScheme.surface,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.inverseSurface,
+                          ),
+                          iconEnabledColor: Colors.black,
+                          value: bureauType.isNotEmpty ? bureauType : null,
+                          hint: const Text("Choose your bureau position"),
+                          items: membreDeBureauList
+                              .map(
+                                (role) => DropdownMenuItem(
+                                  value: role,
+                                  child: Text(role),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() => typeValue = value!);
+                          },
+                        ),
+                      ],
+
                       const SizedBox(height: 20),
-                      Text(
-                        'Add Your deparetement : ',
+
+                      // Department chips
+                      const Text(
+                        'Add your Department : ',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w900,
                           color: Color(0xFF4A8BFF),
                         ),
                       ),
+                      const SizedBox(height: 10),
                       SizedBox(
                         height: 70,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: departementValue.length,
-
                           itemBuilder: (context, index) {
                             final department = departementValue[index];
                             return Padding(
@@ -280,8 +293,11 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                           },
                         ),
                       ),
+
                       const SizedBox(height: 10),
-                      Text(
+
+                      // Description
+                      const Text(
                         'Description : ',
                         style: TextStyle(
                           fontSize: 15,
@@ -292,77 +308,66 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                       const SizedBox(height: 10),
                       TextField(
                         controller: descriptionController,
-                        decoration: InputDecoration(
-                          // labelText: "Description",
-                          hintText: "What are your interests? (Optional)",
-
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
-                          ),
-                          floatingLabelStyle: TextStyle(
-                            color: Color(0xFF4A8BFF),
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[100],
-                        ),
                         maxLines: 4,
-                      ),
-                      const SizedBox(height: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Add a profile picture : ',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xFF4A8BFF),
-                                ),
-                              ),
-
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 12,
-                                  bottom: 12,
-                                ),
-                                child: SizedBox(
-                                  height: 80,
-                                  width: 80,
-                                  child: CircleAvatar(
-                                    backgroundImage:
-                                        picture?.path.isEmpty ?? true
-                                        ? const AssetImage('assets/profile.png')
-                                              as ImageProvider
-                                        : FileImage(File(picture!.path)),
-                                  ),
-                                ),
-                              ),
-                            ],
+                        decoration: InputDecoration(
+                          hintText: "What are your interests? (Optional)",
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                           ),
-                          FlatButton(
-                            colour: Colors.blueAccent,
-                            onPressed: () async {
-                              picture = await pickImage();
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderSide: BorderSide(color: Color(0xFF4A8BFF)),
+                          ),
+                          fillColor: Theme.of(context).colorScheme.surface,
+                          filled: true,
+                        ),
+                      ),
 
-                              setState(() {});
-                            },
-                            text: "SELECT",
+                      const SizedBox(height: 20),
+
+                      // Profile picture
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Add a profile picture : ',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
+                              color: Color(0xFF4A8BFF),
+                            ),
+                          ),
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage:
+                                (picture == null || picture!.path.isEmpty)
+                                ? const AssetImage('assets/profile.png')
+                                : FileImage(picture!) as ImageProvider,
                           ),
                         ],
                       ),
+                      const SizedBox(height: 10),
+                      FlatButton(
+                        colour: Colors.blueAccent,
+                        text: "SELECT",
+                        onPressed: () async {
+                          picture = await pickImage();
+                          setState(() {});
+                        },
+                      ),
+
                       const SizedBox(height: 20),
+
+                      // Continue button
                       FlatButton(
                         text: "CONTINUE",
+                        colour: isValidate && userDepartement.isNotEmpty
+                            ? Colors.blueAccent
+                            : Colors.blueGrey,
                         onPressed: () async {
-                          String? profilePic;
+                          if (!isValidate || userDepartement.isEmpty) return;
+
                           if (picture == null) {
                             final byteData = await rootBundle.load(
                               'assets/profile.png',
@@ -376,32 +381,27 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                             );
                             picture = file;
                           }
-                          profilePic = await putFileInStorage(
-                            picture ?? File.fromUri(Uri()),
+
+                          final profilePic = await putFileInStorage(
+                            picture!,
                             randomNumber,
                             "image",
                           );
-                          setState(() {});
 
-                          // add users data inside datebase
-                          isValidate && userDepartement.isNotEmpty
-                              ? await ref
-                                    .read(userDataServiceProvider)
-                                    .addUserDataToFirestore(
-                                      context: context,
-                                      type: typeValue,
-                                      department: userDepartement,
-                                      email: widget.email,
-                                      username: usernameController.text,
-                                      profilePic: profilePic,
-                                      description:
-                                          descriptionController?.text ?? "",
-                                    )
-                              : () {};
+                          await ref
+                              .read(userDataServiceProvider)
+                              .addUserDataToFirestore(
+                                context: context,
+                                type: typeValue,
+
+                                department: userDepartement,
+                                email: widget.email,
+                                github: widget.github,
+                                username: usernameController.text.trim(),
+                                profilePic: profilePic,
+                                description: descriptionController.text.trim(),
+                              );
                         },
-                        colour: isValidate && userDepartement.isNotEmpty
-                            ? Colors.blueAccent
-                            : Colors.blueGrey,
                       ),
                     ],
                   ),
@@ -414,124 +414,3 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
     );
   }
 }
-
-
-//////
-  //  Column(
-  //             mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //             crossAxisAlignment: CrossAxisAlignment.stretch,
-  //             children: [
-  //               const Padding(
-  //                 padding: EdgeInsets.symmetric(vertical: 26, horizontal: 14),
-  //                 child: Text(
-  //                   'Enter the username',
-  //                   style: TextStyle(color: Colors.blueGrey),
-  //                 ),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.only(left: 15, right: 15),
-  //                 child: Form(
-  //                   child: TextFormField(
-  //                     onChanged: (username) {
-  //                       validateUsername();
-  //                     },
-  //                     autovalidateMode: AutovalidateMode.always,
-  //                     validator: (usremane) {
-  //                       return isValidate ? null : "Username Already Taken";
-  //                     },
-  //                     key: userInfoKey,
-  //                     controller: usernameController,
-  //                     decoration: InputDecoration(
-  //                       suffixIcon: isValidate
-  //                           ? const Icon(Icons.verified_user_outlined)
-  //                           : const Icon(Icons.cancel),
-  //                       suffixIconColor: isValidate ? Colors.green : Colors.red,
-  //                       hintText: 'insert user name',
-  //                       border: const OutlineInputBorder(
-  //                         borderSide: BorderSide(color: Colors.blue),
-  //                       ),
-  //                       enabledBorder: const OutlineInputBorder(
-  //                         borderSide: BorderSide(color: Colors.blue),
-  //                       ),
-  //                       focusedBorder: const OutlineInputBorder(
-  //                         borderSide: BorderSide(color: Colors.green),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //               const SizedBox(height: 20),
-  //               DropdownButton<String>(
-  //                 value: typeValue,
-  //                 icon: const Icon(Icons.arrow_drop_down),
-  //                 items: const [
-  //                   DropdownMenuItem(value: 'Membre', child: Text('Membre')),
-  //                   DropdownMenuItem(
-  //                     value: 'Membre de bureau',
-  //                     child: Text('Membre de bureau'),
-  //                   ),
-  //                   DropdownMenuItem(
-  //                     value: 'President',
-  //                     child: Text('President'),
-  //                   ),
-  //                 ],
-  //                 onChanged: (value) {
-  //                   setState(() {
-  //                     typeValue = value!;
-  //                   });
-  //                 },
-  //               ),
-  //               const SizedBox(height: 20),
-
-  //               Padding(
-  //                 padding: const EdgeInsets.all(8.0),
-  //                 child: SizedBox(
-  //                   height: 500,
-  //                   child: ListView.builder(
-  //                     itemCount: departementValue.length,
-  //                     itemBuilder: (context, index) {
-  //                       final department = departementValue[index];
-  //                       return Padding(
-  //                         padding: EdgeInsetsGeometry.all(8),
-  //                         child: ChoiceChip(
-  //                           label: Text(department),
-  //                           selected: userDepartement.contains(department),
-  //                           onSelected: (value) {
-  //                             setState(() {
-  //                               if (value) {
-  //                                 userDepartement.add(department);
-  //                               } else {
-  //                                 userDepartement.remove(department);
-  //                               }
-  //                             });
-  //                           },
-  //                         ),
-  //                       );
-  //                     },
-  //                   ),
-  //                 ),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.only(bottom: 30, left: 8, right: 8),
-  //                 child: FlatButton(
-  //                   text: "CONTINUE",
-  //                   onPressed: () async {
-  //                     // add users data inside datebase
-  //                     isValidate && userDepartement.isNotEmpty
-  //                         ? await ref
-  //                               .read(userDataServiceProvider)
-  //                               .addUserDataToFirestore(
-  //                                 type: typeValue,
-  //                                 department: userDepartement,
-  //                                 email: widget.email,
-  //                                 username: usernameController.text,
-  //                                 profilePic: "",
-  //                                 description: "",
-  //                               )
-  //                         : null;
-  //                   },
-  //                   colour: isValidate ? Colors.green : Colors.green.shade100,
-  //                 ),
-  //               ),
-  //             ],
-            

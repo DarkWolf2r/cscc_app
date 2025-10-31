@@ -4,6 +4,7 @@ import 'package:cscc_app/cores/dark_theme/theme_provider.dart';
 import 'package:cscc_app/features/auth/pages/login_page.dart';
 import 'package:cscc_app/features/auth/pages/user_info_page.dart';
 import 'package:cscc_app/features/auth/pages/verify_email_page.dart';
+import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:cscc_app/features/departement/departement_page.dart';
 import 'package:cscc_app/features/profile/profile_page.dart';
 import 'package:cscc_app/features/profile/setting_page.dart';
@@ -80,9 +81,11 @@ class MyApp extends ConsumerWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 }
+                final githubLink = ref.watch(githubLinkProvider);
+
                 final user = FirebaseAuth.instance.currentUser;
                 if (!(snapshot.hasData && snapshot.data!.exists)) {
-                  return UserInfoPage(email: user!.email!);
+                  return UserInfoPage(user?.email, githubLink);
                 }
                 return HomePage();
               },

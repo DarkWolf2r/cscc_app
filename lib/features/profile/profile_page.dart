@@ -241,28 +241,29 @@ class ProfilePage extends ConsumerWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
+                                FlatButton(
+                                  text: "My Project ->",
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SettingPage(),
+                                    ),
+                                  ),
+                                  colour: Colors.blue,
+                                ),
 
                                 ///
                                 const SizedBox(height: 10),
                                 FlatButton(
                                   text: "Settings ->",
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SettingPage(),
-                                      ),
-                                    );
-                                  },
-                                  colour: Colors.grey,
-                                ),
-                                const SizedBox(height: 10),
-                                FlatButton(
-                                  text: "Logout",
-                                  onPressed: () => ref
-                                      .read(authServiceProvider)
-                                      .signOutUser(),
-                                  colour: Colors.red,
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SettingPage(),
+                                    ),
+                                  ),
+
+                                  colour: Colors.blue,
                                 ),
                               ],
                             ),

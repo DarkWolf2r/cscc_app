@@ -110,7 +110,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           ),
                           const SizedBox(height: 40),
                           TextFormField(
-                            // key: key,
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
                             cursorColor: Color(0xFF4A8BFF),
@@ -118,10 +117,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                               color: Colors.grey,
                               fontSize: 16,
                             ),
-                            validator: (value) {
-                              value != null && !EmailValidator.validate(value)
-                                  ? 'Enter a valid email'
-                                  : null;
+                            validator: (email) {
+                              if (email == null || email.isEmpty) {
+                                return 'Please enter your email';
+                              } else if (!EmailValidator.validate(email)) {
+                                return 'Please enter a valid email';
+                              }
                               return null;
                             },
                             decoration: InputDecoration(
@@ -270,18 +271,17 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                               ),
                             ),
 
-                            onPressed:
-                                (signUpKey.currentState?.validate() ?? false)
-                                ? () async {
-                                    await ref
-                                        .read(authServiceProvider)
-                                        .sendEmailToVerify(
-                                          context,
-                                          _emailController.text.trim(),
-                                          _passwordController.text.trim(),
-                                        );
-                                  }
-                                : () {},
+                            onPressed: () async {
+                              if (signUpKey.currentState?.validate() ?? false) {
+                                await ref
+                                    .read(authServiceProvider)
+                                    .sendEmailToVerify(
+                                      context,
+                                      _emailController.text.trim(),
+                                      _passwordController.text.trim(),
+                                    );
+                              }
+                            },
 
                             child: Text(
                               "Sign Up",
@@ -362,7 +362,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   onPressed: () async {
                                     await ref
                                         .read(authServiceProvider)
-                                        .signInWithGitHub(context);
+                                        .signInWithGitHub(context,ref);
                                   },
                                 ),
                               ),

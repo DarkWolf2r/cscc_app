@@ -2,16 +2,21 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cscc_app/features/auth/pages/login_page.dart';
-import 'package:cscc_app/features/auth/pages/user_info_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class VerifyEmailPage extends StatefulWidget {
-  final String email;
+import 'package:cscc_app/features/auth/pages/login_page.dart';
+import 'package:cscc_app/features/auth/pages/user_info_page.dart';
 
-  const VerifyEmailPage({super.key, required this.email});
+class VerifyEmailPage extends StatefulWidget {
+  final String? email;
+  final String? github;
+   const VerifyEmailPage({
+    super.key,
+    this.email,
+    this.github,
+  });
 
   @override
   State<VerifyEmailPage> createState() => _VerifyEmailPageState();
@@ -78,7 +83,11 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => UserInfoPage(email: widget.email),
+            builder: (context) => UserInfoPage(
+              widget.email,
+              widget.github,
+              
+            ),
           ),
         );
       } else if (!isEmailVerified) {

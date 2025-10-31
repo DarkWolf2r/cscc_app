@@ -18,7 +18,8 @@ class UserDataService {
 
   addUserDataToFirestore({
     required String username,
-    required String email,
+    String? email,
+    String? github ,
     String? profilePic,
     String? description,
     int followers = 0 ,
@@ -30,6 +31,7 @@ class UserDataService {
       followers: followers ,
       username: username,
       email: email,
+      github: github,
       userId: auth.currentUser!.uid,
       description: description,
       type: type,
