@@ -131,9 +131,9 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                   context,
                   "Logout",
                   "Are you sure you want to logout?",
-                  () {
-                    ref.read(authServiceProvider).signOutUser();
-                    Navigator.pop(context);
+                  () async {
+                    await ref.read(authServiceProvider).signOutUser();
+                    if (mounted) Navigator.pop(context);
                   },
                 ),
               ),

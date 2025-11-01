@@ -136,7 +136,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         child: TextFormField(
                           controller: _email,
                           keyboardType: TextInputType.emailAddress,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          // autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -146,8 +146,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             return null;
                           },
                           cursorColor: Color(0xFF4A8BFF),
-                          style: const TextStyle(
-                            color: Colors.grey,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.inverseSurface,
                             fontSize: 16,
                           ),
                           decoration: InputDecoration(
@@ -173,7 +173,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                               color: Color(0xFF4A8BFF),
                             ),
                             filled: true,
-                            fillColor: Colors.grey[100],
+                            fillColor: Theme.of(context).colorScheme.surface,
                           ),
                         ),
                       ),

@@ -16,19 +16,19 @@ class UserDataService {
   FirebaseFirestore firestore;
   UserDataService({required this.auth, required this.firestore});
 
-  addUserDataToFirestore({
+  Future<void> addUserDataToFirestore({
     required String username,
     String? email,
-    String? github ,
+    String? github,
     String? profilePic,
     String? description,
-    int followers = 0 ,
+    int followers = 0,
     required List<String> department,
     required String type,
     required BuildContext context,
   }) async {
     UserModel user = UserModel(
-      followers: followers ,
+      followers: followers,
       username: username,
       email: email,
       github: github,
@@ -43,11 +43,12 @@ class UserDataService {
       context: context,
       builder: (context) => Center(child: CircularProgressIndicator()),
     );
+    Navigator.of(context).pop();
+
     await firestore
         .collection("users")
         .doc(auth.currentUser!.uid)
         .set(user.toMap());
-    Navigator.pop(context);
   }
 
   Future<UserModel> fetchCurrentUserData() async {

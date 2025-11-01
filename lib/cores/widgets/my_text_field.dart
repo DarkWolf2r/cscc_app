@@ -38,7 +38,10 @@ class MyTextField extends StatelessWidget {
 
       // InputBorder? focusedBorder,
       cursorColor: Color(0xFF4A8BFF),
-      style: const TextStyle(color: Colors.grey, fontSize: 16),
+      style: TextStyle(
+        color: Theme.of(context).colorScheme.inverseSurface,
+        fontSize: 16,
+      ),
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         labelText: labelText,
@@ -62,7 +65,7 @@ class MyTextField extends StatelessWidget {
         ),
         floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
         // filled: true,
-        fillColor: Colors.grey[100],
+        fillColor: Theme.of(context).colorScheme.surface,
       ),
     );
   }
