@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
+import 'package:cscc_app/cores/constants.dart';
 import 'package:cscc_app/cores/widgets/post_card.dart';
 import 'package:cscc_app/features/screens/add_post_screen.dart';
 // import 'package:cscc_app/features/screens/draggable_feed_wrapper_screen.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FeedScreen extends StatefulWidget {
-  const FeedScreen({Key? key}) : super(key: key);
+  const FeedScreen({super.key});
 
   @override
   State<FeedScreen> createState() => _FeedScreenState();
@@ -25,13 +26,14 @@ class _FeedScreenState extends State<FeedScreen> {
     );
   }
 
+  String? departementSelected;
+  String? typeSelected;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // remove any backgroundColor here
       backgroundColor: primaryColor,
       body: PageView(
-
         controller: _pageController,
         physics: const BouncingScrollPhysics(),
         children: [
@@ -104,40 +106,107 @@ class _FeedScreenState extends State<FeedScreen> {
                         // topRight: Radius.circular(14),
                       ),
                     ),
-                    child: StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('posts')
-                          .orderBy('datePublished', descending: true)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                          return const Center(
-                            child: Text(
-                              "No posts yet",
-                              style: TextStyle(color: Colors.grey),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Sorted By',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          );
-                        }
+                            DropdownButton<String>(
+                              borderRadius: BorderRadius.circular(12),
+                              dropdownColor: Theme.of(
+                                context,
+                              ).colorScheme.surface,
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.inverseSurface,
+                              ),
+                              iconEnabledColor: Colors.black,
+                              value: departementSelected,
+                              hint: const Text("Departement"),
+                              items: Constants.departementValue
+                                  .map(
+                                    (departement) => DropdownMenuItem(
+                                      value: departement,
+                                      child: Text(departement),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() => departementSelected = value!);
+                              },
+                            ),
+                            DropdownButton<String>(
+                              borderRadius: BorderRadius.circular(12),
+                              dropdownColor: Theme.of(
+                                context,
+                              ).colorScheme.surface,
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.inverseSurface,
+                              ),
+                              iconEnabledColor: Colors.black,
+                              value: typeSelected,
+                              hint: const Text("Post Type"),
+                              items: Constants.postTypeList
+                                  .map(
+                                    (type) => DropdownMenuItem(
+                                      value: type,
+                                      child: Text(type),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() => typeSelected = value!);
+                              },
+                            ),
+                          ],
+                        ),
+                        StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection('posts')
+                              .orderBy('datePublished', descending: true)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
 
-                        return ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (ctx, index) =>
-                              PostCard(snap: snapshot.data!.docs[index].data()),
-                        );
-                      },
+                            if (!snapshot.hasData ||
+                                snapshot.data!.docs.isEmpty) {
+                              return const Center(
+                                child: Text(
+                                  "No posts yet",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              );
+                            }
+
+                            return ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (ctx, index) => PostCard(
+                                snap: snapshot.data!.docs[index].data(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                
               ],
             ),
             // ),

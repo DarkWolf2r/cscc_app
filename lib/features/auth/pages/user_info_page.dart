@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cscc_app/cores/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,23 +37,6 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
 
   List<String> userDepartement = [];
 
-  final List<String> departementValue = [
-    "Developpement",
-    "Security",
-    "Communication",
-    "Robotics",
-  ];
-
-  final List<String> membreDeBureauList = [
-    "Chef Developement",
-    "Chef Security",
-    "Chef Robotic",
-    "Chef Communication",
-    "Chef Logistic",
-    "Chef Events",
-    "VP Intern",
-    "VP Extern",
-  ];
 
   Future<void> validateUsername() async {
     final usersSnapshot = await FirebaseFirestore.instance
@@ -239,7 +223,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                           iconEnabledColor: Colors.black,
                           value: bureauType.isNotEmpty ? bureauType : null,
                           hint: const Text("Choose your bureau position"),
-                          items: membreDeBureauList
+                          items: Constants.membreDeBureauList
                               .map(
                                 (role) => DropdownMenuItem(
                                   value: role,
@@ -269,9 +253,9 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                         height: 70,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: departementValue.length,
+                          itemCount: Constants.departementValue.length,
                           itemBuilder: (context, index) {
-                            final department = departementValue[index];
+                            final department = Constants.departementValue[index];
                             return Padding(
                               padding: const EdgeInsets.only(right: 8.0),
                               child: ChoiceChip(
