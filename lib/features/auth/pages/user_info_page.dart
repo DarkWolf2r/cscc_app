@@ -76,7 +76,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
       backgroundColor: const Color(0xFF4A8BFF),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height / 0.6,
+          height: MediaQuery.of(context).size.height / 0.65,
           child: Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.center,
@@ -125,7 +125,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                 top: 200,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 0.6,
+                  height: MediaQuery.of(context).size.height / 0.65,
                   padding: const EdgeInsets.fromLTRB(24, 5, 24, 24),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,

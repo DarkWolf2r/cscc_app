@@ -23,9 +23,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text("Settings"),
-
-        // centerTitle: true,
-        // backgroundColor: colorScheme.primary,
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
       ),
       body: SafeArea(
         child: ListView(
@@ -108,6 +106,18 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                     context,
                     "Help",
                     "For support, please contact cscc.team@gmail.com",
+                  );
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.feedback),
+                title: const Text("Feed-back"),
+                onTap: () {
+                  _showInfoDialog(
+                    context,
+                    "Feedback",
+                    "We will be happy to get your feedback !  contact us :  cht1485@gmail.com / laouar.romaissa.info@gmail.com",
                   );
                 },
               ),

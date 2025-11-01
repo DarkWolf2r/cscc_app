@@ -12,11 +12,7 @@ import 'package:cscc_app/features/auth/pages/user_info_page.dart';
 class VerifyEmailPage extends StatefulWidget {
   final String? email;
   final String? github;
-   const VerifyEmailPage({
-    super.key,
-    this.email,
-    this.github,
-  });
+  const VerifyEmailPage({super.key, this.email, this.github});
 
   @override
   State<VerifyEmailPage> createState() => _VerifyEmailPageState();
@@ -83,11 +79,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => UserInfoPage(
-              widget.email,
-              widget.github,
-              
-            ),
+            builder: (context) => UserInfoPage(widget.email, widget.github),
           ),
         );
       } else if (!isEmailVerified) {
@@ -119,6 +111,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFF4A8BFF),
 
       body: Stack(

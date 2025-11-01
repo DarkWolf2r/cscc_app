@@ -31,6 +31,7 @@ class _FeedScreenState extends State<FeedScreen> {
       // remove any backgroundColor here
       backgroundColor: primaryColor,
       body: PageView(
+
         controller: _pageController,
         physics: const BouncingScrollPhysics(),
         children: [
@@ -136,6 +137,7 @@ class _FeedScreenState extends State<FeedScreen> {
                     ),
                   ),
                 ),
+                
               ],
             ),
             // ),
