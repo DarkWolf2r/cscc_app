@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/features/auth/provider/providers.dart';
-import 'package:cscc_app/features/auth/repo/auth_repo.dart';
+// import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:cscc_app/features/profile/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

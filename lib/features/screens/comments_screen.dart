@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/features/auth/provider/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,9 +37,9 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
       _commentController.clear();
     } else {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(res)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(res)));
       }
     }
   }
@@ -48,9 +49,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
     final userState = ref.watch(userNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Comments'),
-      ),
+      appBar: AppBar(title: const Text('Comments')),
       body: userState.when(
         data: (user) {
           if (user == null) {
@@ -64,19 +63,23 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                 .collection('comments')
                 .orderBy('datePublished', descending: true)
                 .snapshots(),
-            builder: (context,
-                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
+            builder:
+                (
+                  context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
+                ) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-              final comments = snapshot.data!.docs;
+                  final comments = snapshot.data!.docs;
 
-              return ListView.builder(
-                itemCount: comments.length,
-                itemBuilder: (ctx, i) => CommentCard(snap: comments[i].data()),
-              );
-            },
+                  return ListView.builder(
+                    itemCount: comments.length,
+                    itemBuilder: (ctx, i) =>
+                        CommentCard(snap: comments[i].data()),
+                  );
+                },
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -90,8 +93,30 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
             child: Container(
               height: kToolbarHeight,
               margin: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+
               padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                border: Border(
+                  top: BorderSide(
+                    color: primaryColor.withOpacity(0.3),
+                    width: 0.8,
+                  ),
+                ),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  topRight: Radius.circular(8),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    offset: const Offset(0, -1),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
               child: Row(
                 children: [
                   CircleAvatar(
@@ -103,7 +128,11 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                     child: TextField(
                       controller: _commentController,
                       decoration: InputDecoration(
-                        hintText: 'Comment as ${user.username}',
+                        hintText: 'What do you think ?',
+                        hintStyle: TextStyle(
+                          color: Colors.grey.withOpacity(0.7),
+                          fontSize: 15,
+                        ),
                         border: InputBorder.none,
                       ),
                     ),
@@ -115,8 +144,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                       user.profilePic,
                     ),
                     child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                       child: Text(
                         'Post',
                         style: TextStyle(

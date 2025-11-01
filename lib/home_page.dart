@@ -1,8 +1,5 @@
-// import 'package:cscc_app/cores/widgets/flat_button.dart';
-import 'package:cscc_app/features/auth/repo/auth_repo.dart';
-import 'package:cscc_app/features/screens/add_post_screen.dart';
+// import 'package:cscc_app/features/screens/add_post_screen.dart';
 import 'package:cscc_app/home_screen_items.dart';
-// import 'package:cscc_app/global_variable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +42,7 @@ class HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     // WidgetRef ref
-    final authService = ref.read(authServiceProvider);
+    // final authService = ref.read(authServiceProvider);
 
     return Scaffold(
       backgroundColor: Colors.white10,
@@ -55,237 +52,72 @@ class HomePageState extends ConsumerState<HomePage> {
         physics: const NeverScrollableScrollPhysics(),
         children: homeScreenItems,
       ),
-      bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: (_page == 0) ? primaryColor : Colors.grey,
-            ),
-            label: '',
+      bottomNavigationBar: SizedBox(
+        height: 50,
+        child: CupertinoTabBar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          border: Border(
+            top: BorderSide(color: primaryColor.withOpacity(0.3), width: 1),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.android,
-              color: (_page == 1) ? primaryColor : Colors.grey,
+
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: (_page == 0) ? primaryColor : Colors.grey,
+              ),
+              label: '',
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add_circle,
-              color: (_page == 2) ? primaryColor : Colors.grey,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.android,
+                color: (_page == 1) ? primaryColor : Colors.grey,
+              ),
+              label: '',
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.favorite,
-              color: (_page == 3) ? primaryColor : Colors.grey,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.add_circle,
+                color: (_page == 2) ? primaryColor : Colors.grey,
+              ),
+              label: '',
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              color: (_page == 4) ? primaryColor : Colors.grey,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.favorite,
+                color: (_page == 3) ? primaryColor : Colors.grey,
+              ),
+              label: '',
             ),
-            label: '',
-            // backgroundColor: Color(0xFF4A8BFF),
-          ),
-        ],
-        onTap: navigationTapped,
-        currentIndex: _page,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+                color: (_page == 4) ? primaryColor : Colors.grey,
+              ),
+              label: '',
+            ),
+          ],
+          onTap: navigationTapped,
+          currentIndex: _page,
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: primaryColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        child: const Icon(Icons.add, color: Colors.white, size: 32),
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (context) => FractionallySizedBox(
-              heightFactor: 0.95,
-              child: const AddPostScreen(),
-            ),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: primaryColor,
+      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      //   child: const Icon(Icons.add, color: Colors.white, size: 32),
+      //   onPressed: () {
+      //     showModalBottomSheet(
+      //       context: context,
+      //       isScrollControlled: true,
+      //       backgroundColor: Colors.transparent,
+      //       builder: (context) => FractionallySizedBox(
+      //         heightFactor: 1,
+      //         child: const AddPostScreen(),
+      //       ),
+      //     );
+      //   },
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
-
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// // import 'package:instagram_clone_flutter/utils/colors.dart';
-// // import 'package:instagram_clone_flutter/utils/global_variable.dart';
-
-// class HomePage extends StatefulWidget {
-//   const HomePage({super.key});
-
-//   @override
-//   State<HomePage> createState() => _HomePageState();
-// }
-
-// class _HomePageState extends State<HomePage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold();
-//   }
-// }
-// // import 'package:flutter/cupertino.dart';
-// // import 'package:flutter/material.dart';
-// // // import 'package:instagram_clone_flutter/utils/colors.dart';
-// // // import 'package:instagram_clone_flutter/utils/global_variable.dart';
-
-// // class MobileScreenLayout extends StatefulWidget {
-// //   const MobileScreenLayout({Key? key}) : super(key: key);
-
-// //   @override
-// //   State<MobileScreenLayout> createState() => _MobileScreenLayoutState();
-// // }
-
-// // class _MobileScreenLayoutState extends State<MobileScreenLayout> {
-// //   int _page = 0;
-// //   late PageController pageController; // for tabs animation
-
-// //   @override
-// //   void initState() {
-// //     super.initState();
-// //     pageController = PageController();
-// //   }
-
-// //   @override
-// //   void dispose() {
-// //     super.dispose();
-// //     pageController.dispose();
-// //   }
-
-// //   void onPageChanged(int page) {
-// //     setState(() {
-// //       _page = page;
-// //     });
-// //   }
-
-// //   void navigationTapped(int page) {
-// //     //Animating Page
-// //     pageController.jumpToPage(page);
-// //   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: PageView(
-//         controller: pageController,
-//         onPageChanged: onPageChanged,
-//         children: homeScreenItems,
-//       ),
-//       bottomNavigationBar: CupertinoTabBar(
-//         backgroundColor: mobileBackgroundColor,
-//         items: <BottomNavigationBarItem>[
-//           BottomNavigationBarItem(
-//             icon: Icon(
-//               Icons.home,
-//               color: (_page == 0) ? primaryColor : secondaryColor,
-//             ),
-//             label: '',
-//             backgroundColor: primaryColor,
-//           ),
-//           BottomNavigationBarItem(
-//               icon: Icon(
-//                 Icons.search,
-//                 color: (_page == 1) ? primaryColor : secondaryColor,
-//               ),
-//               label: '',
-//               backgroundColor: primaryColor),
-//           BottomNavigationBarItem(
-//               icon: Icon(
-//                 Icons.add_circle,
-//                 color: (_page == 2) ? primaryColor : secondaryColor,
-//               ),
-//               label: '',
-//               backgroundColor: primaryColor),
-//           BottomNavigationBarItem(
-//             icon: Icon(
-//               Icons.favorite,
-//               color: (_page == 3) ? primaryColor : secondaryColor,
-//             ),
-//             label: '',
-//             backgroundColor: primaryColor,
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(
-//               Icons.person,
-//               color: (_page == 4) ? primaryColor : secondaryColor,
-//             ),
-//             label: '',
-//             backgroundColor: primaryColor,
-//           ),
-//         ],
-//         onTap: navigationTapped,
-//         currentIndex: _page,
-//       ),
-//     );
-//   }
-// }
-
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return Scaffold(
-// //       body: PageView(
-// //         controller: pageController,
-// //         onPageChanged: onPageChanged,
-// //         children: homeScreenItems,
-// //       ),
-// //       bottomNavigationBar: CupertinoTabBar(
-// //         backgroundColor: mobileBackgroundColor,
-// //         items: <BottomNavigationBarItem>[
-// //           BottomNavigationBarItem(
-// //             icon: Icon(
-// //               Icons.home,
-// //               color: (_page == 0) ? primaryColor : secondaryColor,
-// //             ),
-// //             label: '',
-// //             backgroundColor: primaryColor,
-// //           ),
-// //           BottomNavigationBarItem(
-// //               icon: Icon(
-// //                 Icons.search,
-// //                 color: (_page == 1) ? primaryColor : secondaryColor,
-// //               ),
-// //               label: '',
-// //               backgroundColor: primaryColor),
-// //           BottomNavigationBarItem(
-// //               icon: Icon(
-// //                 Icons.add_circle,
-// //                 color: (_page == 2) ? primaryColor : secondaryColor,
-// //               ),
-// //               label: '',
-// //               backgroundColor: primaryColor),
-// //           BottomNavigationBarItem(
-// //             icon: Icon(
-// //               Icons.favorite,
-// //               color: (_page == 3) ? primaryColor : secondaryColor,
-// //             ),
-// //             label: '',
-// //             backgroundColor: primaryColor,
-// //           ),
-// //           BottomNavigationBarItem(
-// //             icon: Icon(
-// //               Icons.person,
-// //               color: (_page == 4) ? primaryColor : secondaryColor,
-// //             ),
-// //             label: '',
-// //             backgroundColor: primaryColor,
-// //           ),
-// //         ],
-// //         onTap: navigationTapped,
-// //         currentIndex: _page,
-// //       ),
-// //     );
-// //   }
-// // }

@@ -5,9 +5,6 @@ import 'package:cscc_app/features/auth/pages/login_page.dart';
 import 'package:cscc_app/features/auth/pages/user_info_page.dart';
 import 'package:cscc_app/features/auth/pages/verify_email_page.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
-import 'package:cscc_app/features/departement/departement_page.dart';
-import 'package:cscc_app/features/profile/profile_page.dart';
-import 'package:cscc_app/features/profile/setting_page.dart';
 import 'package:cscc_app/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +23,7 @@ void main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(ProviderScope(child: MyApp()));
 }
 

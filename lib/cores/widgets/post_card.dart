@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
-import 'package:cscc_app/cores/widgets/follow_button.dart';
+// import 'package:cscc_app/cores/widgets/follow_button.dart';
 import 'package:cscc_app/cores/widgets/like_animation.dart';
 import 'package:cscc_app/features/screens/comments_screen.dart';
 import 'package:cscc_app/features/screens/edit_post_screen.dart';
@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cscc_app/cores/firestore_methods.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostCard extends StatefulWidget {
@@ -162,6 +162,86 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
+  Widget _buildInstagramStyleImages(List<String> postUrls) {
+    final PageController _pageController = PageController();
+    int currentPage = 0;
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox(
+              height: 300,
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: postUrls.length,
+                onPageChanged: (index) => setState(() => currentPage = index),
+                itemBuilder: (context, index) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      postUrls[index],
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            if (postUrls.length != 1)
+              Positioned(
+                top: 10,
+                right: 12,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+
+                  child: Text(
+                    '${currentPage + 1}/${postUrls.length}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+
+            if (postUrls.length != 1)
+              Positioned(
+                bottom: 8,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(postUrls.length, (index) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      height: 6,
+                      width: currentPage == index ? 16 : 6,
+                      decoration: BoxDecoration(
+                        color: currentPage == index
+                            ? Colors.white
+                            : Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final snap = widget.snap;
@@ -190,9 +270,16 @@ class _PostCardState extends State<PostCard> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(snap['profImage']),
+                  Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: primaryColor.withOpacity(0.7),
+                      shape: BoxShape.circle,
+                    ),
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: NetworkImage(snap['profImage']),
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -202,18 +289,22 @@ class _PostCardState extends State<PostCard> {
                       children: [
                         Text(
                           snap['username'],
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.lato(
+                            textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           timeago.format(snap['datePublished'].toDate()),
-                          style: TextStyle(
-                            color: Colors.grey.withOpacity(0.7),
-                            fontSize: 12,
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              color: Colors.grey.withOpacity(0.7),
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ],
@@ -270,18 +361,10 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
 
-            // ================= Image
-            if (snap['postUrl'] != null &&
-                snap['postUrl'].toString().isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  snap['postUrl'],
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 280,
-                ),
-              ),
+            // ===== Images
+            if (snap['postUrls'] != null &&
+                (snap['postUrls'] as List).isNotEmpty)
+              _buildInstagramStyleImages(List<String>.from(snap['postUrls'])),
 
             // ================= Description (if exists)
             if (snap['description'] != null &&
@@ -290,7 +373,9 @@ class _PostCardState extends State<PostCard> {
                 padding: const EdgeInsets.only(top: 10, left: 8, right: 8),
                 child: Text(
                   snap['description'],
-                  style: const TextStyle(fontSize: 15, height: 1.4),
+                  style: GoogleFonts.lato(
+                    textStyle: const TextStyle(fontSize: 15, height: 1.4),
+                  ),
                 ),
               ),
 
@@ -369,265 +454,6 @@ class _PostCardState extends State<PostCard> {
         ),
       ),
     );
-
-    // return Card(
-    //   margin: const EdgeInsets.symmetric(vertical: 8),
-    //   shape: RoundedRectangleBorder(
-    //     borderRadius: BorderRadius.circular(10),
-    //     side: BorderSide(color: primaryColor.withOpacity(0.3), width: 1),
-    //   ),
-    //   color: Theme.of(context).colorScheme.surface,
-    //   child: Padding(
-    //     padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Padding(
-    //           padding: const EdgeInsets.only(bottom: 5, left: 5),
-    //           child: Row(
-    //             crossAxisAlignment: CrossAxisAlignment.center,
-    //             children: [
-    //               CircleAvatar(
-    //                 // radius: 20,
-    //                 backgroundImage: NetworkImage(snap['profImage']),
-    //               ),
-    //               const SizedBox(width: 12),
-    //               Expanded(
-    //                 child: Column(
-    //                   crossAxisAlignment: CrossAxisAlignment.start,
-    //                   mainAxisAlignment: MainAxisAlignment.center,
-    //                   children: [
-    //                     Text(
-    //                       snap['username'],
-    //                       style: const TextStyle(
-    //                         fontWeight: FontWeight.bold,
-    //                         fontSize: 14,
-    //                         overflow: TextOverflow.ellipsis,
-    //                       ),
-    //                     ),
-    //                     // const SizedBox(height: 1),
-    //                     Text(
-    //                       timeago.format(snap['datePublished'].toDate()),
-    //                       style: TextStyle(
-    //                         // color: Color.fromARGB(255, 180, 180, 180),
-    //                         color: Colors.grey.withOpacity(0.7),
-    //                         fontSize: 12,
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-
-    //               if (snap['uid'] != currentUserId)
-    //                 Flexible(
-    //                   child: Container(
-    //                     margin: const EdgeInsets.only(right: 4),
-    //                     child: TextButton(
-    //                       onPressed: () {
-    //                         FireStoreMethods().followUser(
-    //                           currentUserId,
-    //                           profileUserId,
-    //                         );
-    //                         setState(() {
-    //                           isFollowing = !isFollowing;
-    //                         });
-    //                       },
-    //                       style: TextButton.styleFrom(
-    //                         backgroundColor: isFollowing
-    //                             ? Colors.white
-    //                             : primaryColor,
-    //                         padding: const EdgeInsets.symmetric(
-    //                           horizontal: 10,
-    //                           vertical: 4,
-    //                         ),
-    //                         minimumSize: const Size(0, 0),
-    //                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    //                         // padding: EdgeInsets.zero,
-    //                         // minimumSize: const Size(80, 32),
-    //                         shape: RoundedRectangleBorder(
-    //                           borderRadius: BorderRadius.circular(6),
-    //                           side: BorderSide(
-    //                             color: primaryColor.withOpacity(0.3),
-    //                             width: 0.5,
-    //                           ),
-    //                         ),
-    //                       ),
-    //                       child: Text(
-    //                         isFollowing ? 'Unfollow' : 'Follow',
-    //                         style: GoogleFonts.lato(
-    //                           textStyle: TextStyle(
-    //                             color: isFollowing
-    //                                 ? Colors.black
-    //                                 : Colors.white,
-    //                             fontSize: 12,
-    //                             fontWeight: FontWeight.w600,
-    //                           ),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 ),
-
-    //               IconButton(
-    //                 icon: const Icon(Icons.more_vert_sharp),
-    //                 onPressed: () =>
-    //                     showPostOptions(context, snap['uid'], snap['postId']),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-
-    //         // ListTile(
-    //         //   leading: CircleAvatar(
-    //         //     backgroundImage: NetworkImage(snap['profImage']),
-    //         //   ),
-    //         //   title: Row(
-    //         //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         //     children: [
-    //         //       Expanded(
-    //         //         child: Text(
-    //         //           snap['username'],
-    //         //           style: const TextStyle(
-    //         //             fontWeight: FontWeight.bold,
-    //         //             overflow: TextOverflow.ellipsis,
-    //         //           ),
-    //         //         ),
-    //         //       ),
-    //         //       TextButton(
-    //         //         onPressed: () {
-    //         //           FireStoreMethods().followUser(currentUserId, profileUserId);
-    //         //           setState(() {
-    //         //             isFollowing = !isFollowing;
-    //         //           });
-    //         //         },
-    //         //         style: TextButton.styleFrom(
-    //         //           backgroundColor: isFollowing ? Colors.white : Colors.blue,
-    //         //           minimumSize: const Size(80, 32),
-    //         //           padding: EdgeInsets.zero,
-    //         //           shape: RoundedRectangleBorder(
-    //         //             borderRadius: BorderRadius.circular(6),
-    //         //             side: BorderSide(color: Colors.grey.shade400),
-    //         //           ),
-    //         //         ),
-    //         //         child: Text(
-    //         //           isFollowing ? 'Unfollow' : 'Follow',
-    //         //           style: TextStyle(
-    //         //             color: isFollowing ? Colors.black : Colors.white,
-    //         //             fontSize: 12,
-    //         //             fontWeight: FontWeight.w600,
-    //         //           ),
-    //         //         ),
-    //         //       ),
-    //         //     ],
-    //         //   ),
-    //         //   subtitle: Text(
-    //         //     timeago.format(snap['datePublished'].toDate()),
-    //         //     style: const TextStyle(
-    //         //       color: Color.fromARGB(255, 194, 194, 194),
-    //         //       fontSize: 12,
-    //         //     ),
-    //         //   ),
-    //         //   trailing: IconButton(
-    //         //     icon: const Icon(Icons.more_vert),
-    //         //     onPressed: () =>
-    //         //         showPostOptions(context, snap['uid'], snap['postId']),
-    //         //   ),
-    //         // ),
-
-    //         // --- Follow Button ---
-    //         // Padding(
-    //         //   padding: const EdgeInsets.symmetric(horizontal: 12),
-    //         //   child: FollowButton(
-    //         //     text: isFollowing ? 'Unfollow' : 'Follow',
-    //         //     backgroundColor: isFollowing ? Colors.white : Colors.blue,
-    //         //     borderColor: Colors.grey,
-    //         //     textColor: isFollowing ? Colors.black : Colors.white,
-    //         //     onTap: () {
-    //         //       FireStoreMethods().followUser(currentUserId, profileUserId);
-    //         //       setState(() {
-    //         //         isFollowing = !isFollowing;
-    //         //       });
-    //         //     },
-    //         //   ),
-    //         // ),
-
-    //         // --- Image ---
-    //         if (snap['postUrl'] != null &&
-    //             snap['postUrl'].toString().isNotEmpty)
-    //           Image.network(
-    //             snap['postUrl'],
-    //             fit: BoxFit.cover,
-    //             width: double.infinity,
-    //             height: 280,
-    //           ),
-
-    //         // --- Description ---
-    //         if (snap['description'] != null &&
-    //             snap['description'].toString().trim().isNotEmpty)
-    //           Padding(
-    //             padding: const EdgeInsets.all(12),
-    //             child: Text(
-    //               snap['description'],
-    //               style: const TextStyle(fontSize: 15, height: 1.4),
-    //             ),
-    //           ),
-
-    //         // --- Like Button ---
-    //         Row(
-    //           children: [
-    //             LikeAnimation(
-    //               isAnimating: isLiked,
-    //               smallLike: true,
-    //               child: IconButton(
-    //                 icon: Icon(
-    //                   isLiked ? Icons.favorite : Icons.favorite_border,
-    //                   color: isLiked
-    //                       ? Colors.red
-    //                       : Colors.grey.withOpacity(0.7),
-    //                 ),
-    //                 onPressed: () async {
-    //                   await FireStoreMethods().likePost(
-    //                     snap['postId'],
-    //                     currentUserId,
-    //                     snap['likes'],
-    //                   );
-    //                   setState(() {
-    //                     isLiked = !isLiked;
-    //                   });
-    //                 },
-    //               ),
-    //             ),
-    //             Text("${snap['likes'].length}"),
-
-    //             // SizedBox(width: 5),
-
-    //             // --- Comments Button ---
-    //             // Padding(
-    //             // padding: const EdgeInsets.symmetric(
-    //             //   // horizontal: 12,
-    //             //   vertical: 0,
-    //             // ),
-    //             IconButton(
-    //               icon: Icon(
-    //                 Icons.mode_comment_outlined,
-    //                 color: Colors.grey.withOpacity(0.7),
-    //               ),
-    //               onPressed: () {
-    //                 Navigator.push(
-    //                   context,
-    //                   MaterialPageRoute(
-    //                     builder: (_) => CommentsScreen(postId: snap['postId']),
-    //                   ),
-    //                 );
-    //               },
-    //             ),
-    //             // ),
-    //           ],
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }
 
