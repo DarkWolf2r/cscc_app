@@ -1,9 +1,8 @@
-// import 'package:cscc_app/features/screens/add_post_screen.dart';
 import 'package:cscc_app/home_screen_items.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cscc_app/cores/colors.dart';
+import 'package:iconsax/iconsax.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -52,55 +51,80 @@ class HomePageState extends ConsumerState<HomePage> {
         physics: const NeverScrollableScrollPhysics(),
         children: homeScreenItems,
       ),
-      bottomNavigationBar: SizedBox(
-        height: 50,
-        child: CupertinoTabBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          border: Border(
-            top: BorderSide(color: primaryColor.withOpacity(0.3), width: 1),
-          ),
+      bottomNavigationBar: NavigationBar(
+        //maintainBottomViewPadding: true,
+        // elevation: 0,
+        //   height: 80,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        indicatorColor:
+            primaryColor, 
+        onDestinationSelected: navigationTapped,
+        selectedIndex: _page,
 
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: (_page == 0) ? primaryColor : Colors.grey,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.android,
-                color: (_page == 1) ? primaryColor : Colors.grey,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.add_circle,
-                color: (_page == 2) ? primaryColor : Colors.grey,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite,
-                color: (_page == 3) ? primaryColor : Colors.grey,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-                color: (_page == 4) ? primaryColor : Colors.grey,
-              ),
-              label: '',
-            ),
-          ],
-          onTap: navigationTapped,
-          currentIndex: _page,
-        ),
+        destinations: [
+          NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
+          NavigationDestination(icon: Icon(Iconsax.people), label: 'Event'),
+          NavigationDestination(
+            icon: Icon(Iconsax.add_circle),
+            label: 'Add Post',
+          ),
+          NavigationDestination(
+            icon: Icon(Iconsax.folder_cloud),
+            label: 'Project',
+          ),
+          NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
+        ],
       ),
+      // bottomNavigationBar: SizedBox(
+      //   height: 50,
+      //   child: CupertinoTabBar(
+      //     backgroundColor: Theme.of(context).colorScheme.surface,
+      //     border: Border(
+      //       top: BorderSide(color: primaryColor.withOpacity(0.3), width: 1),
+      //     ),
+
+      //     items: <BottomNavigationBarItem>[
+      //       BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.home,
+      //           color: (_page == 0) ? primaryColor : Colors.grey,
+      //         ),
+      //         label: '',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.android,
+      //           color: (_page == 1) ? primaryColor : Colors.grey,
+      //         ),
+      //         label: '',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.add_circle,
+      //           color: (_page == 2) ? primaryColor : Colors.grey,
+      //         ),
+      //         label: '',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.favorite,
+      //           color: (_page == 3) ? primaryColor : Colors.grey,
+      //         ),
+      //         label: '',
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.person,
+      //           color: (_page == 4) ? primaryColor : Colors.grey,
+      //         ),
+      //         label: '',
+      //       ),
+      //     ],
+
+      //     onTap: navigationTapped,
+      //     currentIndex: _page,
+      //   ),
+      // ),
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: primaryColor,
       //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
