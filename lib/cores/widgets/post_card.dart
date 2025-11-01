@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
-// import 'package:cscc_app/cores/widgets/follow_button.dart';
 import 'package:cscc_app/cores/widgets/like_animation.dart';
+import 'package:cscc_app/cores/widgets/view_profile.dart';
+import 'package:cscc_app/features/profile/profile_page.dart';
 import 'package:cscc_app/features/screens/comments_screen.dart';
 import 'package:cscc_app/features/screens/edit_post_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cscc_app/cores/firestore_methods.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostCard extends StatefulWidget {
@@ -28,6 +28,7 @@ class _PostCardState extends State<PostCard> {
   void initState() {
     super.initState();
     fetchCommentLen();
+    checkIfFollowing();
   }
 
   fetchCommentLen() async {
@@ -242,6 +243,60 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
+  void checkIfFollowing() async {
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    final profileUserId = widget.snap['uid'];
+
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUserId)
+        .get();
+
+    final followingList = List<String>.from(doc['following'] ?? []);
+    setState(() {
+      isFollowing = followingList.contains(profileUserId);
+    });
+  }
+
+  // void openProfile(BuildContext context, String profileUid) async {
+  //   try {
+  //     final docSnap = await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(profileUid)
+  //         .get();
+
+  //     // تحقق من الوجود
+  //     if (!docSnap.exists || docSnap.data() == null) {
+  //       ScaffoldMessenger.of(
+  //         context,
+  //       ).showSnackBar(const SnackBar(content: Text("User not found")));
+  //       return;
+  //     }
+
+  //     final data = docSnap.data()! as Map<String, dynamic>;
+
+  //     // تحقق من الايميل باش نتأكد
+  //     final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
+  //     if (data['email'] != null && data['email'] != currentUserEmail) {
+  //       ScaffoldMessenger.of(
+  //         context,
+  //       ).showSnackBar(const SnackBar(content: Text("User email mismatch")));
+  //       return;
+  //     }
+
+  //     // كلشي صحيح، افتح صفحة الملف الشخصي
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (_) => ViewProfilePage(userId: profileUid)),
+  //     );
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(const SnackBar(content: Text("Error fetching user info")));
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     final snap = widget.snap;
@@ -270,15 +325,41 @@ class _PostCardState extends State<PostCard> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.7),
-                      shape: BoxShape.circle,
-                    ),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(snap['profImage']),
+                  GestureDetector(
+                    onTap: () {
+                      final currentUserId =
+                          FirebaseAuth.instance.currentUser!.uid;
+                      final postUserId = snap['uid'];
+
+                      if (currentUserId == postUserId) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ProfilePage(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ViewProfilePage(userId: postUserId),
+                          ),
+                        );
+                        // final postUserId = snap['uid'];
+
+                        // openProfile(context, postUserId);
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: primaryColor.withOpacity(0.7),
+                        shape: BoxShape.circle,
+                      ),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(snap['profImage']),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -312,14 +393,53 @@ class _PostCardState extends State<PostCard> {
                   ),
 
                   if (snap['uid'] != currentUserId)
+                    // TextButton(
+                    //   onPressed: () {
+                    //     FireStoreMethods().followUser(
+                    //       currentUserId,
+                    //       profileUserId,
+                    //     );
+                    //     setState(() {
+                    //       isFollowing = !isFollowing;
+                    //     });
+                    //   },
+                    //   style: TextButton.styleFrom(
+                    //     backgroundColor: isFollowing
+                    //         ? Colors.white
+                    //         : primaryColor,
+                    //     padding: const EdgeInsets.symmetric(
+                    //       horizontal: 10,
+                    //       vertical: 4,
+                    //     ),
+                    //     minimumSize: const Size(0, 0),
+                    //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(6),
+                    //       side: BorderSide(
+                    //         color: primaryColor.withOpacity(0.3),
+                    //         width: 0.5,
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   child: Text(
+                    //     isFollowing ? 'Unfollow' : 'Follow',
+                    //     style: GoogleFonts.lato(
+                    //       textStyle: TextStyle(
+                    //         color: isFollowing ? Colors.black : Colors.white,
+                    //         fontSize: 12,
+                    //         fontWeight: FontWeight.w600,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     TextButton(
-                      onPressed: () {
-                        FireStoreMethods().followUser(
+                      onPressed: () async {
+                        final result = await FireStoreMethods().followUser(
                           currentUserId,
                           profileUserId,
                         );
                         setState(() {
-                          isFollowing = !isFollowing;
+                          isFollowing = result;
                         });
                       },
                       style: TextButton.styleFrom(

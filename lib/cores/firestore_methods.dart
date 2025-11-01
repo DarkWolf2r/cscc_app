@@ -225,31 +225,65 @@ class FireStoreMethods {
   }
 
   /// Follow / Unfollow user
-  Future<void> followUser(String uid, String followId) async {
+  // Future<void> followUser(String uid, String followId) async {
+  //   try {
+  //     DocumentSnapshot snap = await _firestore
+  //         .collection('users')
+  //         .doc(uid)
+  //         .get();
+  //     List following = (snap.data()! as dynamic)['following'];
+
+  //     if (following.contains(followId)) {
+  //       await _firestore.collection('users').doc(followId).update({
+  //         'followers': FieldValue.arrayRemove([uid]),
+  //       });
+  //       await _firestore.collection('users').doc(uid).update({
+  //         'following': FieldValue.arrayRemove([followId]),
+  //       });
+  //     } else {
+  //       await _firestore.collection('users').doc(followId).update({
+  //         'followers': FieldValue.arrayUnion([uid]),
+  //       });
+  //       await _firestore.collection('users').doc(uid).update({
+  //         'following': FieldValue.arrayUnion([followId]),
+  //       });
+  //     }
+  //   } catch (e) {
+  //     if (kDebugMode) print(e.toString());
+  //   }
+  // }
+  Future<bool> followUser(String uid, String followId) async {
     try {
-      DocumentSnapshot snap = await _firestore
-          .collection('users')
-          .doc(uid)
-          .get();
-      List following = (snap.data()! as dynamic)['following'];
+      final userRef = _firestore.collection('users');
+
+      DocumentSnapshot currentUserSnap = await userRef.doc(uid).get();
+      DocumentSnapshot targetUserSnap = await userRef.doc(followId).get();
+
+      List following = List.from(currentUserSnap['following'] ?? []);
+      List followers = List.from(targetUserSnap['followers'] ?? []);
 
       if (following.contains(followId)) {
-        await _firestore.collection('users').doc(followId).update({
-          'followers': FieldValue.arrayRemove([uid]),
-        });
-        await _firestore.collection('users').doc(uid).update({
+        // Unfollow
+        await userRef.doc(uid).update({
           'following': FieldValue.arrayRemove([followId]),
         });
-      } else {
-        await _firestore.collection('users').doc(followId).update({
-          'followers': FieldValue.arrayUnion([uid]),
+        await userRef.doc(followId).update({
+          'followers': FieldValue.arrayRemove([uid]),
         });
-        await _firestore.collection('users').doc(uid).update({
+        return false; // unfollowed
+      } else {
+        // Follow
+        await userRef.doc(uid).update({
           'following': FieldValue.arrayUnion([followId]),
         });
+        await userRef.doc(followId).update({
+          'followers': FieldValue.arrayUnion([uid]),
+        });
+        return true; // followed
       }
     } catch (e) {
       if (kDebugMode) print(e.toString());
+      return false;
     }
   }
 
