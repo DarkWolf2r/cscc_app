@@ -15,23 +15,19 @@ class AuthService {
   FirebaseAuth auth;
 
   AuthService({required this.auth});
-  Future<Map<String, String?>> signInWithGoogle() async {
-    // Initialize if necessary
+  Future<UserCredential?> signInWithGoogle() async {
     final googleSignIn = GoogleSignIn.instance;
-    await googleSignIn.initialize();
-    // Trigger interactive sign-in (native account picker)
-    final GoogleSignInAccount googleUser = await googleSignIn.authenticate(
-      scopeHint: ['email'],
-    );
-
-    final GoogleSignInAuthentication googleAuth = googleUser.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      idToken: googleAuth.idToken,
-    );
-
-    final userCredential = await auth.signInWithCredential(credential);
-    return {'email': userCredential.user?.email, 'github': null};
+    try {
+      await googleSignIn.initialize(
+        serverClientId:
+            "102890835302-5dh3es8d578obpnb7eie3ckjoaeiu3af.apps.googleusercontent.com",
+      );
+      final user = await googleSignIn.authenticate();
+      final authUser = user.authentication;
+      final cred = GoogleAuthProvider.credential(idToken: authUser.idToken);
+      return await auth.signInWithCredential(cred);
+    } catch (e) {}
+    return null;
   }
 
   Future<Map<String, String?>> signInWithEmailAndPassword(
@@ -58,25 +54,32 @@ class AuthService {
   }
 
   Future<void> signInWithGitHub(BuildContext context, WidgetRef ref) async {
-  try {
-    final githubProvider = GithubAuthProvider()
-      ..addScope('read:user')
-      ..addScope('user:email');
+    try {
+      final githubProvider = GithubAuthProvider()
+        ..addScope('read:user')
+        ..addScope('user:email');
 
-    final credential = await FirebaseAuth.instance.signInWithProvider(githubProvider);
-    final username = credential.additionalUserInfo?.username;
-    final githubLink = username != null ? 'https://github.com/$username' : null;
+      final credential = await FirebaseAuth.instance.signInWithProvider(
+        githubProvider,
+      );
+      final username = credential.additionalUserInfo?.username;
+      final githubLink = username != null
+          ? 'https://github.com/$username'
+          : null;
 
-    // Store GitHub link in the provider
-    ref.read(githubLinkProvider.notifier).state = githubLink;
-  } catch (e) {
-    throw Exception("GitHub sign in failed: $e");
+      // Store GitHub link in the provider
+      ref.read(githubLinkProvider.notifier).state = githubLink;
+    } catch (e) {
+      throw Exception("GitHub sign in failed: $e");
+    }
   }
-}
-
 
   Future<void> signOutUser() async {
-    await FirebaseAuth.instance.signOut();
+    try {
+      await auth.signOut();
+    } catch (e) {
+      debugPrint("Error when sign out");
+    }
   }
 
   Future<void> sendEmailToVerify(

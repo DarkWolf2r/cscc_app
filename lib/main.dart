@@ -64,7 +64,12 @@ class MyApp extends ConsumerWidget {
             return Center(child: CircularProgressIndicator());
           } else if (!snapshot.hasData) {
             return SignInPage();
-          } else if (!(snapshot.data!.emailVerified)) {
+          } else if (!(snapshot.data!.emailVerified) &&
+              !(snapshot.data!.providerData.any(
+                (p) =>
+                    p.providerId == 'github.com' ||
+                    p.providerId == 'google.com',
+              ))) {
             return VerifyEmailPage(email: snapshot.data!.email!);
           } else {
             return StreamBuilder(

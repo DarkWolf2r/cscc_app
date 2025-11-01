@@ -52,7 +52,6 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
     "Chef Events",
     "VP Intern",
     "VP Extern",
-
   ];
 
   Future<void> validateUsername() async {
@@ -249,7 +248,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                               )
                               .toList(),
                           onChanged: (value) {
-                            setState(() => typeValue = value!);
+                            setState(() => bureauType = value!);
                           },
                         ),
                       ],
@@ -362,11 +361,20 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                       // Continue button
                       FlatButton(
                         text: "CONTINUE",
-                        colour: isValidate && userDepartement.isNotEmpty
+
+                        colour:
+                            isValidate &&
+                                userDepartement.isNotEmpty &&
+                                (typeValue != 'Membre du bureau' ||
+                                    bureauType.isNotEmpty)
                             ? Colors.blueAccent
                             : Colors.blueGrey,
                         onPressed: () async {
-                          if (!isValidate || userDepartement.isEmpty) return;
+                          if (!isValidate ||
+                              userDepartement.isEmpty ||
+                              (typeValue == 'Membre du bureau' &&
+                                  bureauType.isEmpty))
+                            return;
 
                           if (picture == null) {
                             final byteData = await rootBundle.load(
@@ -392,8 +400,9 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                               .read(userDataServiceProvider)
                               .addUserDataToFirestore(
                                 context: context,
-                                type: typeValue,
-
+                                type: bureauType.isNotEmpty
+                                    ? bureauType
+                                    : typeValue,
                                 department: userDepartement,
                                 email: widget.email,
                                 github: widget.github,

@@ -113,8 +113,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
                             cursorColor: Color(0xFF4A8BFF),
-                            style: const TextStyle(
-                              color: Colors.grey,
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.inverseSurface,
                               fontSize: 16,
                             ),
                             validator: (email) {
@@ -152,7 +154,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 color: Color(0xFF4A8BFF),
                               ),
                               filled: true,
-                              fillColor: Colors.grey[100],
+                              fillColor: Theme.of(context).colorScheme.surface,
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -165,8 +167,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 : null,
                             keyboardType: TextInputType.visiblePassword,
                             cursorColor: Color(0xFF4A8BFF),
-                            style: const TextStyle(
-                              color: Colors.grey,
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.inverseSurface,
                               fontSize: 16,
                             ),
                             decoration: InputDecoration(
@@ -209,7 +213,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 color: Color(0xFF4A8BFF),
                               ),
                               filled: true,
-                              fillColor: Colors.grey[100],
+                              fillColor: Theme.of(context).colorScheme.surface,
                             ),
                             obscureText: _obscurePassword,
                           ),
@@ -218,8 +222,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             controller: _confirmPasswordController,
                             keyboardType: TextInputType.visiblePassword,
                             cursorColor: Color(0xFF4A8BFF),
-                            style: const TextStyle(
-                              color: Colors.grey,
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.inverseSurface,
                               fontSize: 16,
                             ),
                             validator: (confirmPassword) {
@@ -255,7 +261,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 color: Color(0xFF4A8BFF),
                               ),
                               filled: true,
-                              fillColor: Colors.grey[100],
+                              fillColor: Theme.of(context).colorScheme.surface,
                             ),
                             obscureText: _obscureConfirmPassword,
                           ),
@@ -362,7 +368,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   onPressed: () async {
                                     await ref
                                         .read(authServiceProvider)
-                                        .signInWithGitHub(context,ref);
+                                        .signInWithGitHub(context, ref);
                                   },
                                 ),
                               ),
