@@ -52,6 +52,7 @@ dependencies:
   timeago: ^3.7.1
   pull_to_refresh: ^2.0.0
   iconsax: ^0.0.8
+  url_launcher: ^6.3.2
   
   
 
