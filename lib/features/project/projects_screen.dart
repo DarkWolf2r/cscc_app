@@ -70,11 +70,13 @@
 //     );
 //   }
 // }
+import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/features/project/add_project_screen.dart';
 import 'package:cscc_app/features/project/project_model.dart';
 import 'package:cscc_app/features/project/project_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -99,7 +101,20 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
     final projectsAsync = ref.watch(projectsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Projects"), centerTitle: true),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        title: Text(
+          "Projects",
+          style: GoogleFonts.lato(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+
+        foregroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: primaryColor,
+      ),
       body: Column(
         children: [
           // Department filter
@@ -112,6 +127,7 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: ChoiceChip(
+                    selectedColor: primaryColor,
                     label: Text(dep),
                     selected: isSelected,
                     onSelected: (_) {
@@ -143,18 +159,56 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                       ProjectCard(project: filtered[i]),
                 );
               },
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => Column(
+                children: [
+                  ProjectCard(
+                    project: ProjectModel(
+                      title: "title",
+                      description: "description",
+                      department: "department",
+                      senderName: "senderName",
+                      senderImage: "senderImage",
+                    ),
+                  ),
+                  ProjectCard(
+                    project: ProjectModel(
+                      title: "title",
+                      description: "description",
+                      department: "department",
+                      senderName: "senderName",
+                      senderImage: "senderImage",
+                    ),
+                  ),
+                  ProjectCard(
+                    project: ProjectModel(
+                      title: "title",
+                      description: "description",
+                      department: "department",
+                      senderName: "senderName",
+                      senderImage: "senderImage",
+                    ),
+                  ),
+                ],
+              ), //const Center(child: CircularProgressIndicator()),
               error: (e, _) => Center(child: Text('Error: $e')),
             ),
           ),
         ],
       ),
-      floatingActionButton: IconButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AddProjectScreen()),
+      floatingActionButton: Container(
+        height: 60,
+        width: 60,
+        decoration: BoxDecoration(
+          color: primaryColor,
+          borderRadius: BorderRadius.circular(15),
         ),
-        icon: Icon(Iconsax.add),
+        child: IconButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProjectScreen()),
+          ),
+          icon: Icon(Iconsax.add),
+        ),
       ),
     );
   }
@@ -256,7 +310,7 @@ class ProjectCard extends StatelessWidget {
                 label: const Text("View Project"),
               ),
 
-            const Divider(),
+            // const Divider(),
 
             // Sender info
             Row(

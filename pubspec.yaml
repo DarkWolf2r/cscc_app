@@ -53,6 +53,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   iconsax: ^0.0.8
   url_launcher: ^6.3.2
+  skeletonizer: ^2.1.0+1
   
   
 

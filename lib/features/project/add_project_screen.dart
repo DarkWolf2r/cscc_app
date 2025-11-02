@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cscc_app/features/auth/provider/providers.dart';
 import 'package:cscc_app/features/project/projects_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,9 +53,9 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
             department: department,
             images: images,
             videos: videos,
-            senderName: "Club Member",
-            senderImage:
-                "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+            senderName: ref.read(currentUserProvider).value!.username,
+            senderImage: ref.read(currentUserProvider).value!.profilePic!,
+
             link: _linkCtrl.text.trim().isEmpty ? null : _linkCtrl.text.trim(),
           );
       ScaffoldMessenger.of(context).showSnackBar(
