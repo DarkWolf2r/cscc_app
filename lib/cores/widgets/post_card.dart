@@ -265,7 +265,6 @@ class _PostCardState extends State<PostCard> {
   //         .doc(profileUid)
   //         .get();
 
-  //     // تحقق من الوجود
   //     if (!docSnap.exists || docSnap.data() == null) {
   //       ScaffoldMessenger.of(
   //         context,
@@ -275,7 +274,6 @@ class _PostCardState extends State<PostCard> {
 
   //     final data = docSnap.data()! as Map<String, dynamic>;
 
-  //     // تحقق من الايميل باش نتأكد
   //     final currentUserEmail = FirebaseAuth.instance.currentUser?.email;
   //     if (data['email'] != null && data['email'] != currentUserEmail) {
   //       ScaffoldMessenger.of(
@@ -284,7 +282,6 @@ class _PostCardState extends State<PostCard> {
   //       return;
   //     }
 
-  //     // كلشي صحيح، افتح صفحة الملف الشخصي
   //     Navigator.push(
   //       context,
   //       MaterialPageRoute(builder: (_) => ViewProfilePage(userId: profileUid)),
@@ -441,6 +438,16 @@ class _PostCardState extends State<PostCard> {
                         setState(() {
                           isFollowing = result;
                         });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              isFollowing
+                                  ? 'Unfollowed'
+                                  : 'Followed successfully',
+                            ),
+                            duration: const Duration(seconds: 1),
+                          ),
+                        );
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: isFollowing

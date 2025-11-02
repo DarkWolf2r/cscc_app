@@ -3,22 +3,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/foundation.dart';
-import 'package:cscc_app/cores/models/post.dart';
+// import 'package:cscc_app/cores/models/post.dart';
 import 'package:cscc_app/cores/storage_methods.dart';
 
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  /// ✅ Upload Post (with image + metadata)
+  /// Upload Post (with image + metadata)
   Future<String> uploadPost({
     required String description,
     required List<Uint8List> files,
     required String uid,
     required String username,
     required String profImage,
-    required String department,   // <-- أضفناها
-    required String type,         // <-- أضفناها
-    required String visibility,   // <-- أضفناها ("Everyone" أو "Bureau Members Only")
+    required String department,
+    required String type,
+    required String visibility,
   }) async {
     String res = "Some error occurred";
     try {
@@ -60,7 +60,7 @@ class FireStoreMethods {
     return res;
   }
 
-  /// ✅ Upload Text-only Post (no image)
+  /// Upload Text-only Post (no image)
   Future<String> uploadTextPost({
     required String description,
     required String uid,
@@ -139,15 +139,15 @@ class FireStoreMethods {
             .collection('comments')
             .doc(commentId)
             .set({
-          'postId': postId,
-          'commentId': commentId,
-          'uid': uid,
-          'name': name,
-          'profilePic': profilePic,
-          'text': text,
-          'likes': [],
-          'datePublished': DateTime.now(),
-        });
+              'postId': postId,
+              'commentId': commentId,
+              'uid': uid,
+              'name': name,
+              'profilePic': profilePic,
+              'text': text,
+              'likes': [],
+              'datePublished': DateTime.now(),
+            });
         res = 'success';
       } else {
         res = "Comment cannot be empty";
@@ -233,34 +233,81 @@ class FireStoreMethods {
   }
 
   /// Follow / Unfollow user
+  // Future<bool> followUser(String uid, String followId) async {
+  //   try {
+  //     final userRef = _firestore.collection('users');
+  //     DocumentSnapshot currentUserSnap = await userRef.doc(uid).get();
+  //     DocumentSnapshot targetUserSnap = await userRef.doc(followId).get();
+
+  //     List following = List.from(currentUserSnap['following'] ?? []);
+  //     List followers = List.from(targetUserSnap['followers'] ?? []);
+
+  //     if (following.contains(followId)) {
+  //       await userRef.doc(uid).update({
+  //         'following': FieldValue.arrayRemove([followId]),
+  //       });
+  //       await userRef.doc(followId).update({
+  //         'followers': FieldValue.arrayRemove([uid]),
+  //       });
+  //       return false; // unfollowed
+  //     } else {
+  //       await userRef.doc(uid).update({
+  //         'following': FieldValue.arrayUnion([followId]),
+  //       });
+  //       await userRef.doc(followId).update({
+  //         'followers': FieldValue.arrayUnion([uid]),
+  //       });
+  //       return true; // followed
+  //     }
+  //   } catch (e) {
+  //     if (kDebugMode) print(e.toString());
+  //     return false;
+  //   }
+  // }
   Future<bool> followUser(String uid, String followId) async {
     try {
-      final userRef = _firestore.collection('users');
-      DocumentSnapshot currentUserSnap = await userRef.doc(uid).get();
-      DocumentSnapshot targetUserSnap = await userRef.doc(followId).get();
+      final userRef = _firestore.collection('users').doc(uid);
+      final targetRef = _firestore.collection('users').doc(followId);
 
-      List following = List.from(currentUserSnap['following'] ?? []);
-      List followers = List.from(targetUserSnap['followers'] ?? []);
+      final currentUserSnap = await userRef.get();
+      final targetUserSnap = await targetRef.get();
 
-      if (following.contains(followId)) {
-        await userRef.doc(uid).update({
+      List following = [];
+      List followers = [];
+
+      if (currentUserSnap.exists && currentUserSnap.data() != null) {
+        final data = currentUserSnap.data() as Map<String, dynamic>;
+        following = List<String>.from(data['following'] ?? []);
+      }
+
+      if (targetUserSnap.exists && targetUserSnap.data() != null) {
+        final data = targetUserSnap.data() as Map<String, dynamic>;
+        followers = List<String>.from(data['followers'] ?? []);
+      }
+
+      final isFollowing = following.contains(followId);
+
+      if (isFollowing) {
+        // Unfollow
+        await userRef.update({
           'following': FieldValue.arrayRemove([followId]),
         });
-        await userRef.doc(followId).update({
+        await targetRef.update({
           'followers': FieldValue.arrayRemove([uid]),
         });
-        return false; // unfollowed
+        return false;
       } else {
-        await userRef.doc(uid).update({
+        // Follow
+        await userRef.update({
           'following': FieldValue.arrayUnion([followId]),
         });
-        await userRef.doc(followId).update({
+        await targetRef.update({
           'followers': FieldValue.arrayUnion([uid]),
         });
-        return true; // followed
+        return true;
       }
     } catch (e) {
-      if (kDebugMode) print(e.toString());
+      print('followUser error: $e');
       return false;
     }
   }
