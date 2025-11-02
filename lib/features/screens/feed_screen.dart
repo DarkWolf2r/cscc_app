@@ -3,7 +3,8 @@ import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/constants.dart';
 import 'package:cscc_app/cores/widgets/post_card.dart';
 import 'package:cscc_app/features/screens/add_post_screen.dart';
-// import 'package:cscc_app/features/screens/draggable_feed_wrapper_screen.dart';
+import 'package:cscc_app/features/screens/animated_list_wrapper.dart';
+import 'package:cscc_app/features/screens/filter_bottom_sheet.dart';
 import 'package:cscc_app/features/screens/messages_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +19,23 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   final PageController _pageController = PageController();
 
+  List<String> selectedDepartments = [];
+  List<String> selectedPostTypes = [];
+  String selectedVisibility = "Everyone";
+
+  bool _matchesFilter(Map<String, dynamic> post) {
+    bool deptOk =
+        selectedDepartments.isEmpty ||
+        selectedDepartments.contains(post['department']);
+    bool typeOk =
+        selectedPostTypes.isEmpty || selectedPostTypes.contains(post['type']);
+    bool visOk =
+        selectedVisibility == "Everyone" ||
+        post['visibility']?.toLowerCase() == "bureau";
+
+    return deptOk && typeOk && visOk;
+  }
+
   void _goToMessages() {
     _pageController.animateToPage(
       1,
@@ -26,13 +44,37 @@ class _FeedScreenState extends State<FeedScreen> {
     );
   }
 
-  String? departementSelected;
-  String? typeSelected;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Query postsQuery = FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('datePublished', descending: true);
+
+    if (selectedDepartments.isNotEmpty) {
+      postsQuery = postsQuery.where('department', whereIn: selectedDepartments);
+    }
+
+    if (selectedPostTypes.isNotEmpty) {
+      postsQuery = postsQuery.where('type', whereIn: selectedPostTypes);
+    }
+
+    if (selectedVisibility == "Bureau Members Only") {
+      postsQuery = postsQuery.where('visibility', isEqualTo: 'bureau');
+    }
+
     return Scaffold(
-      // remove any backgroundColor here
       backgroundColor: primaryColor,
+      // backgroundColor: Theme.of(context).colorScheme.surface,
+      // backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: false,
       body: PageView(
         controller: _pageController,
         physics: const BouncingScrollPhysics(),
@@ -40,7 +82,7 @@ class _FeedScreenState extends State<FeedScreen> {
           // ---- Feed Page ----
           Container(
             color: primaryColor,
-            // child: DraggableFeed(
+            // color: Theme.of(context).colorScheme.surface,
             child: CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -82,7 +124,81 @@ class _FeedScreenState extends State<FeedScreen> {
                           ),
                         );
                       },
+                      // onPressed: () async {
+                      //   final result = await showModalBottomSheet(
+                      //     context: context,
+                      //     isScrollControlled: true,
+                      //     backgroundColor: Colors.transparent,
+                      //     builder: (context) => const FilterBottomSheet(),
+                      //   );
+
+                      //   if (result != null) {
+                      //     setState(() {
+                      //       selectedDepartments =
+                      //           List<String>.from(result['departments']);
+                      //       selectedPostTypes =
+                      //           List<String>.from(result['types']);
+                      //       selectedVisibility = result['visibility'];
+                      //     });
+                      //   }
+                      // },
                     ),
+                    IconButton(
+                      icon: const Icon(Icons.filter_list, color: Colors.white),
+                      // onPressed: () async {
+                      //   final result = await showModalBottomSheet(
+                      //     context: context,
+                      //     isScrollControlled: true,
+                      //     backgroundColor: Colors.transparent,
+                      //     builder: (context) => const FilterBottomSheet(),
+                      //   );
+
+                      //   if (result != null) {
+                      //     print(result); // Contient les filtres choisis
+                      //     // Ici tu peux filtrer ton Stream Firestore selon ces valeurs
+                      //   }
+                      // },
+                      onPressed: () async {
+                        final result = await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => const FilterBottomSheet(),
+                        );
+
+                        if (result != null) {
+                          setState(() {
+                            selectedDepartments = List<String>.from(
+                              result['departments'],
+                            );
+                            selectedPostTypes = List<String>.from(
+                              result['types'],
+                            );
+                            selectedVisibility = result['visibility'];
+                          });
+                        }
+                      },
+                    ),
+
+                    IconButton(
+                      icon: const Icon(Icons.refresh, color: Colors.white),
+                      tooltip: "Reset filters",
+                      onPressed: () {
+                        setState(() {
+                          selectedDepartments.clear();
+                          selectedPostTypes.clear();
+                          selectedVisibility = "Everyone";
+                        });
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Filters reset to default"),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                      },
+                    ),
+
                     IconButton(
                       icon: const Icon(
                         Icons.messenger_outline,
@@ -103,113 +219,177 @@ class _FeedScreenState extends State<FeedScreen> {
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(16),
-                        // topRight: Radius.circular(14),
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Sorted By',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            DropdownButton<String>(
-                              borderRadius: BorderRadius.circular(12),
-                              dropdownColor: Theme.of(
-                                context,
-                              ).colorScheme.surface,
-                              style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.inverseSurface,
-                              ),
-                              iconEnabledColor: Colors.black,
-                              value: departementSelected,
-                              hint: const Text("Departement"),
-                              items: Constants.departementValue
-                                  .map(
-                                    (departement) => DropdownMenuItem(
-                                      value: departement,
-                                      child: Text(departement),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(() => departementSelected = value!);
-                              },
-                            ),
-                            DropdownButton<String>(
-                              borderRadius: BorderRadius.circular(12),
-                              dropdownColor: Theme.of(
-                                context,
-                              ).colorScheme.surface,
-                              style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.inverseSurface,
-                              ),
-                              iconEnabledColor: Colors.black,
-                              value: typeSelected,
-                              hint: const Text("Post Type"),
-                              items: Constants.postTypeList
-                                  .map(
-                                    (type) => DropdownMenuItem(
-                                      value: type,
-                                      child: Text(type),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) {
-                                setState(() => typeSelected = value!);
-                              },
-                            ),
-                          ],
-                        ),
-                        StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection('posts')
-                              .orderBy('datePublished', descending: true)
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
+                    // child: StreamBuilder(
+                    //   // stream: FirebaseFirestore.instance
+                    //   //     .collection('posts')
+                    //   //     .orderBy('datePublished', descending: true)
+                    //   //     .snapshots(),
+                    //   stream: postsQuery.snapshots(),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.connectionState ==
+                    //         ConnectionState.waiting) {
+                    //       return const Center(
+                    //         child: CircularProgressIndicator(),
+                    //       );
+                    //     }
 
-                            if (!snapshot.hasData ||
-                                snapshot.data!.docs.isEmpty) {
-                              return const Center(
-                                child: Text(
-                                  "No posts yet",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              );
-                            }
+                    //     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    //       return const Center(
+                    //         child: Text(
+                    //           "No posts yet",
+                    //           style: TextStyle(color: Colors.grey),
+                    //         ),
+                    //       );
+                    //     }
 
-                            return ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (ctx, index) => PostCard(
-                                snap: snapshot.data!.docs[index].data(),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                    //     // return ListView.builder(
+                    //     //   physics: const NeverScrollableScrollPhysics(),
+                    //     //   shrinkWrap: true,
+                    //     //   itemCount: snapshot.data!.docs.length,
+                    //     //   itemBuilder: (ctx, index) =>
+                    //     //       PostCard(snap: snapshot.data!.docs[index].data()),
+                    //     // );
+
+                    //     return ListView.builder(
+                    //       physics: const NeverScrollableScrollPhysics(),
+                    //       shrinkWrap: true,
+                    //       itemCount: snapshot.data!.docs.length,
+                    //       itemBuilder: (ctx, index) {
+                    //         final data =
+                    //             snapshot.data!.docs[index].data()
+                    //                 as Map<String, dynamic>;
+                    //         return PostCard(snap: data);
+                    //       },
+                    //     );
+                    //   },
+                    // ),
+                    child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('posts')
+                          .orderBy('datePublished', descending: true)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        // if (snapshot.connectionState ==
+                        //     ConnectionState.waiting) {
+                        //   return const Center(
+                        //     child: CircularProgressIndicator(),
+                        //   );
+                        // }
+
+                        // if (snapshot.connectionState ==
+                        //         ConnectionState.waiting &&
+                        //     (snapshot.data == null ||
+                        //         snapshot.data!.docs.isEmpty)) {
+                        //   return const Padding(
+                        //     padding: EdgeInsets.all(30),
+                        //     child: Center(child: CircularProgressIndicator()),
+                        //   );
+                        // }
+
+                        if (snapshot.connectionState ==
+                                ConnectionState.waiting &&
+                            (snapshot.data == null ||
+                                snapshot.data!.docs.isEmpty)) {
+                          return const SizedBox(
+                            height: 300,
+                            child: Center(
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                          );
+                        }
+
+                        // if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        //   return const Center(
+                        //     child: Text(
+                        //       "No posts yet",
+                        //       style: TextStyle(color: Colors.grey),
+                        //     ),
+                        //   );
+                        // }
+                        // final docs = snapshot.data!.docs
+                        //     .map((d) => d.data() as Map<String, dynamic>)
+                        //     .toList();
+
+                        final docs = (snapshot.data?.docs ?? [])
+                            .map((d) => d.data() as Map<String, dynamic>)
+                            .toList();
+
+                        if (docs.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              "No posts yet",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          );
+                        }
+
+                        // docs.sort((a, b) {
+                        //   bool aMatch = _matchesFilter(a);
+                        //   bool bMatch = _matchesFilter(b);
+
+                        //   if (aMatch && !bMatch) return -1;
+                        //   if (!aMatch && bMatch) return 1;
+                        //   return 0;
+                        // });
+                        final sortedDocs = [...docs];
+                        sortedDocs.sort((a, b) {
+                          bool aMatch = _matchesFilter(a);
+                          bool bMatch = _matchesFilter(b);
+                          if (aMatch && !bMatch) return -1;
+                          if (!aMatch && bMatch) return 1;
+                          return 0;
+                        });
+
+                        // return AnimatedSwitcher(
+                        //   duration: const Duration(milliseconds: 500),
+                        //   transitionBuilder: (child, animation) {
+                        //     final offsetAnim = Tween<Offset>(
+                        //       begin: const Offset(0, 0.05),
+                        //       end: Offset.zero,
+                        //     ).animate(animation);
+                        //     return FadeTransition(
+                        //       opacity: animation,
+                        //       child: SlideTransition(
+                        //         position: offsetAnim,
+                        //         child: child,
+                        //       ),
+                        //     );
+                        //   },
+                        //   child: ListView.builder(
+                        //     key: ValueKey(
+                        //       docs.hashCode,
+                        //     ), // trigger rebuild animation
+                        //     physics: const NeverScrollableScrollPhysics(),
+                        //     shrinkWrap: true,
+                        //     itemCount: docs.length,
+                        //     itemBuilder: (ctx, index) =>
+                        //         PostCard(snap: docs[index]),
+                        //   ),
+                        // );
+                        return AnimatedListWrapper(
+                          key: ValueKey(
+                            selectedDepartments.join(',') +
+                                selectedPostTypes.join(',') +
+                                selectedVisibility,
+                          ),
+                          docs: sortedDocs,
+                        );
+
+                        // return ListView.builder(
+                        //   physics: const NeverScrollableScrollPhysics(),
+                        //   shrinkWrap: true,
+                        //   itemCount: docs.length,
+                        //   itemBuilder: (ctx, index) =>
+                        //       PostCard(snap: docs[index]),
+                        // );
+                      },
                     ),
                   ),
                 ),
               ],
             ),
-            // ),
           ),
 
           // ---- Messages Page ----
@@ -224,142 +404,3 @@ class _FeedScreenState extends State<FeedScreen> {
     );
   }
 }
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:cscc_app/cores/colors.dart';
-// import 'package:cscc_app/cores/widgets/post_card.dart';
-// import 'package:cscc_app/features/screens/messages_screen.dart';
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-
-// class FeedScreen extends StatefulWidget {
-//   const FeedScreen({Key? key}) : super(key: key);
-
-//   @override
-//   State<FeedScreen> createState() => _FeedScreenState();
-// }
-
-// class _FeedScreenState extends State<FeedScreen> {
-//   final PageController _pageController = PageController();
-//   int _currentPage = 0;
-
-//   void _goToMessages() {
-//     _pageController.animateToPage(
-//       1,
-//       duration: const Duration(milliseconds: 300),
-//       curve: Curves.easeInOut,
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: primaryColor,
-//       body: PageView(
-//         controller: _pageController,
-//         onPageChanged: (page) {
-//           setState(() {
-//             _currentPage = page;
-//           });
-//         },
-//         children: [
-//           CustomScrollView(
-//             slivers: [
-//               SliverAppBar(
-//                 backgroundColor: primaryColor,
-//                 floating: true,
-//                 snap: true,
-//                 elevation: 0,
-//                 // title: SvgPicture.asset(
-//                 //   'assets/ic_instagram.svg',
-//                 //   color: primaryColor,
-//                 //   height: 32,
-//                 // ),
-//                 title: Text(
-//                   "CSCC",
-//                   style: GoogleFonts.lato(
-//                     textStyle: const TextStyle(
-//                       fontSize: 28,
-//                       fontWeight: FontWeight.w900,
-//                       color: Colors.white,
-//                     ),
-//                   ),
-//                 ),
-//                 actions: [
-//                   IconButton(
-//                     icon: const Icon(
-//                       Icons.favorite_border,
-//                       color: Colors.white,
-//                     ),
-//                     onPressed: () {},
-//                   ),
-//                   IconButton(
-//                     icon: const Icon(
-//                       Icons.messenger_outline,
-//                       color: Colors.white,
-//                     ),
-//                     onPressed: _goToMessages,
-//                   ),
-//                 ],
-//               ),
-
-//               // -------- Posts List --------
-//               SliverToBoxAdapter(
-//                 child: Container(
-//                   padding: const EdgeInsets.only(
-//                     bottom: 15,
-//                     right: 10,
-//                     left: 10,
-//                   ),
-//                   // color: Theme.of(context).colorScheme.surface,
-//                   decoration: BoxDecoration(
-//                     color: Theme.of(context).colorScheme.surface,
-//                     borderRadius: const BorderRadius.only(
-//                       topLeft: Radius.circular(14),
-//                       topRight: Radius.circular(14),
-//                     ),
-//                   ),
-//                   child: StreamBuilder(
-//                     stream: FirebaseFirestore.instance
-//                         .collection('posts')
-//                         .orderBy('datePublished', descending: true)
-//                         .snapshots(),
-//                     builder: (context, snapshot) {
-//                       // (
-//                       //   context,
-//                       //   AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-//                       //   snapshot,
-//                       // ) {
-//                       if (snapshot.connectionState == ConnectionState.waiting) {
-//                         return const Center(child: CircularProgressIndicator());
-//                       }
-
-//                       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-//                         return const Center(
-//                           child: Text(
-//                             "No posts yet",
-//                             style: TextStyle(color: Colors.grey),
-//                           ),
-//                         );
-//                       }
-
-//                       return ListView.builder(
-//                         physics: const NeverScrollableScrollPhysics(),
-//                         shrinkWrap: true,
-//                         itemCount: snapshot.data!.docs.length,
-//                         itemBuilder: (ctx, index) =>
-//                             PostCard(snap: snapshot.data!.docs[index].data()),
-//                       );
-//                     },
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//           // ---- Messages Page ----
-//           const MessagesScreen(),
-//         ],
-//       ),
-//     );
-//   }
-// }

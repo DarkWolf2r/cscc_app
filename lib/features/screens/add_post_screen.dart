@@ -93,26 +93,78 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
     );
   }
 
+  // void postImage(String uid, String username, String profImage) async {
+  //   if (_files.isEmpty && _descriptionController.text.isEmpty) return;
+  //   setState(() => isLoading = true);
+
+  //   try {
+  //     String res;
+  //     if (_files.isNotEmpty) {
+  //       res = await FireStoreMethods().uploadPost(
+  //         _descriptionController.text,
+  //         _files,
+  //         uid,
+  //         username,
+  //         profImage,
+  //       );
+  //     } else {
+  //       res = await FireStoreMethods().uploadTextPost(
+  //         _descriptionController.text,
+  //         uid,
+  //         username,
+  //         profImage,
+  //       );
+  //     }
+
+  //     if (res == "success") {
+  //       if (mounted) showSnackBar(context, 'Posted!');
+  //       setState(() => _files.clear());
+  //       Navigator.pop(context);
+  //     } else {
+  //       if (mounted) showSnackBar(context, res);
+  //     }
+  //   } catch (err) {
+  //     showSnackBar(context, err.toString());
+  //   } finally {
+  //     if (mounted) setState(() => isLoading = false);
+  //   }
+  // }
+
   void postImage(String uid, String username, String profImage) async {
     if (_files.isEmpty && _descriptionController.text.isEmpty) return;
     setState(() => isLoading = true);
 
     try {
       String res;
+
+      String department = selectedDepartments.contains("Everyone")
+          ? "All"
+          : selectedDepartments.join(", ");
+      String type = "General"; 
+      String visibility = selectedMemberType == "Bureau Members Only"
+          ? "Bureau Members Only"
+          : "Everyone";
+
       if (_files.isNotEmpty) {
         res = await FireStoreMethods().uploadPost(
-          _descriptionController.text,
-          _files,
-          uid,
-          username,
-          profImage,
+          description: _descriptionController.text,
+          files: _files,
+          uid: uid,
+          username: username,
+          profImage: profImage,
+          department: department,
+          type: type,
+          visibility: visibility,
         );
       } else {
         res = await FireStoreMethods().uploadTextPost(
-          _descriptionController.text,
-          uid,
-          username,
-          profImage,
+          description: _descriptionController.text,
+          uid: uid,
+          username: username,
+          profImage: profImage,
+          department: department,
+          type: type,
+          visibility: visibility,
         );
       }
 
