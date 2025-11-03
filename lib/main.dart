@@ -47,6 +47,12 @@ class MyApp extends ConsumerWidget {
             statusBarIconBrightness: Brightness.light,
           ),
         ),
+        colorScheme: ColorScheme.light(
+          primary: primaryColor,
+          surface: Colors.white,
+          inverseSurface: Colors.black,
+        ),
+        progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),
       ),
       darkTheme: darkTheme.copyWith(
         appBarTheme: const AppBarTheme(
@@ -55,6 +61,12 @@ class MyApp extends ConsumerWidget {
             statusBarIconBrightness: Brightness.light,
           ),
         ),
+        colorScheme: ColorScheme.dark(
+          primary: primaryColor,
+          surface: const Color.fromRGBO(24, 27, 46, 1),
+          inverseSurface: Colors.white,
+        ),
+        progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),
       ),
       themeMode: appThemeState.themeMode,
       home: StreamBuilder(

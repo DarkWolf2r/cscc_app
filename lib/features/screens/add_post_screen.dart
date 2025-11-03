@@ -140,7 +140,8 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
       String department = selectedDepartments.contains("Everyone")
           ? "All"
           : selectedDepartments.join(", ");
-      String type = "General"; 
+      // String type = "General";
+      String type = selectedPostType;
       String visibility = selectedMemberType == "Bureau Members Only"
           ? "Bureau Members Only"
           : "Everyone";
@@ -194,6 +195,7 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
 
   List<String> memberTypes = ["All Members", "Bureau Members Only"];
   String selectedMemberType = "All Members";
+  String selectedPostType = "Announcement";
 
   Widget _buildImageGrid() {
     int count = _files.length;
@@ -381,135 +383,338 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                           builder: (context) {
                             return StatefulBuilder(
                               builder: (context, setStateModal) {
-                                return Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(
-                                      context,
-                                    ).viewInsets.bottom,
-                                  ),
-                                  child: SingleChildScrollView(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Who can see your post?",
-                                            style: GoogleFonts.lato(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
+                                return FractionallySizedBox(
+                                  widthFactor: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(
+                                        context,
+                                      ).viewInsets.bottom,
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Who can see your post?",
+                                              style: GoogleFonts.lato(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 16),
-                                          DropdownButton<String>(
-                                            value: selectedVisibility,
-                                            items: const [
-                                              DropdownMenuItem(
-                                                value: "Everyone",
-                                                child: Text("Everyone"),
-                                              ),
-                                              DropdownMenuItem(
-                                                value: "Custom",
-                                                child: Text(
-                                                  "Custom (choose departments)",
+                                            const SizedBox(height: 16),
+
+                                            // Dropdown visibility
+                                            DropdownButton<String>(
+                                              value: selectedVisibility,
+                                              isExpanded: true,
+                                              items: const [
+                                                DropdownMenuItem(
+                                                  value: "Everyone",
+                                                  child: Text("Everyone"),
                                                 ),
-                                              ),
-                                            ],
-                                            onChanged: (val) {
-                                              setStateModal(() {
-                                                selectedVisibility = val!;
-                                                if (val == "Everyone") {
-                                                  selectedDepartments = [
-                                                    "Everyone",
-                                                  ];
-                                                }
-                                              });
-                                            },
-                                          ),
-                                          if (selectedVisibility == "Custom")
-                                            Column(
-                                              children: [
-                                                CheckboxListTile(
-                                                  value: selectedDepartments
-                                                      .contains("Everyone"),
-                                                  title: const Text("Everyone"),
-                                                  activeColor: primaryColor,
-                                                  onChanged: (val) {
-                                                    setStateModal(() {
-                                                      if (val == true) {
-                                                        selectedDepartments = [
-                                                          "Everyone",
-                                                          ...departments,
-                                                        ];
-                                                      } else {
+                                                DropdownMenuItem(
+                                                  value: "Custom",
+                                                  child: Text(
+                                                    "Custom (choose departments)",
+                                                  ),
+                                                ),
+                                              ],
+                                              onChanged: (val) {
+                                                setStateModal(() {
+                                                  selectedVisibility = val!;
+                                                  if (val == "Everyone") {
+                                                    selectedDepartments = [
+                                                      "Everyone",
+                                                    ];
+                                                  }
+                                                });
+                                              },
+                                            ),
+
+                                            // Checkbox list
+                                            if (selectedVisibility == "Custom")
+                                              Column(
+                                                children: [
+                                                  CheckboxListTile(
+                                                    value:
                                                         selectedDepartments
-                                                            .clear();
-                                                      }
-                                                    });
-                                                  },
-                                                ),
-                                                ...departments.map((d) {
-                                                  bool isSelected =
-                                                      selectedDepartments
-                                                          .contains(d);
-                                                  return CheckboxListTile(
-                                                    value: isSelected,
-                                                    title: Text(d),
+                                                            .contains(
+                                                              "Everyone",
+                                                            ) ||
+                                                        selectedDepartments
+                                                            .contains(
+                                                              "All Members",
+                                                            ),
+                                                    title: const Text(
+                                                      "Everyone",
+                                                    ),
                                                     activeColor: primaryColor,
+                                                    controlAffinity:
+                                                        ListTileControlAffinity
+                                                            .leading,
+                                                    contentPadding:
+                                                        EdgeInsets.zero,
                                                     onChanged: (val) {
                                                       setStateModal(() {
                                                         if (val == true) {
-                                                          selectedDepartments
-                                                              .add(d);
+                                                          selectedDepartments =
+                                                              [
+                                                                "Everyone",
+                                                                "All Members",
+                                                                ...departments,
+                                                              ];
                                                         } else {
                                                           selectedDepartments
-                                                              .remove(d);
-                                                          selectedDepartments
-                                                              .remove(
-                                                                "Everyone",
-                                                              );
+                                                              .clear();
                                                         }
                                                       });
                                                     },
-                                                  );
-                                                }),
-                                              ],
-                                            ),
-                                          const SizedBox(height: 10),
-                                          DropdownButton<String>(
-                                            value: selectedMemberType,
-                                            items: memberTypes
-                                                .map(
-                                                  (m) => DropdownMenuItem(
-                                                    value: m,
-                                                    child: Text(m),
                                                   ),
-                                                )
-                                                .toList(),
-                                            onChanged: (val) {
-                                              setStateModal(
-                                                () => selectedMemberType = val!,
-                                              );
-                                            },
-                                          ),
-                                          const SizedBox(height: 20),
-                                          Center(
-                                            child: ElevatedButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: const Text(
-                                                "Save",
-                                                style: TextStyle(
-                                                  color: primaryColor,
+                                                  ...departments.map((d) {
+                                                    bool isSelected =
+                                                        selectedDepartments
+                                                            .contains(d);
+                                                    return CheckboxListTile(
+                                                      value: isSelected,
+                                                      title: Text(d),
+                                                      activeColor: primaryColor,
+                                                      controlAffinity:
+                                                          ListTileControlAffinity
+                                                              .leading,
+                                                      contentPadding:
+                                                          EdgeInsets.zero,
+                                                      onChanged: (val) {
+                                                        setStateModal(() {
+                                                          if (val == true) {
+                                                            selectedDepartments
+                                                                .add(d);
+                                                            if (selectedDepartments
+                                                                    .length ==
+                                                                departments
+                                                                    .length) {
+                                                              selectedDepartments
+                                                                  .addAll([
+                                                                    "Everyone",
+                                                                    "All Members",
+                                                                  ]);
+                                                            }
+                                                          } else {
+                                                            selectedDepartments
+                                                                .remove(d);
+                                                            selectedDepartments
+                                                                .remove(
+                                                                  "Everyone",
+                                                                );
+                                                            selectedDepartments
+                                                                .remove(
+                                                                  "All Members",
+                                                                );
+                                                          }
+                                                        });
+                                                      },
+                                                    );
+                                                  }),
+                                                ],
+                                              ),
+
+                                            const SizedBox(height: 10),
+
+                                            DropdownButton<String>(
+                                              value: selectedMemberType,
+                                              isExpanded: true,
+                                              items: memberTypes
+                                                  .map(
+                                                    (m) => DropdownMenuItem(
+                                                      value: m,
+                                                      child: Text(m),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                              onChanged: (val) {
+                                                setStateModal(
+                                                  () =>
+                                                      selectedMemberType = val!,
+                                                );
+                                              },
+                                            ),
+
+                                            const SizedBox(height: 20),
+
+                                            Text(
+                                              "Post Type",
+                                              style: GoogleFonts.lato(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+
+                                            // Chips full width + color change
+                                            // Wrap(
+                                            //   spacing: 8,
+                                            //   runSpacing: 8,
+                                            //   children:
+                                            //       [
+                                            //         "Announcement",
+                                            //         "Project",
+                                            //         "Event",
+                                            //       ].map((type) {
+                                            //         bool isSelected =
+                                            //             type ==
+                                            //             selectedPostType;
+                                            //         return ChoiceChip(
+                                            //           label: SizedBox(
+                                            //             width:
+                                            //                 MediaQuery.of(
+                                            //                   context,
+                                            //                 ).size.width *
+                                            //                 0.22,
+                                            //             child: Center(
+                                            //               child: Text(type),
+                                            //             ),
+                                            //           ),
+                                            //           selected: isSelected,
+                                            //           onSelected: (val) {
+                                            //             setStateModal(() {
+                                            //               selectedPostType =
+                                            //                   type;
+                                            //             });
+                                            //           },
+                                            //           backgroundColor:
+                                            //               Theme.of(
+                                            //                     context,
+                                            //                   ).brightness ==
+                                            //                   Brightness.dark
+                                            //               ? const Color.fromRGBO(
+                                            //                   24,
+                                            //                   27,
+                                            //                   46,
+                                            //                   1,
+                                            //                 )
+                                            //               : Colors
+                                            //                     .grey
+                                            //                     .shade200,
+                                            //           selectedColor:
+                                            //               primaryColor,
+                                            //           labelStyle: TextStyle(
+                                            //             color: isSelected
+                                            //                 ? Colors.white
+                                            //                 : (Theme.of(
+                                            //                             context,
+                                            //                           ).brightness ==
+                                            //                           Brightness
+                                            //                               .dark
+                                            //                       ? Colors.white
+                                            //                       : Colors
+                                            //                             .black87),
+                                            //             fontWeight:
+                                            //                 FontWeight.w600,
+                                            //           ),
+                                            //         );
+                                            //       }).toList(),
+                                            // ),
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children:
+                                                    [
+                                                      "Announcement",
+                                                      "Project",
+                                                      "Event",
+                                                    ].map((type) {
+                                                      bool isSelected =
+                                                          type ==
+                                                          selectedPostType;
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(
+                                                              right: 8,
+                                                            ),
+                                                        child: ChoiceChip(
+                                                          label: Text(type),
+                                                          selected: isSelected,
+                                                          onSelected: (val) {
+                                                            setStateModal(() {
+                                                              selectedPostType =
+                                                                  type;
+                                                            });
+                                                          },
+                                                          backgroundColor:
+                                                              Theme.of(
+                                                                    context,
+                                                                  ).brightness ==
+                                                                  Brightness
+                                                                      .dark
+                                                              ? const Color.fromRGBO(
+                                                                  24,
+                                                                  27,
+                                                                  46,
+                                                                  1,
+                                                                )
+                                                              : Colors
+                                                                    .grey
+                                                                    .shade200,
+                                                          selectedColor:
+                                                              primaryColor,
+                                                          labelStyle: TextStyle(
+                                                            color: isSelected
+                                                                ? Colors.white
+                                                                : (Theme.of(
+                                                                            context,
+                                                                          ).brightness ==
+                                                                          Brightness
+                                                                              .dark
+                                                                      ? Colors
+                                                                            .white
+                                                                      : Colors
+                                                                            .black87),
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                              ),
+                                            ),
+
+                                            const SizedBox(height: 20),
+
+                                            // Full-width Save button
+                                            SizedBox(
+                                              width: double.infinity,
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: primaryColor,
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        vertical: 14,
+                                                      ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                  ),
+                                                ),
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: const Text(
+                                                  "Save",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -529,6 +734,35 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                           border: Border.all(color: Colors.grey.shade400),
                           borderRadius: BorderRadius.circular(16),
                         ),
+                        // child: Row(
+                        //   children: [
+                        //     Expanded(
+                        //       child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           Text(
+                        //             selectedDepartments.contains("Everyone")
+                        //                 ? "Everyone"
+                        //                 : selectedDepartments.join(', '),
+                        //             style: const TextStyle(
+                        //               fontSize: 14,
+                        //               fontWeight: FontWeight.w600,
+                        //             ),
+                        //             overflow: TextOverflow.ellipsis,
+                        //           ),
+                        //           Text(
+                        //             selectedMemberType,
+                        //             style: TextStyle(
+                        //               fontSize: 12,
+                        //               color: Colors.grey.shade600,
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //     const Icon(Icons.arrow_drop_down, size: 20),
+                        //   ],
+                        // ),
                         child: Row(
                           children: [
                             Expanded(
@@ -545,12 +779,14 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
+
                                   Text(
-                                    selectedMemberType,
+                                    "$selectedMemberType, $selectedPostType",
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey.shade600,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
@@ -573,7 +809,8 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                     style: TextButton.styleFrom(
                       backgroundColor: isPostEnabled
                           ? primaryColor
-                          : Colors.grey.shade600,
+                          : Color.fromARGB(255, 43, 43, 43),
+                      // : Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -658,10 +895,10 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                       ),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.add, color: primaryColor, size: 28),
-                  ),
+                  // IconButton(
+                  //   onPressed: () {},
+                  //   icon: const Icon(Icons.add, color: primaryColor, size: 28),
+                  // ),
                 ],
               ),
             ],

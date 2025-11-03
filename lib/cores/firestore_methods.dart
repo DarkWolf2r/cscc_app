@@ -9,7 +9,7 @@ import 'package:cscc_app/cores/storage_methods.dart';
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  /// ✅ Upload Post (with image + metadata)
+  /// Upload Post (with image + metadata)
   Future<String> uploadPost({
     required String description,
     required List<Uint8List> files,

@@ -69,12 +69,9 @@ class _FeedScreenState extends State<FeedScreen> {
     }
 
     return Scaffold(
-      // backgroundColor: primaryColor,
-      // backgroundColor: Colors.transparent,
       backgroundColor: Theme.of(context).colorScheme.surface,
       extendBodyBehindAppBar: false,
       body: Container(
-        // width: double.infinity,
         height: double.infinity,
         color: Theme.of(context).colorScheme.surface,
         child: PageView(
@@ -125,24 +122,6 @@ class _FeedScreenState extends State<FeedScreen> {
                             ),
                           );
                         },
-                        // onPressed: () async {
-                        //   final result = await showModalBottomSheet(
-                        //     context: context,
-                        //     isScrollControlled: true,
-                        //     backgroundColor: Colors.transparent,
-                        //     builder: (context) => const FilterBottomSheet(),
-                        //   );
-
-                        //   if (result != null) {
-                        //     setState(() {
-                        //       selectedDepartments =
-                        //           List<String>.from(result['departments']);
-                        //       selectedPostTypes =
-                        //           List<String>.from(result['types']);
-                        //       selectedVisibility = result['visibility'];
-                        //     });
-                        //   }
-                        // },
                       ),
                       IconButton(
                         icon: const Icon(
@@ -169,19 +148,6 @@ class _FeedScreenState extends State<FeedScreen> {
                             });
                           }
                         },
-                        // onPressed: () async {
-                        //   final result = await showModalBottomSheet(
-                        //     context: context,
-                        //     isScrollControlled: true,
-                        //     backgroundColor: Colors.transparent,
-                        //     builder: (context) => const FilterBottomSheet(),
-                        //   );
-
-                        //   if (result != null) {
-                        //     print(result); // Contient les filtres choisis
-                        //     // Ici tu peux filtrer ton Stream Firestore selon ces valeurs
-                        //   }
-                        // },
                       ),
 
                       IconButton(
@@ -225,98 +191,41 @@ class _FeedScreenState extends State<FeedScreen> {
                           topLeft: Radius.circular(16),
                         ),
                       ),
-                      // child: StreamBuilder(
-                      //   // stream: FirebaseFirestore.instance
-                      //   //     .collection('posts')
-                      //   //     .orderBy('datePublished', descending: true)
-                      //   //     .snapshots(),
-                      //   stream: postsQuery.snapshots(),
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.connectionState ==
-                      //         ConnectionState.waiting) {
-                      //       return const Center(
-                      //         child: CircularProgressIndicator(),
-                      //       );
-                      //     }
-
-                      //     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      //       return const Center(
-                      //         child: Text(
-                      //           "No posts yet",
-                      //           style: TextStyle(color: Colors.grey),
-                      //         ),
-                      //       );
-                      //     }
-
-                      //     // return ListView.builder(
-                      //     //   physics: const NeverScrollableScrollPhysics(),
-                      //     //   shrinkWrap: true,
-                      //     //   itemCount: snapshot.data!.docs.length,
-                      //     //   itemBuilder: (ctx, index) =>
-                      //     //       PostCard(snap: snapshot.data!.docs[index].data()),
-                      //     // );
-
-                      //     return ListView.builder(
-                      //       physics: const NeverScrollableScrollPhysics(),
-                      //       shrinkWrap: true,
-                      //       itemCount: snapshot.data!.docs.length,
-                      //       itemBuilder: (ctx, index) {
-                      //         final data =
-                      //             snapshot.data!.docs[index].data()
-                      //                 as Map<String, dynamic>;
-                      //         return PostCard(snap: data);
-                      //       },
-                      //     );
-                      //   },
-                      // ),
                       child: StreamBuilder(
                         stream: FirebaseFirestore.instance
                             .collection('posts')
                             .orderBy('datePublished', descending: true)
                             .snapshots(),
                         builder: (context, snapshot) {
-                          // if (snapshot.connectionState ==
-                          //     ConnectionState.waiting) {
-                          //   return const Center(
-                          //     child: CircularProgressIndicator(),
-                          //   );
-                          // }
-
+                          // IMPORTANT
                           // if (snapshot.connectionState ==
                           //         ConnectionState.waiting &&
                           //     (snapshot.data == null ||
                           //         snapshot.data!.docs.isEmpty)) {
-                          //   return const Padding(
-                          //     padding: EdgeInsets.all(30),
-                          //     child: Center(child: CircularProgressIndicator()),
+                          //   return const SizedBox(
+                          //     height: 300,
+                          //     child: Center(
+                          //       child: CircularProgressIndicator(
+                          //         strokeWidth: 2,
+                          //       ),
+                          //     ),
                           //   );
                           // }
 
                           if (snapshot.connectionState ==
-                                  ConnectionState.waiting &&
-                              (snapshot.data == null ||
-                                  snapshot.data!.docs.isEmpty)) {
-                            return const SizedBox(
-                              height: 300,
-                              child: Center(
+                              ConnectionState.waiting) {
+                            return Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: double.infinity,
+                              color: Theme.of(context).colorScheme.surface,
+                              child: const Center(
                                 child: CircularProgressIndicator(
-                                  strokeWidth: 2,
+                                  strokeWidth: 2.5,
+                                  color: primaryColor,
                                 ),
                               ),
                             );
                           }
-
-                          // if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                          //   return const Center(
-                          //     child: Text(
-                          //       "No posts yet",
-                          //       style: TextStyle(color: Colors.grey),
-                          //     ),
-                          //   );
-                          // }
-                          // final docs = snapshot.data!.docs
-                          //     .map((d) => d.data() as Map<String, dynamic>)
-                          //     .toList();
 
                           final docs = (snapshot.data?.docs ?? [])
                               .map((d) => d.data() as Map<String, dynamic>)
@@ -347,33 +256,6 @@ class _FeedScreenState extends State<FeedScreen> {
                             if (!aMatch && bMatch) return 1;
                             return 0;
                           });
-
-                          // return AnimatedSwitcher(
-                          //   duration: const Duration(milliseconds: 500),
-                          //   transitionBuilder: (child, animation) {
-                          //     final offsetAnim = Tween<Offset>(
-                          //       begin: const Offset(0, 0.05),
-                          //       end: Offset.zero,
-                          //     ).animate(animation);
-                          //     return FadeTransition(
-                          //       opacity: animation,
-                          //       child: SlideTransition(
-                          //         position: offsetAnim,
-                          //         child: child,
-                          //       ),
-                          //     );
-                          //   },
-                          //   child: ListView.builder(
-                          //     key: ValueKey(
-                          //       docs.hashCode,
-                          //     ), // trigger rebuild animation
-                          //     physics: const NeverScrollableScrollPhysics(),
-                          //     shrinkWrap: true,
-                          //     itemCount: docs.length,
-                          //     itemBuilder: (ctx, index) =>
-                          //         PostCard(snap: docs[index]),
-                          //   ),
-                          // );
                           return AnimatedListWrapper(
                             key: ValueKey(
                               selectedDepartments.join(',') +
@@ -400,9 +282,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
             // ---- Messages Page ----
             Container(
-              color: Theme.of(
-                context,
-              ).colorScheme.surface,
+              color: Theme.of(context).colorScheme.surface,
               child: const MessagesScreen(),
             ),
           ],
