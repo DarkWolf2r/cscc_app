@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'package:cscc_app/cores/colors.dart';
+import 'package:cscc_app/cores/widgets/my_text_field.dart';
 import 'package:cscc_app/features/auth/provider/providers.dart';
 import 'package:cscc_app/features/project/projects_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddProjectScreen extends ConsumerStatefulWidget {
@@ -59,13 +62,16 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
             link: _linkCtrl.text.trim().isEmpty ? null : _linkCtrl.text.trim(),
           );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Project uploaded successfully")),
+        const SnackBar(
+          backgroundColor: Colors.green,
+          content: Text("Project uploaded successfully"),
+        ),
       );
       Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor: Colors.red, content: Text("Error: $e")),
+      );
     } finally {
       setState(() => isLoading = false);
     }
@@ -74,6 +80,7 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: const Text("Add Project")),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -83,22 +90,30 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    TextFormField(
-                      controller: _titleCtrl,
-                      decoration: const InputDecoration(labelText: "Title"),
+                    MyTextField(
+                      hintText: 'Title',
+                      labelText: "Title",
+                      obscureText: false,
+                      prefixIcon: Icons.text_fields,
+                      contoller: _titleCtrl,
                       validator: (v) =>
                           v == null || v.isEmpty ? "Enter title" : null,
                     ),
-                    TextFormField(
-                      controller: _descCtrl,
-                      decoration: const InputDecoration(
-                        labelText: "Description",
-                      ),
-                      maxLines: 3,
+                    const SizedBox(height: 20),
+                    MyTextField(
+                      contoller: _descCtrl,
+                      hintText: "Decription",
+                      labelText: "Description",
+                      obscureText: false,
+                      prefixIcon: Icons.description,
+                      maxLines: 5,
                       validator: (v) =>
                           v == null || v.isEmpty ? "Enter description" : null,
                     ),
+                    const SizedBox(height: 20),
+
                     DropdownButtonFormField<String>(
+                      borderRadius: BorderRadius.circular(30),
                       initialValue: department,
                       items: ['Dev', 'Security', 'Robotics', 'Communication']
                           .map(
@@ -106,29 +121,68 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                           )
                           .toList(),
                       onChanged: (val) => setState(() => department = val!),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(color: primaryColor),
+                        fillColor: Theme.of(context).colorScheme.surface,
+                        filled: true,
+
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: primaryColor),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+
                         labelText: "Department",
                       ),
                     ),
-                    TextFormField(
-                      controller: _linkCtrl,
-                      decoration: const InputDecoration(
-                        labelText: "Project Link (optional)",
+                    const SizedBox(height: 20),
+                    MyTextField(
+                      labelText: "Project Link",
+                      obscureText: false,
+                      prefixIcon: Iconsax.link,
+                      hintText: "Project Link (Optional)",
+                      contoller: _linkCtrl,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Note : Please Select all Images and Videos in one Time !",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.inverseSurface,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        foregroundColor: Theme.of(context).colorScheme.surface,
+                        minimumSize: const Size(double.infinity, 50),
+                      ),
                       onPressed: pickImages,
                       icon: const Icon(Icons.image),
                       label: Text("Select Images (${images.length})"),
                     ),
+                    const SizedBox(height: 20),
                     ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        foregroundColor: Theme.of(context).colorScheme.surface,
+                        minimumSize: const Size(double.infinity, 50),
+                      ),
                       onPressed: pickVideos,
                       icon: const Icon(Icons.video_library),
                       label: Text("Select Videos (${videos.length})"),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        foregroundColor: Theme.of(context).colorScheme.surface,
+                        minimumSize: const Size(double.infinity, 50),
+                      ),
                       onPressed: uploadProject,
                       child: const Text("Upload Project"),
                     ),
