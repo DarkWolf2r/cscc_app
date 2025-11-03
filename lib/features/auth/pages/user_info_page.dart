@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -36,7 +37,6 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
   String randomNumber = const Uuid().v4();
 
   List<String> userDepartement = [];
-
 
   Future<void> validateUsername() async {
     final usersSnapshot = await FirebaseFirestore.instance
@@ -255,11 +255,12 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                           scrollDirection: Axis.horizontal,
                           itemCount: Constants.departementValue.length,
                           itemBuilder: (context, index) {
-                            final department = Constants.departementValue[index];
+                            final department =
+                                Constants.departementValue[index];
                             return Padding(
                               padding: const EdgeInsets.only(right: 8.0),
                               child: ChoiceChip(
-                                selectedColor: Colors.greenAccent,
+                                selectedColor: primaryColor,
                                 label: Text(department),
                                 selected: userDepartement.contains(department),
                                 onSelected: (value) {
@@ -332,7 +333,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                       ),
                       const SizedBox(height: 10),
                       FlatButton(
-                        colour: Colors.blueAccent,
+                        colour: primaryColor,
                         text: "SELECT",
                         onPressed: () async {
                           picture = await pickImage();
@@ -351,7 +352,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                                 userDepartement.isNotEmpty &&
                                 (typeValue != 'Membre du bureau' ||
                                     bureauType.isNotEmpty)
-                            ? Colors.blueAccent
+                            ? primaryColor
                             : Colors.blueGrey,
                         onPressed: () async {
                           if (!isValidate ||

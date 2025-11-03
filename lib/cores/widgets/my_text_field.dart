@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
@@ -11,20 +12,21 @@ class MyTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool obscureText;
   final FocusNode? focusNode;
+  final int? maxLines;
   const MyTextField({
-    super.key,
+    Key? key,
     this.suffixIcon,
     required this.prefixIcon,
     required this.labelText,
     this.keyboardType,
     required this.contoller,
     required this.hintText,
-    required this.obscureText,
-    this.focusNode,
     this.autofillHints,
     this.validator,
-    // required TextInputAction textInputAction
-  });
+    required this.obscureText,
+    this.focusNode,
+    this.maxLines,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class MyTextField extends StatelessWidget {
       focusNode: focusNode,
       controller: contoller,
       obscureText: obscureText,
-
+      maxLines: maxLines,
       // InputBorder? focusedBorder,
       cursorColor: Color(0xFF4A8BFF),
       style: TextStyle(

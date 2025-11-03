@@ -1,75 +1,3 @@
-// import 'package:cscc_app/cores/colors.dart';
-// import 'package:cscc_app/features/Pages/add_post_Page.dart';
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:iconsax/iconsax.dart';
-
-// class ProjectsPage extends StatelessWidget {
-//   const ProjectsPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: primaryColor,
-
-//       body: SingleChildScrollView(
-//         child: SizedBox(
-//           height: MediaQuery.of(context).size.height / 0.9,
-//           child: Stack(
-//             children: [
-//               Positioned(
-//                 top: 60,
-//                 left: 10,
-//                 child: Text(
-//                   " PROJECTS",
-//                   style: GoogleFonts.lato(
-//                     fontSize: 30,
-//                     fontWeight: FontWeight.bold,
-//                     color: Colors.white,
-//                   ),
-//                 ),
-//               ),
-//               Positioned(
-//                 top: 150,
-//                 child: Container(
-//                   width: MediaQuery.of(context).size.width,
-//                   height: MediaQuery.of(context).size.height,
-//                   decoration: BoxDecoration(
-//                     color: Theme.of(context).colorScheme.surface,
-//                     borderRadius: const BorderRadius.only(
-//                       topLeft: Radius.circular(30),
-//                       topRight: Radius.circular(30),
-//                     ),
-//                   ),
-
-//                   child: Column(children: []),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-
-//       floatingActionButton: Container(
-//         height: 60,
-//         width: 60,
-//         decoration: BoxDecoration(
-//           color: primaryColor,
-//           borderRadius: BorderRadius.circular(15),
-//         ),
-//         child: IconButton(
-//           onPressed: () {
-//             Navigator.push(
-//               context,
-//               MaterialPageRoute(builder: (context) => AddPostPage()),
-//             );
-//           },
-//           icon: Icon(Iconsax.add),
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/features/project/add_project_screen.dart';
 import 'package:cscc_app/features/project/project_model.dart';
@@ -78,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final projectServiceProvider = Provider((ref) => ProjectService());
@@ -159,36 +88,39 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                       ProjectCard(project: filtered[i]),
                 );
               },
-              loading: () => Column(
-                children: [
-                  ProjectCard(
-                    project: ProjectModel(
-                      title: "title",
-                      description: "description",
-                      department: "department",
-                      senderName: "senderName",
-                      senderImage: "senderImage",
+              loading: () => Skeletonizer(
+                child: Column(
+                  children: [
+                    ProjectCard(
+                      project: ProjectModel(
+                        title: "title",
+                        description: "description",
+                        department: "department",
+                        senderName: "senderName",
+                        senderImage: "senderImage",
+                      ),
                     ),
-                  ),
-                  ProjectCard(
-                    project: ProjectModel(
-                      title: "title",
-                      description: "description",
-                      department: "department",
-                      senderName: "senderName",
-                      senderImage: "senderImage",
+                    ProjectCard(
+                      project: ProjectModel(
+                        title: "title",
+                        description: "description",
+                        department: "department",
+                        senderName: "senderName",
+                        senderImage: "senderImage",
+                      ),
                     ),
-                  ),
-                  ProjectCard(
-                    project: ProjectModel(
-                      title: "title",
-                      description: "description",
-                      department: "department",
-                      senderName: "senderName",
-                      senderImage: "senderImage",
+
+                    ProjectCard(
+                      project: ProjectModel(
+                        title: "title",
+                        description: "description",
+                        department: "department",
+                        senderName: "senderName",
+                        senderImage: "senderImage",
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ), //const Center(child: CircularProgressIndicator()),
               error: (e, _) => Center(child: Text('Error: $e')),
             ),
@@ -267,6 +199,42 @@ class ProjectCard extends StatelessWidget {
                           project.imageUrls[index],
                           width: 200,
                           fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            final isLoading = loadingProgress != null;
+
+                            if (isLoading) {
+                              return Skeletonizer(
+                                enabled: true,
+                                child: Container(
+                                  width: 200,
+                                  height: 120,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade300,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              // ✅ When image is done loading
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: child,
+                              );
+                            }
+                          },
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                                width: 200,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.broken_image,
+                                  color: Colors.redAccent,
+                                ),
+                              ),
                         ),
                       ),
                     );
@@ -309,6 +277,7 @@ class ProjectCard extends StatelessWidget {
                 icon: const Icon(Icons.link),
                 label: const Text("View Project"),
               ),
+              
 
             // const Divider(),
 

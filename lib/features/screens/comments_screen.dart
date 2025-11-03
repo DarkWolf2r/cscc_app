@@ -148,7 +148,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                       child: Text(
                         'Post',
                         style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: primaryColor,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -290,7 +290,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
 //                 child: const Text(
 //                   'Post',
 //                   style: TextStyle(
-//                     color: Colors.blueAccent,
+//                     color: primaryColor,
 //                     fontWeight: FontWeight.bold,
 //                   ),
 //                 ),
