@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
-// import 'package:cscc_app/cores/widgets/post_card.dart';
 import 'package:cscc_app/features/screens/add_post_screen.dart';
 import 'package:cscc_app/features/screens/animated_list_wrapper.dart';
 import 'package:cscc_app/features/screens/filter_bottom_sheet.dart';
@@ -71,8 +70,8 @@ class _FeedScreenState extends State<FeedScreen> {
 
     return Scaffold(
       // backgroundColor: primaryColor,
-      backgroundColor: Theme.of(context).colorScheme.surface,
       // backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       extendBodyBehindAppBar: false,
       body: Container(
         // width: double.infinity,
@@ -85,7 +84,6 @@ class _FeedScreenState extends State<FeedScreen> {
             // ---- Feed Page ----
             Container(
               color: primaryColor,
-              // color: Theme.of(context).colorScheme.surface,
               child: CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -151,19 +149,6 @@ class _FeedScreenState extends State<FeedScreen> {
                           Icons.filter_list,
                           color: Colors.white,
                         ),
-                        // onPressed: () async {
-                        //   final result = await showModalBottomSheet(
-                        //     context: context,
-                        //     isScrollControlled: true,
-                        //     backgroundColor: Colors.transparent,
-                        //     builder: (context) => const FilterBottomSheet(),
-                        //   );
-
-                        //   if (result != null) {
-                        //     print(result); // Contient les filtres choisis
-                        //     // Ici tu peux filtrer ton Stream Firestore selon ces valeurs
-                        //   }
-                        // },
                         onPressed: () async {
                           final result = await showModalBottomSheet(
                             context: context,
@@ -184,6 +169,19 @@ class _FeedScreenState extends State<FeedScreen> {
                             });
                           }
                         },
+                        // onPressed: () async {
+                        //   final result = await showModalBottomSheet(
+                        //     context: context,
+                        //     isScrollControlled: true,
+                        //     backgroundColor: Colors.transparent,
+                        //     builder: (context) => const FilterBottomSheet(),
+                        //   );
+
+                        //   if (result != null) {
+                        //     print(result); // Contient les filtres choisis
+                        //     // Ici tu peux filtrer ton Stream Firestore selon ces valeurs
+                        //   }
+                        // },
                       ),
 
                       IconButton(
@@ -404,7 +402,7 @@ class _FeedScreenState extends State<FeedScreen> {
             Container(
               color: Theme.of(
                 context,
-              ).colorScheme.surface, // make sure background is solid
+              ).colorScheme.surface,
               child: const MessagesScreen(),
             ),
           ],
