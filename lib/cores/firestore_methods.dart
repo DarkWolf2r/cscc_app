@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/foundation.dart';
-import 'package:cscc_app/cores/models/post.dart';
+// import 'package:cscc_app/cores/models/post.dart';
 import 'package:cscc_app/cores/storage_methods.dart';
 
 class FireStoreMethods {
@@ -16,9 +16,9 @@ class FireStoreMethods {
     required String uid,
     required String username,
     required String profImage,
-    required String department,   // <-- أضفناها
-    required String type,         // <-- أضفناها
-    required String visibility,   // <-- أضفناها ("Everyone" أو "Bureau Members Only")
+    required String department, 
+    required String type,        
+    required String visibility,  
   }) async {
     String res = "Some error occurred";
     try {
@@ -45,7 +45,6 @@ class FireStoreMethods {
         'postUrls': photoUrls,
         'likes': [],
         'datePublished': DateTime.now(),
-        // 🧠 معلومات الفلترة
         'department': department,
         'type': type,
         'visibility': visibility == "Bureau Members Only"
@@ -315,6 +314,8 @@ class FireStoreMethods {
     }
   }
 }
+
+
 
 // import 'dart:typed_data';
 // import 'package:cloud_firestore/cloud_firestore.dart';
