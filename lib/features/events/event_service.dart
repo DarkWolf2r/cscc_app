@@ -1,8 +1,16 @@
-// Stream<List<PostModel>> getEventPosts() {
-//   return _firestore
-//       .collection('posts')
-//       .where('type', isEqualTo: 'event')
-//       .snapshots()
-//       .map((snapshot) =>
-//           snapshot.docs.map((doc) => PostModel.fromMap(doc.data(), doc.id)).toList());
-// }
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+class EventService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  getEventPosts() {
+    return _firestore
+        .collection('posts')
+        .orderBy('datePublished', descending: true)
+        .where('type', isEqualTo: 'event')
+        .snapshots()
+        .map((event) => event.docs)
+        .toList();
+  }
+}
