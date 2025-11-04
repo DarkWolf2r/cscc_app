@@ -120,7 +120,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                 child: const AddPostScreen(),
                               ),
                             ),
-                          );
+                          );   
                         },
                       ),
                       IconButton(
