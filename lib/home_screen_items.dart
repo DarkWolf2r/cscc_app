@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 const List<Widget> homeScreenItems = [
   FeedScreen(),
   EventScreen(),
-  // Text("Add something"),
   AddPostScreen(),
   ProjectsScreen(),
   ProfilePage(),
