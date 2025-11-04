@@ -99,30 +99,30 @@ class _FeedScreenState extends State<FeedScreen> {
                       ),
                     ),
                     actions: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.add_box_outlined,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) => FractionallySizedBox(
-                              heightFactor: 1,
-                              child: Container(
-                                margin: EdgeInsets.only(top: 35),
-                                padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).padding.top,
-                                ),
-                                color: Theme.of(context).colorScheme.surface,
-                                child: const AddPostScreen(),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                      // IconButton(
+                      //   icon: const Icon(
+                      //     Icons.add_box_outlined,
+                      //     color: Colors.white,
+                      //   ),
+                      //   onPressed: () {
+                      //     showModalBottomSheet(
+                      //       context: context,
+                      //       isScrollControlled: true,
+                      //       backgroundColor: Colors.transparent,
+                      //       builder: (context) => FractionallySizedBox(
+                      //         heightFactor: 1,
+                      //         child: Container(
+                      //           margin: EdgeInsets.only(top: 35),
+                      //           padding: EdgeInsets.only(
+                      //             top: MediaQuery.of(context).padding.top,
+                      //           ),
+                      //           color: Theme.of(context).colorScheme.surface,
+                      //           child: const AddPostScreen(),
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
                       IconButton(
                         icon: const Icon(
                           Icons.filter_list,

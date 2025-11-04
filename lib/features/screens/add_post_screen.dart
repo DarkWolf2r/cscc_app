@@ -93,43 +93,6 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
     );
   }
 
-  // void postImage(String uid, String username, String profImage) async {
-  //   if (_files.isEmpty && _descriptionController.text.isEmpty) return;
-  //   setState(() => isLoading = true);
-
-  //   try {
-  //     String res;
-  //     if (_files.isNotEmpty) {
-  //       res = await FireStoreMethods().uploadPost(
-  //         _descriptionController.text,
-  //         _files,
-  //         uid,
-  //         username,
-  //         profImage,
-  //       );
-  //     } else {
-  //       res = await FireStoreMethods().uploadTextPost(
-  //         _descriptionController.text,
-  //         uid,
-  //         username,
-  //         profImage,
-  //       );
-  //     }
-
-  //     if (res == "success") {
-  //       if (mounted) showSnackBar(context, 'Posted!');
-  //       setState(() => _files.clear());
-  //       Navigator.pop(context);
-  //     } else {
-  //       if (mounted) showSnackBar(context, res);
-  //     }
-  //   } catch (err) {
-  //     showSnackBar(context, err.toString());
-  //   } finally {
-  //     if (mounted) setState(() => isLoading = false);
-  //   }
-  // }
-
   void postImage(String uid, String username, String profImage) async {
     if (_files.isEmpty && _descriptionController.text.isEmpty) return;
     setState(() => isLoading = true);
@@ -553,71 +516,6 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                                               ),
                                             ),
                                             const SizedBox(height: 8),
-
-                                            // Chips full width + color change
-                                            // Wrap(
-                                            //   spacing: 8,
-                                            //   runSpacing: 8,
-                                            //   children:
-                                            //       [
-                                            //         "Announcement",
-                                            //         "Project",
-                                            //         "Event",
-                                            //       ].map((type) {
-                                            //         bool isSelected =
-                                            //             type ==
-                                            //             selectedPostType;
-                                            //         return ChoiceChip(
-                                            //           label: SizedBox(
-                                            //             width:
-                                            //                 MediaQuery.of(
-                                            //                   context,
-                                            //                 ).size.width *
-                                            //                 0.22,
-                                            //             child: Center(
-                                            //               child: Text(type),
-                                            //             ),
-                                            //           ),
-                                            //           selected: isSelected,
-                                            //           onSelected: (val) {
-                                            //             setStateModal(() {
-                                            //               selectedPostType =
-                                            //                   type;
-                                            //             });
-                                            //           },
-                                            //           backgroundColor:
-                                            //               Theme.of(
-                                            //                     context,
-                                            //                   ).brightness ==
-                                            //                   Brightness.dark
-                                            //               ? const Color.fromRGBO(
-                                            //                   24,
-                                            //                   27,
-                                            //                   46,
-                                            //                   1,
-                                            //                 )
-                                            //               : Colors
-                                            //                     .grey
-                                            //                     .shade200,
-                                            //           selectedColor:
-                                            //               primaryColor,
-                                            //           labelStyle: TextStyle(
-                                            //             color: isSelected
-                                            //                 ? Colors.white
-                                            //                 : (Theme.of(
-                                            //                             context,
-                                            //                           ).brightness ==
-                                            //                           Brightness
-                                            //                               .dark
-                                            //                       ? Colors.white
-                                            //                       : Colors
-                                            //                             .black87),
-                                            //             fontWeight:
-                                            //                 FontWeight.w600,
-                                            //           ),
-                                            //         );
-                                            //       }).toList(),
-                                            // ),
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Row(
@@ -681,9 +579,7 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                                                     }).toList(),
                                               ),
                                             ),
-
                                             const SizedBox(height: 20),
-
                                             // Full-width Save button
                                             SizedBox(
                                               width: double.infinity,
@@ -734,35 +630,6 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                           border: Border.all(color: Colors.grey.shade400),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        // child: Row(
-                        //   children: [
-                        //     Expanded(
-                        //       child: Column(
-                        //         crossAxisAlignment: CrossAxisAlignment.start,
-                        //         children: [
-                        //           Text(
-                        //             selectedDepartments.contains("Everyone")
-                        //                 ? "Everyone"
-                        //                 : selectedDepartments.join(', '),
-                        //             style: const TextStyle(
-                        //               fontSize: 14,
-                        //               fontWeight: FontWeight.w600,
-                        //             ),
-                        //             overflow: TextOverflow.ellipsis,
-                        //           ),
-                        //           Text(
-                        //             selectedMemberType,
-                        //             style: TextStyle(
-                        //               fontSize: 12,
-                        //               color: Colors.grey.shade600,
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //     const Icon(Icons.arrow_drop_down, size: 20),
-                        //   ],
-                        // ),
                         child: Row(
                           children: [
                             Expanded(
@@ -810,7 +677,6 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                       backgroundColor: isPostEnabled
                           ? primaryColor
                           : Color.fromARGB(255, 43, 43, 43),
-                      // : Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
