@@ -21,6 +21,8 @@ class EditPostScreen extends ConsumerStatefulWidget {
 
 class _EditPostScreenState extends ConsumerState<EditPostScreen> {
   final TextEditingController _descriptionController = TextEditingController();
+    final TextEditingController _titleController = TextEditingController();
+
   List<Uint8List> _newFiles = [];
   List<String> _oldImageUrls = [];
 
@@ -109,6 +111,7 @@ class _EditPostScreenState extends ConsumerState<EditPostScreen> {
     try {
       await FireStoreMethods().updatePost(
         postId: widget.postId,
+        title: _titleController.text.trim(),
         description: _descriptionController.text.trim(),
         newImages: _newFiles,
         oldImageUrls: _oldImageUrls,
@@ -237,6 +240,20 @@ class _EditPostScreenState extends ConsumerState<EditPostScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                TextField(
+                  controller: _titleController,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    hintText: "Edit your Title",
+                    border: InputBorder.none,
+                    hintStyle: GoogleFonts.lato(
+                      color: Colors.grey.shade500,
+                      fontSize: 16,
+                    ),
+                  ),
+                  style: GoogleFonts.lato(fontSize: 16),
+                ),
+                const SizedBox(height: 20,) ,
                 TextField(
                   controller: _descriptionController,
                   maxLines: null,

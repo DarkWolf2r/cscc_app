@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:cscc_app/cores/widgets/my_text_field.dart';
 import 'package:cscc_app/features/screens/full_screen_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +22,8 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
   List<Uint8List> _files = [];
   bool isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+
   String? profilePicUrl;
   String? username;
   String? uid;
@@ -148,6 +151,7 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
 
       if (_files.isNotEmpty) {
         res = await FireStoreMethods().uploadPost(
+          title: _titleController.text,
           description: _descriptionController.text,
           files: _files,
           uid: uid,
@@ -159,6 +163,7 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
         );
       } else {
         res = await FireStoreMethods().uploadTextPost(
+          title: _titleController.text,
           description: _descriptionController.text,
           uid: uid,
           username: username,
@@ -347,7 +352,7 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     bool isPostEnabled =
-        _descriptionController.text.trim().isNotEmpty || _files.isNotEmpty;
+        _descriptionController.text.trim().isNotEmpty || _files.isNotEmpty || _titleController.text.trim().isNotEmpty;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -834,7 +839,13 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
               ),
 
               const SizedBox(height: 12),
-
+              MyTextField(
+                prefixIcon: Icons.title,
+                labelText: "Title",
+                contoller: _titleController,
+                hintText: "Title",
+                obscureText: false,
+              ),
               // ===== TextField =====
               Expanded(
                 child: SingleChildScrollView(
