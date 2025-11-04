@@ -11,6 +11,7 @@ class FireStoreMethods {
 
   /// Upload Post (with image + metadata)
   Future<String> uploadPost({
+    required String title,
     required String description,
     required List<Uint8List> files,
     required String uid,
@@ -42,6 +43,7 @@ class FireStoreMethods {
         'username': username,
         'profImage': profImage,
         'description': description,
+        'title':title,
         'postUrls': photoUrls,
         'likes': [],
         'datePublished': DateTime.now(),
@@ -61,6 +63,7 @@ class FireStoreMethods {
 
   /// ✅ Upload Text-only Post (no image)
   Future<String> uploadTextPost({
+    required String title,
     required String description,
     required String uid,
     required String username,
@@ -80,6 +83,7 @@ class FireStoreMethods {
       await _firestore.collection('posts').doc(postId).set({
         'postId': postId,
         'uid': uid,
+        'title': title,
         'username': username,
         'profImage': profImage,
         'description': description,
@@ -287,6 +291,7 @@ class FireStoreMethods {
 
   /// Update Post
   Future<void> updatePost({
+    required String title,
     required String postId,
     required String description,
     required List<Uint8List> newImages,
@@ -306,6 +311,7 @@ class FireStoreMethods {
 
       await _firestore.collection('posts').doc(postId).update({
         'description': description,
+        'title':title,
         'postUrls': finalUrls,
         'dateUpdated': DateTime.now(),
       });

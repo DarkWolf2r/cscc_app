@@ -316,7 +316,7 @@ class _PostCardState extends State<PostCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ================= Header (User info + follow + options)
+            // ================= Header (User info + follow + options = type + title)
             Padding(
               padding: const EdgeInsets.only(bottom: 8, left: 5),
               child: Row(
@@ -357,7 +357,7 @@ class _PostCardState extends State<PostCard> {
                         radius: 20,
                         backgroundImage: NetworkImage(snap['profImage']),
                       ),
-                    ),
+                    ), 
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -487,7 +487,16 @@ class _PostCardState extends State<PostCard> {
                 ],
               ),
             ),
-
+            Padding(
+            padding: 
+            EdgeInsetsGeometry.all(12),
+            child: Column(
+              children: [
+                Text(snap['type']),
+                Text(snap['title']),
+              ],
+            ),
+            ) ,   
             // ===== Images
             if (snap['postUrls'] != null &&
                 (snap['postUrls'] as List).isNotEmpty)
