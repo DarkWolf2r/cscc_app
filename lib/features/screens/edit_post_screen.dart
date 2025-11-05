@@ -21,7 +21,7 @@ class EditPostScreen extends ConsumerStatefulWidget {
 
 class _EditPostScreenState extends ConsumerState<EditPostScreen> {
   final TextEditingController _descriptionController = TextEditingController();
-    final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
 
   List<Uint8List> _newFiles = [];
   List<String> _oldImageUrls = [];
@@ -48,6 +48,7 @@ class _EditPostScreenState extends ConsumerState<EditPostScreen> {
 
       final data = doc.data()!;
       _descriptionController.text = data['description'] ?? '';
+      _titleController.text = data['title'] ?? '';
       _oldImageUrls = List<String>.from(
         data['postUrls'] ?? [data['postUrl'] ?? ''],
       );
@@ -100,6 +101,7 @@ class _EditPostScreenState extends ConsumerState<EditPostScreen> {
 
   Future<void> _updatePost() async {
     if (_descriptionController.text.trim().isEmpty &&
+      _titleController.text.trim().isEmpty &&
         _oldImageUrls.isEmpty &&
         _newFiles.isEmpty) {
       showSnackBar(context, 'Post cannot be empty.');
@@ -253,7 +255,7 @@ class _EditPostScreenState extends ConsumerState<EditPostScreen> {
                   ),
                   style: GoogleFonts.lato(fontSize: 16),
                 ),
-                const SizedBox(height: 20,) ,
+                const SizedBox(height: 20),
                 TextField(
                   controller: _descriptionController,
                   maxLines: null,

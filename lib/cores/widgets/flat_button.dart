@@ -5,12 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class FlatButton extends StatelessWidget {
   final String text;
-  final bool? isPressed;
   final VoidCallback onPressed;
   final Color colour;
   const FlatButton({
     super.key,
-    this.isPressed,
     required this.text,
     required this.onPressed,
     required this.colour,
