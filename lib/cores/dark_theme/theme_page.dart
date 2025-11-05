@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
     brightness: Brightness.light ,
     colorScheme: ColorScheme.light(
       surface:  Colors.white,
-      inverseSurface: Colors.black
+      inverseSurface: Colors.black,
+     // onSurface: Colors.grey.shade300,
     )
   );
    ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark ,
     colorScheme: ColorScheme.dark(
       // surface:  Colors.black,
-      surface:  Color.fromRGBO(24, 27, 46, 1),
-      inverseSurface: Colors.white 
+      surface:  Color(0xFF181B2E),
+      inverseSurface: Colors.white,
+    //  onSurface: Colors.grey.shade700, 
     )
   );
 

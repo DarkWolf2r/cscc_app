@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/foundation.dart';
@@ -52,7 +53,20 @@ class FireStoreMethods {
             ? "bureau"
             : "everyone",
       });
-
+      if (type == 'Event') {
+        await _firestore.collection('events').doc(postId).set({
+          'postId': postId,
+          'title': title,
+          'place': '',
+          'date': '',
+          'teams': [
+            {'name': 'Logistics', 'description': 'Handles setup', 'members': []},
+            {'name': 'Design', 'description': 'Creates visuals', 'members': []},
+            {'name': 'Media', 'description': 'Handles coverage', 'members': []},
+          ],
+          'createdBy':FirebaseAuth.instance.currentUser!.uid 
+        });
+      }
       res = "success";
     } catch (err) {
       res = err.toString();
@@ -95,7 +109,21 @@ class FireStoreMethods {
             ? "bureau"
             : "everyone",
       });
-
+     if (type == 'Event') {
+        await _firestore.collection('events').doc(postId).set({
+          'postId': postId,
+          'title': title,
+          'place': '',
+          'date': '',
+          'teams': [
+            {'name': 'Logistics', 'description': 'Handles setup', 'members': []},
+            {'name': 'Design', 'description': 'Creates visuals', 'members': []},
+            {'name': 'Media', 'description': 'Handles coverage', 'members': []},
+          ],
+          'createdBy':FirebaseAuth.instance.currentUser!.uid 
+        });
+      }
+      
       res = "success";
     } catch (err) {
       res = err.toString();
