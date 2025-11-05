@@ -106,7 +106,6 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
       String department = selectedDepartments.contains("Everyone")
           ? "All"
           : selectedDepartments.join(", ");
-      // String type = "General";
       String type = selectedPostType;
       String visibility = selectedMemberType == "Bureau Members Only"
           ? "Bureau Members Only"
@@ -325,7 +324,7 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ===== Header Row =====
+              // ----- Header Row -----
               Row(
                 children: [
                   CircleAvatar(
@@ -712,7 +711,7 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                 hintText: "Title",
                 obscureText: false,
               ),
-              // ===== TextField =====
+              // ----- TextField -----
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -750,7 +749,7 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
 
               const SizedBox(height: 10),
 
-              // ===== Bottom Row =====
+              // ----- Bottom Row -----
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -772,10 +771,6 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                       ),
                     ),
                   ),
-                  // IconButton(
-                  //   onPressed: () {},
-                  //   icon: const Icon(Icons.add, color: primaryColor, size: 28),
-                  // ),
                 ],
               ),
             ],

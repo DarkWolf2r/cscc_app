@@ -78,62 +78,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
             const SizedBox(height: 10),
 
-            // // Departments
-            // const Text(
-            //   "Departments",
-            //   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-            // ),
-            // Wrap(
-            //   spacing: 8,
-            //   children: departments.map((dept) {
-            //     final isSelected = selectedDepartments.contains(dept);
-            //     return FilterChip(
-            //       label: Text(dept),
-            //       selected: isSelected,
-            //       onSelected: (val) {
-            //         setState(() {
-            //           if (val) {
-            //             selectedDepartments.add(dept);
-            //           } else {
-            //             selectedDepartments.remove(dept);
-            //           }
-            //         });
-            //       },
-            //       selectedColor: Color.fromARGB(255, 127, 174, 255),
-            //       checkmarkColor: primaryColor,
-            //     );
-            //   }).toList(),
-            // ),
-
-            // const SizedBox(height: 20),
-
-            // // Post Types
-            // const Text(
-            //   "Post Types",
-            //   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-            // ),
-            // Wrap(
-            //   spacing: 8,
-            //   children: postTypes.map((type) {
-            //     final isSelected = selectedPostTypes.contains(type);
-            //     return FilterChip(
-            //       label: Text(type),
-            //       selected: isSelected,
-            //       onSelected: (val) {
-            //         setState(() {
-            //           if (val) {
-            //             selectedPostTypes.add(type);
-            //           } else {
-            //             selectedPostTypes.remove(type);
-            //           }
-            //         });
-            //       },
-            //       selectedColor: Color.fromARGB(255, 127, 174, 255),
-            //       checkmarkColor: primaryColor,
-            //     );
-            //   }).toList(),
-            // ),
-
             // Departments
             const Text(
               "Departments",
@@ -222,8 +166,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 );
               }).toList(),
             ),
-
-            // const SizedBox(height: 20),
 
             // // Optional slider
             // const Text(

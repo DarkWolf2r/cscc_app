@@ -25,12 +25,10 @@
 //   Future<void> _refreshFeed() async {
 //     setState(() => _isRefreshing = true);
 
-//     // هنا ننتظر البيانات من Firestore (أو simulate)
 //     await Future.delayed(const Duration(seconds: 1));
 
 //     setState(() => _isRefreshing = false);
 
-//     // ترجّع الصفحة لمكانها
 //     _animation = Tween<double>(begin: _dragOffset, end: 0).animate(
 //       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
 //     )..addListener(() => setState(() => _dragOffset = _animation.value));
@@ -44,7 +42,6 @@
 //       onNotification: (notification) {
 //         if (_isRefreshing) return true;
 
-//         // إذا السحب يمين وأنت في بداية الصفحة
 //         if (notification is OverscrollNotification &&
 //             notification.overscroll < 0 &&
 //             notification.metrics.pixels <= 0) {

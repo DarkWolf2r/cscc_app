@@ -18,7 +18,6 @@ class ProfilePage extends ConsumerWidget {
           data: (data) {
             return Scaffold(
               backgroundColor: const Color(0xFF4A8BFF),
-              //   appBar: AppBar(title: const Text('Profile'), centerTitle: true),
               body: SingleChildScrollView(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height / 0.9,
@@ -67,7 +66,6 @@ class ProfilePage extends ConsumerWidget {
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    //  mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(10.0),
@@ -162,7 +160,6 @@ class ProfilePage extends ConsumerWidget {
                                 ),
                                 const SizedBox(height: 10),
 
-                                ///////
                                 Container(
                                   height: 60,
                                   width: MediaQuery.sizeOf(context).width,
@@ -201,10 +198,8 @@ class ProfilePage extends ConsumerWidget {
                                   ),
                                 ),
 
-                                ///
                                 const SizedBox(height: 10),
                                 Container(
-                                  //  height: 200,
                                   width: MediaQuery.sizeOf(context).width,
                                   decoration: BoxDecoration(
                                     color: Colors.grey.shade100,
@@ -252,7 +247,6 @@ class ProfilePage extends ConsumerWidget {
                                   colour: Colors.blue,
                                 ),
 
-                                ///
                                 const SizedBox(height: 10),
                                 FlatButton(
                                   text: "Settings ->",

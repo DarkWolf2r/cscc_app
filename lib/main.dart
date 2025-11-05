@@ -37,9 +37,6 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       // theme: lightTheme,
       // darkTheme: darkTheme,
-
-      // theme: lightTheme,
-      // darkTheme: darkTheme,
       theme: lightTheme.copyWith(
         appBarTheme: const AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(

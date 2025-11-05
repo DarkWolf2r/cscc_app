@@ -4,7 +4,6 @@ import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/firestore_methods.dart';
 import 'package:cscc_app/cores/utils.dart';
 import 'package:cscc_app/features/screens/full_screen_image_viewer.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';

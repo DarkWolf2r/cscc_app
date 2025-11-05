@@ -118,7 +118,6 @@ class _PostCardState extends State<PostCard> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        // builder: (_) => EditPostScreen(postData: snap),
                         builder: (_) => EditPostScreen(postId: postId),
                       ),
                     );
@@ -316,7 +315,7 @@ class _PostCardState extends State<PostCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ================= Header (User info + follow + options = type + title)
+            // --- Header (User info + follow + options = type + title)
             Padding(
               padding: const EdgeInsets.only(bottom: 8, left: 5),
               child: Row(
@@ -357,7 +356,7 @@ class _PostCardState extends State<PostCard> {
                         radius: 20,
                         backgroundImage: NetworkImage(snap['profImage']),
                       ),
-                    ), 
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -390,45 +389,6 @@ class _PostCardState extends State<PostCard> {
                   ),
 
                   if (snap['uid'] != currentUserId)
-                    // TextButton(
-                    //   onPressed: () {
-                    //     FireStoreMethods().followUser(
-                    //       currentUserId,
-                    //       profileUserId,
-                    //     );
-                    //     setState(() {
-                    //       isFollowing = !isFollowing;
-                    //     });
-                    //   },
-                    //   style: TextButton.styleFrom(
-                    //     backgroundColor: isFollowing
-                    //         ? Colors.white
-                    //         : primaryColor,
-                    //     padding: const EdgeInsets.symmetric(
-                    //       horizontal: 10,
-                    //       vertical: 4,
-                    //     ),
-                    //     minimumSize: const Size(0, 0),
-                    //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(6),
-                    //       side: BorderSide(
-                    //         color: primaryColor.withOpacity(0.3),
-                    //         width: 0.5,
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   child: Text(
-                    //     isFollowing ? 'Unfollow' : 'Follow',
-                    //     style: GoogleFonts.lato(
-                    //       textStyle: TextStyle(
-                    //         color: isFollowing ? Colors.black : Colors.white,
-                    //         fontSize: 12,
-                    //         fontWeight: FontWeight.w600,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     TextButton(
                       onPressed: () async {
                         final result = await FireStoreMethods().followUser(
@@ -487,22 +447,65 @@ class _PostCardState extends State<PostCard> {
                 ],
               ),
             ),
-            Padding(
-            padding: 
-            EdgeInsetsGeometry.all(12),
-            child: Column(
+
+            const SizedBox(height: 1),
+
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(snap['type']),
-                Text(snap['title']),
+                // Title with small left padding
+                Padding(
+                  padding: const EdgeInsets.only(left: 6.0),
+                  child: Flexible(
+                    child: Text(
+                      snap['title'],
+                      style: GoogleFonts.lato(
+                        textStyle: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
+                          height: 2,
+                        ),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 6),
+
+                // Type chip (same design as before)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: primaryColor.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    snap['type'].toString().toUpperCase(),
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 11,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
-            ) ,   
-            // ===== Images
+
+            const SizedBox(height: 10),
+            // --- Images
             if (snap['postUrls'] != null &&
                 (snap['postUrls'] as List).isNotEmpty)
               _buildInstagramStyleImages(List<String>.from(snap['postUrls'])),
 
-            // ================= Description (if exists)
+            // --- Description (if exists)
             if (snap['description'] != null &&
                 snap['description'].toString().trim().isNotEmpty)
               Padding(
@@ -517,7 +520,7 @@ class _PostCardState extends State<PostCard> {
 
             const SizedBox(height: 4),
 
-            // ================= Like + Comment row
+            // --- Like + Comment row
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
               child: Row(
@@ -592,388 +595,3 @@ class _PostCardState extends State<PostCard> {
     );
   }
 }
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:cscc_app/cores/colors.dart';
-// import 'package:cscc_app/cores/widgets/follow_button.dart';
-// import 'package:cscc_app/cores/widgets/like_animation.dart';
-// import 'package:cscc_app/features/screens/comments_screen.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
-// import 'package:cscc_app/cores/firestore_methods.dart';
-// import 'package:intl/intl.dart';
-// import 'package:timeago/timeago.dart' as timeago;
-
-// class PostCard extends StatefulWidget {
-//   final Map<String, dynamic> snap;
-//   const PostCard({Key? key, required this.snap}) : super(key: key);
-
-//   @override
-//   State<PostCard> createState() => _PostCardState();
-// }
-
-// class _PostCardState extends State<PostCard> {
-//   bool isLikeAnimating = false;
-//   int commentLen = 0;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     fetchCommentLen();
-//   }
-
-//   fetchCommentLen() async {
-//     try {
-//       QuerySnapshot snap = await FirebaseFirestore.instance
-//           .collection('posts')
-//           .doc(widget.snap['postId'])
-//           .collection('comments')
-//           .get();
-//       setState(() => commentLen = snap.docs.length);
-//     } catch (e) {
-//       debugPrint(e.toString());
-//     }
-//   }
-
-//   deletePost(String postId) async {
-//     await FireStoreMethods().deletePost(postId);
-//   }
-
-//   void showPostOptions(
-//     BuildContext context,
-//     String postOwnerId,
-//     String postId,
-//   ) {
-//     final currentUserId = FirebaseAuth.instance.currentUser!.uid;
-//     final isMyPost = currentUserId == postOwnerId;
-
-//     showModalBottomSheet(
-//       context: context,
-//       backgroundColor: Theme.of(context).colorScheme.surface,
-//       shape: const RoundedRectangleBorder(
-//         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-//       ),
-//       builder: (context) {
-//         return Padding(
-//           padding: const EdgeInsets.symmetric(vertical: 16),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               Container(
-//                 height: 4,
-//                 width: 40,
-//                 decoration: BoxDecoration(
-//                   color: Colors.grey[600],
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//               ),
-//               const SizedBox(height: 16),
-//               if (isMyPost) ...[
-//                 ListTile(
-//                   leading: const Icon(Icons.edit),
-//                   title: const Text("Edit"),
-//                   onTap: () {
-//                     Navigator.pop(context);
-//                     // TODO: Navigate to edit screen
-//                   },
-//                 ),
-//                 ListTile(
-//                   leading: const Icon(Icons.delete, color: Colors.red),
-//                   title: const Text(
-//                     "Delete",
-//                     style: TextStyle(color: Colors.red),
-//                   ),
-//                   onTap: () {
-//                     Navigator.pop(context);
-//                     // TODO: Call deletePost(postId)
-//                   },
-//                 ),
-//               ] else ...[
-//                 ListTile(
-//                   leading: const Icon(Icons.report, color: Colors.red),
-//                   title: const Text(
-//                     "Report",
-//                     style: TextStyle(color: Colors.red),
-//                   ),
-//                   onTap: () {
-//                     Navigator.pop(context);
-//                     // TODO: Handle report
-//                   },
-//                 ),
-//                 ListTile(
-//                   leading: const Icon(Icons.person_remove),
-//                   title: const Text("Unfollow"),
-//                   onTap: () {
-//                     Navigator.pop(context);
-//                     // TODO: Handle unfollow
-//                   },
-//                 ),
-//               ],
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final snap = widget.snap;
-//     final currentUserId = "CURRENT_USER_ID";
-//     final profileUserId = snap['uid'];
-
-//     bool isLiked = snap['likes'].contains(currentUserId);
-//     bool isFollowing = false;
-
-//     return Card(
-//       margin: const EdgeInsets.symmetric(vertical: 8),
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(10),
-//         side: BorderSide(
-//           // color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-//           color: primaryColor.withOpacity(0.3),
-//           width: 1,
-//         ),
-//       ),
-//       color: Theme.of(context).colorScheme.surface,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           ListTile(
-//             leading: CircleAvatar(
-//               backgroundImage: NetworkImage(snap['profImage']),
-//             ),
-//             title: Text(
-//               snap['username'],
-//               style: const TextStyle(fontWeight: FontWeight.bold),
-//             ),
-//             subtitle: Text(
-//               // DateFormat.yMMMd().format(snap['datePublished'].toDate()),
-//               timeago.format(snap['datePublished'].toDate()),
-//               style: const TextStyle(
-//                 color: Color.fromARGB(255, 194, 194, 194),
-//                 fontSize: 12,
-//               ),
-//             ),
-//             // trailing: IconButton(
-//             //   icon: const Icon(Icons.more_vert),
-//             //   onPressed: () => deletePost(snap['postId']),
-//             // ),
-//             trailing: IconButton(
-//               icon: const Icon(Icons.more_vert),
-//               onPressed: () =>
-//                   showPostOptions(context, snap['uid'], snap['postId']),
-//             ),
-//           ),
-
-//           // --- Follow Button ---
-//           Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 12),
-//             child: FollowButton(
-//               text: isFollowing ? 'Unfollow' : 'Follow',
-//               backgroundColor: isFollowing ? Colors.white : Colors.blue,
-//               borderColor: Colors.grey,
-//               textColor: isFollowing ? Colors.black : Colors.white,
-//               onTap: () {
-//                 FireStoreMethods().followUser(currentUserId, profileUserId);
-//                 setState(() {
-//                   isFollowing = !isFollowing;
-//                 });
-//               },
-//             ),
-//           ),
-
-//           // --- Image ---
-//           if (snap['postUrl'] != null && snap['postUrl'].toString().isNotEmpty)
-//             Image.network(
-//               snap['postUrl'],
-//               fit: BoxFit.cover,
-//               width: double.infinity,
-//               height: 250,
-//             ),
-
-//           // --- Like Button ---
-//           Row(
-//             children: [
-//               LikeAnimation(
-//                 isAnimating: isLiked,
-//                 smallLike: true,
-//                 child: IconButton(
-//                   icon: Icon(
-//                     isLiked ? Icons.favorite : Icons.favorite_border,
-//                     color: isLiked ? Colors.red : Colors.grey,
-//                   ),
-//                   onPressed: () async {
-//                     await FireStoreMethods().likePost(
-//                       snap['postId'],
-//                       currentUserId,
-//                       snap['likes'],
-//                     );
-//                     setState(() {
-//                       isLiked = !isLiked;
-//                     });
-//                   },
-//                 ),
-//               ),
-//               Text("${snap['likes'].length} likes"),
-//             ],
-//           ),
-
-//           // --- Description ---
-//           Padding(
-//             padding: const EdgeInsets.all(12),
-//             child: Text(
-//               snap['description'] ?? "",
-//               style: const TextStyle(fontSize: 15, height: 1.4),
-//             ),
-//           ),
-
-//           // --- Comments Button ---
-//           Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-//             child: TextButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (_) => CommentsScreen(postId: snap['postId']),
-//                   ),
-//                 );
-//               },
-//               child: Text('View all $commentLen comments'),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-// import 'package:cscc_app/cores/firestore_methods.dart';
-// import 'package:cscc_app/cores/colors.dart';
-// import 'package:intl/intl.dart';
-
-// class PostCard extends StatefulWidget {
-//   final Map<String, dynamic> snap;
-//   const PostCard({Key? key, required this.snap}) : super(key: key);
-
-//   @override
-//   State<PostCard> createState() => _PostCardState();
-// }
-
-// class _PostCardState extends State<PostCard> {
-//   bool isLikeAnimating = false;
-//   int commentLen = 0;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     fetchCommentLen();
-//   }
-
-//   fetchCommentLen() async {
-//     try {
-//       QuerySnapshot snap = await FirebaseFirestore.instance
-//           .collection('posts')
-//           .doc(widget.snap['postId'])
-//           .collection('comments')
-//           .get();
-//       setState(() => commentLen = snap.docs.length);
-//     } catch (e) {
-//       debugPrint(e.toString());
-//     }
-//   }
-
-//   deletePost(String postId) async {
-//     await FireStoreMethods().deletePost(postId);
-//   }
-
-//   bool isLiked = snap['likes'].contains(currentUserId);
-
-// LikeAnimation(
-//   isAnimating: isLiked,
-//   smallLike: true,
-//   child: IconButton(
-//     icon: Icon(
-//       isLiked ? Icons.favorite : Icons.favorite_border,
-//       color: isLiked ? Colors.red : Colors.grey,
-//     ),
-//     onPressed: () => FireStoreMethods().likePost(
-//       snap['postId'],
-//       currentUserId,
-//       snap['likes'],
-//     ),
-//   ),
-// ),
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final snap = widget.snap;
-
-//     return Card(
-//       margin: const EdgeInsets.symmetric(vertical: 8),
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-//       color: Theme.of(context).colorScheme.surface,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           // --- Header ---
-//           ListTile(
-//             leading: CircleAvatar(
-//               backgroundImage: NetworkImage(snap['profImage']),
-//             ),
-//             title: Text(
-//               snap['username'],
-//               style: const TextStyle(fontWeight: FontWeight.bold),
-//             ),
-//             subtitle: Text(
-//               DateFormat.yMMMd().format(snap['datePublished'].toDate()),
-//             ),
-//             trailing: IconButton(
-//               icon: const Icon(Icons.more_vert),
-//               onPressed: () => deletePost(snap['postId']),
-//             ),
-//           ),
-
-//           // --- Image (if exists) ---
-//           if (snap['postUrl'] != null && snap['postUrl'].toString().isNotEmpty)
-//             Image.network(
-//               snap['postUrl'],
-//               fit: BoxFit.cover,
-//               width: double.infinity,
-//               height: 250,
-//             ),
-
-//           // --- Description ---
-//           Padding(
-//             padding: const EdgeInsets.all(12),
-//             child: Text(
-//               snap['description'] ?? "",
-//               style: const TextStyle(fontSize: 15, height: 1.4),
-//             ),
-//           ),
-
-//           // --- Footer (likes/comments) ---
-//           Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   "${snap['likes'].length} likes",
-//                   style: const TextStyle(fontWeight: FontWeight.w600),
-//                 ),
-//                 TextButton( onPressed: () { Navigator.push( context, MaterialPageRoute( builder: (_) => CommentsScreen(postId: snap['postId']), ), ); }, child: Text('View all $commentLen comments'), )
-//               ],
-//             ),
-//           ),
-
-          
-//         ],
-//       ),
-//     );
-//   }
-// }
