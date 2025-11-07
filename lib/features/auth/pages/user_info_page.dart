@@ -203,7 +203,6 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                         ],
                       ),
 
-                      // Bureau role (only if "Membre du bureau")
                       if (typeValue == "Membre du bureau") ...[
                         const SizedBox(height: 15),
                         const Text(
@@ -322,25 +321,31 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                               color: Color(0xFF4A8BFF),
                             ),
                           ),
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                (picture == null || picture!.path.isEmpty)
-                                ? const AssetImage('assets/profile.png')
-                                : FileImage(picture!) as ImageProvider,
+                          InkWell(
+                            onTap: () async {
+                              picture = await pickImage();
+                              setState(() {});
+                            },
+                            child: CircleAvatar(
+                              radius: 40,
+                              backgroundImage:
+                                  (picture == null || picture!.path.isEmpty)
+                                  ? const AssetImage('assets/profile.png')
+                                  : FileImage(picture!) as ImageProvider,
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      FlatButton(
-                        colour: primaryColor,
-                        text: "SELECT",
-                        onPressed: () async {
-                          picture = await pickImage();
-                          setState(() {});
-                        },
-                      ),
 
+                      //   const SizedBox(height: 10),
+                      // FlatButton(
+                      //   colour: primaryColor,
+                      //   text: "SELECT",
+                      //   onPressed: () async {
+                      //     picture = await pickImage();
+                      //     setState(() {});
+                      //   },
+                      // ),
                       const SizedBox(height: 20),
 
                       // Continue button

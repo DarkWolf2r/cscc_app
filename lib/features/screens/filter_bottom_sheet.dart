@@ -157,6 +157,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               children: visibilities.map((v) {
                 return RadioListTile<String>(
                   value: v,
+                  
                   groupValue: selectedVisibility,
                   onChanged: (val) {
                     setState(() => selectedVisibility = val!);

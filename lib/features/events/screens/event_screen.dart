@@ -298,16 +298,13 @@
 //     );
 //   }
 // }
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
-import 'package:cscc_app/features/auth/provider/providers.dart';
-import 'package:cscc_app/features/events/screens/edit_event_screen.dart';
-import 'package:cscc_app/features/events/screens/event_chat_screen.dart';
+import 'package:cscc_app/features/auth/provider/providers.dart';import 'package:cscc_app/features/events/screens/event_chat_screen.dart';
 import 'package:cscc_app/features/events/repo/event_service.dart';
+import 'package:cscc_app/features/events/screens/event_details_screen.dart';
 import 'package:cscc_app/features/events/screens/events_teams_screen.dart';
 import 'package:cscc_app/features/project/project_model.dart';
 import 'package:cscc_app/features/project/projects_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -473,8 +470,11 @@ class EventScreen extends ConsumerWidget {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => EventTeamsScreen(
+                      builder: (_) => EventDetailsScreen(
                         eventId: post['id'] ?? post['postId'] ?? '', // Firestore doc ID
+                        userName: currentUser.value!.username,
+                        userId: currentUser.value!.userId,
+                        profilePic:currentUser.value!.profilePic! ,
                         userType: currentUser.value!.type, // from user model
                       ),
                     ),

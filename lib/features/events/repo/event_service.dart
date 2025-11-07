@@ -13,7 +13,6 @@
 // });
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../model/event_model.dart';
 
 // final eventPostsProvider = StreamProvider<List<EventModel>>((ref) {
 //   return FirebaseFirestore.instance

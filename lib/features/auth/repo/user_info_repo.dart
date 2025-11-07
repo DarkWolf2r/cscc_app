@@ -23,6 +23,7 @@ class UserDataService {
     String? profilePic,
     String? description,
     int followers = 0,
+    int following = 0,
     required List<String> department,
     required String type,
     required BuildContext context,
@@ -30,6 +31,7 @@ class UserDataService {
     UserModel user = UserModel(
       followers: followers,
       username: username,
+      following: following,
       email: email,
       github: github,
       userId: auth.currentUser!.uid,
@@ -43,12 +45,18 @@ class UserDataService {
       context: context,
       builder: (context) => Center(child: CircularProgressIndicator()),
     );
-    Navigator.of(context).pop();
 
-    await firestore
-        .collection("users")
-        .doc(auth.currentUser!.uid)
-        .set(user.toMap());
+    try {
+      await firestore
+          .collection("users")
+          .doc(auth.currentUser!.uid)
+          .set(user.toMap());
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Failed : ${e.toString()}")));
+    }
+    Navigator.of(context).pop();
   }
 
   Future<UserModel> fetchCurrentUserData() async {

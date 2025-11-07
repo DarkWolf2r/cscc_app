@@ -227,7 +227,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           }
 
                           final docs = (snapshot.data?.docs ?? [])
-                              .map((d) => d.data() as Map<String, dynamic>)
+                              .map((d) => d.data())
                               .toList();
 
                           if (docs.isEmpty) {

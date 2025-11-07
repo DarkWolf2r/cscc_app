@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cscc_app/cores/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -174,8 +175,15 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               ),
               child: Column(
                 children: [
+                  const SizedBox(height: 40),
+
+                  
+                  if (isEmailVerified)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: LinearProgressIndicator(color: primaryColor),
+                    ),
                   const SizedBox(height: 80),
-                  const SizedBox(height: 20),
                   Text(
                     "Email Verification",
                     style: GoogleFonts.lato(
@@ -187,7 +195,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     ),
                   ),
                   Text(
-                    "Check your email to verify your account !",
+                    "Click to send an email to verify your account !",
                     style: GoogleFonts.lato(
                       textStyle: const TextStyle(
                         fontSize: 12,

@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -58,11 +57,11 @@ class FireStoreMethods {
           'postId': postId,
           'title': title,
           'place': '',
+          'description':description,
           'date': '',
           'teams': [
-            {'name': 'Logistics', 'description': 'Handles setup', 'members': []},
-            {'name': 'Design', 'description': 'Creates visuals', 'members': []},
-            {'name': 'Media', 'description': 'Handles coverage', 'members': []},
+            {'name': 'Logistics', 'description': 'Organisation', 'members': []},
+         
           ],
           'createdBy':FirebaseAuth.instance.currentUser!.uid 
         });
@@ -113,12 +112,12 @@ class FireStoreMethods {
         await _firestore.collection('events').doc(postId).set({
           'postId': postId,
           'title': title,
+          'desciption' :description,
           'place': '',
           'date': '',
           'teams': [
-            {'name': 'Logistics', 'description': 'Handles setup', 'members': []},
-            {'name': 'Design', 'description': 'Creates visuals', 'members': []},
-            {'name': 'Media', 'description': 'Handles coverage', 'members': []},
+            {'name': 'Logistics', 'description': 'Organisation', 'members': []},
+           
           ],
           'createdBy':FirebaseAuth.instance.currentUser!.uid 
         });

@@ -8,6 +8,7 @@ class UserModel {
   final String? description;
   final String type;
   int followers = 0;
+  int following = 0;
   
 
   UserModel({
@@ -20,6 +21,7 @@ class UserModel {
     this.description,
     required this.type,
     required this.followers,
+    required this.following,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,6 +35,7 @@ class UserModel {
       'description': description,
       'type': type,
       'followers': followers,
+      'following':following ,
       
     };
   }
@@ -48,6 +51,7 @@ class UserModel {
       description: map['description'],
       type: map['type'] ?? '',
       followers: map['followers'] ,     
+      following: map['following']
     );
   }
 }
