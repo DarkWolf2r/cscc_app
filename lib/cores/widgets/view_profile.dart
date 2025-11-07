@@ -135,13 +135,13 @@ class ViewProfilePage extends StatelessWidget {
                         data['profilePic'] ?? '',
                       );
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              ChatScreen(chatId: chatId, receiverId: userId),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (_) =>
+                      //         ChatScreen(chatId: chatId, receiverId: userId),
+                      //   ),
+                      // );
                     },
                     icon: const Icon(Icons.message_rounded, size: 20),
                     label: Text(

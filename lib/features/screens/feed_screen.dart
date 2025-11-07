@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/features/screens/animated_list_wrapper.dart';
 import 'package:cscc_app/features/screens/filter_bottom_sheet.dart';
-import 'package:cscc_app/features/screens/messages_screen.dart';
+import 'package:cscc_app/features/chat/screens/messages_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/firestore_methods.dart';
-import 'package:cscc_app/cores/widgets/terminal_message.dart';
+import 'package:cscc_app/features/chat/widgets/terminal_message_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -62,6 +62,10 @@ class _ChatScreenState extends State<ChatScreen> {
       senderId: currentUserId,
       text: text,
     );
+    // await firestore.collection('chats').doc(chatId).update({
+    //   'lastMessage': text,
+    //   'lastMessageTime': FieldValue.serverTimestamp(),
+    // });
 
     _messageController.clear();
     _scrollToBottom();
@@ -69,13 +73,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = const Color.fromRGBO(24, 27, 46, 1);
+    // final bgColor = Theme.of(context).colorScheme.surface;
+    final bgColor = Color.fromRGBO(24, 27, 46, 1);
     final inputColor = const Color.fromARGB(255, 39, 43, 56);
 
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(28, 31, 57, 1),
+        backgroundColor: Color.fromRGBO(28, 31, 57, 1),
         elevation: 0,
         title: Text(
           receiverName != null
@@ -103,65 +108,6 @@ class _ChatScreenState extends State<ChatScreen> {
           //         _scrollToBottom();
           //       });
 
-          //       if (messages.isEmpty) {
-          //         final now = DateTime.now();
-          //         final formattedDate =
-          //             "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} "
-          //             "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
-
-          //         return SingleChildScrollView(
-          //           padding: const EdgeInsets.symmetric(
-          //             horizontal: 10,
-          //             vertical: 12,
-          //           ),
-          //           child: Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             children: [
-          //               Text(
-          //                 "CSCC Team [Version 11.0.22631.xxxx]",
-          //                 style: GoogleFonts.robotoMono(
-          //                   fontSize: 14,
-          //                   color: Colors.grey.shade400,
-          //                 ),
-          //               ),
-          //               Text(
-          //                 "(c) CSCC Corporation. All rights reserved.",
-          //                 style: GoogleFonts.robotoMono(
-          //                   fontSize: 14,
-          //                   color: Colors.grey.shade400,
-          //                 ),
-          //               ),
-          //               const SizedBox(height: 16),
-          //               Text(
-          //                 "System booted on $formattedDate",
-          //                 style: GoogleFonts.robotoMono(
-          //                   fontSize: 13,
-          //                   color: Colors.grey.shade500,
-          //                 ),
-          //               ),
-          //               const SizedBox(height: 12),
-          //               Text(
-          //                 receiverName != null
-          //                     ? "Connecting to ${receiverName!}@cscc_terminal..."
-          //                     : "Connecting to remote terminal...",
-          //                 style: GoogleFonts.robotoMono(
-          //                   fontSize: 13,
-          //                   color: primaryColor,
-          //                 ),
-          //               ),
-          //               const SizedBox(height: 12),
-          //               Text(
-          //                 "C:\\Users\\You>",
-          //                 style: GoogleFonts.robotoMono(
-          //                   fontSize: 14,
-          //                   color: primaryColor,
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         );
-          //       }
-
           //       return ListView.builder(
           //         controller: _scrollController,
           //         padding: const EdgeInsets.symmetric(
@@ -172,6 +118,7 @@ class _ChatScreenState extends State<ChatScreen> {
           //         itemBuilder: (context, index) {
           //           final msg = messages[index];
           //           final isMe = msg['senderId'] == currentUserId;
+
           //           return TerminalMessage(
           //             username: isMe ? "You" : (receiverName ?? "User"),
           //             message: msg['text'],
@@ -199,10 +146,60 @@ class _ChatScreenState extends State<ChatScreen> {
                 });
 
                 if (messages.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      "No messages yet",
-                      style: TextStyle(color: Colors.grey),
+                  final now = DateTime.now();
+                  final formattedDate =
+                      "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} "
+                      "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 12,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "CSCC Team [Version 11.0.22631.xxxx]",
+                          style: GoogleFonts.robotoMono(
+                            fontSize: 14,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                        Text(
+                          "(c) CSCC Corporation. All rights reserved.",
+                          style: GoogleFonts.robotoMono(
+                            fontSize: 14,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          "System booted on $formattedDate",
+                          style: GoogleFonts.robotoMono(
+                            fontSize: 13,
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          receiverName != null
+                              ? "Connecting to ${receiverName!}@cscc_terminal..."
+                              : "Connecting to remote terminal...",
+                          style: GoogleFonts.robotoMono(
+                            fontSize: 13,
+                            color: primaryColor,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          "C:\\Users\\You>",
+                          style: GoogleFonts.robotoMono(
+                            fontSize: 14,
+                            color: primaryColor,
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 }
@@ -217,21 +214,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemBuilder: (context, index) {
                     final msg = messages[index];
                     final isMe = msg['senderId'] == currentUserId;
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: Align(
-                        alignment: isMe
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Text(
-                          "${isMe ? 'You' : (receiverName ?? 'User')}: ${msg['text']}",
-                          style: GoogleFonts.robotoMono(
-                            fontSize: 14,
-                            color: isMe ? primaryColor : Colors.white,
-                          ),
-                        ),
-                      ),
+                    return TerminalMessage(
+                      username: isMe ? "You" : (receiverName ?? "User"),
+                      message: msg['text'],
+                      isMe: isMe,
                     );
                   },
                 );
@@ -281,7 +267,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cscc_app/cores/colors.dart';
 // import 'package:cscc_app/cores/firestore_methods.dart';
@@ -346,10 +331,6 @@ class _ChatScreenState extends State<ChatScreen> {
 //       senderId: currentUserId,
 //       text: text,
 //     );
-//     // await firestore.collection('chats').doc(chatId).update({
-//     //   'lastMessage': text,
-//     //   'lastMessageTime': FieldValue.serverTimestamp(),
-//     // });
 
 //     _messageController.clear();
 //     _scrollToBottom();
@@ -357,14 +338,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     // final bgColor = Theme.of(context).colorScheme.surface;
-//     final bgColor = Color.fromRGBO(24, 27, 46, 1);
+//     final bgColor = const Color.fromRGBO(24, 27, 46, 1);
 //     final inputColor = const Color.fromARGB(255, 39, 43, 56);
 
 //     return Scaffold(
 //       backgroundColor: bgColor,
 //       appBar: AppBar(
-//         backgroundColor: Color.fromRGBO(28, 31, 57, 1),
+//         backgroundColor: const Color.fromRGBO(28, 31, 57, 1),
 //         elevation: 0,
 //         title: Text(
 //           receiverName != null
@@ -392,6 +372,65 @@ class _ChatScreenState extends State<ChatScreen> {
 //           //         _scrollToBottom();
 //           //       });
 
+//           //       if (messages.isEmpty) {
+//           //         final now = DateTime.now();
+//           //         final formattedDate =
+//           //             "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} "
+//           //             "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+
+//           //         return SingleChildScrollView(
+//           //           padding: const EdgeInsets.symmetric(
+//           //             horizontal: 10,
+//           //             vertical: 12,
+//           //           ),
+//           //           child: Column(
+//           //             crossAxisAlignment: CrossAxisAlignment.start,
+//           //             children: [
+//           //               Text(
+//           //                 "CSCC Team [Version 11.0.22631.xxxx]",
+//           //                 style: GoogleFonts.robotoMono(
+//           //                   fontSize: 14,
+//           //                   color: Colors.grey.shade400,
+//           //                 ),
+//           //               ),
+//           //               Text(
+//           //                 "(c) CSCC Corporation. All rights reserved.",
+//           //                 style: GoogleFonts.robotoMono(
+//           //                   fontSize: 14,
+//           //                   color: Colors.grey.shade400,
+//           //                 ),
+//           //               ),
+//           //               const SizedBox(height: 16),
+//           //               Text(
+//           //                 "System booted on $formattedDate",
+//           //                 style: GoogleFonts.robotoMono(
+//           //                   fontSize: 13,
+//           //                   color: Colors.grey.shade500,
+//           //                 ),
+//           //               ),
+//           //               const SizedBox(height: 12),
+//           //               Text(
+//           //                 receiverName != null
+//           //                     ? "Connecting to ${receiverName!}@cscc_terminal..."
+//           //                     : "Connecting to remote terminal...",
+//           //                 style: GoogleFonts.robotoMono(
+//           //                   fontSize: 13,
+//           //                   color: primaryColor,
+//           //                 ),
+//           //               ),
+//           //               const SizedBox(height: 12),
+//           //               Text(
+//           //                 "C:\\Users\\You>",
+//           //                 style: GoogleFonts.robotoMono(
+//           //                   fontSize: 14,
+//           //                   color: primaryColor,
+//           //                 ),
+//           //               ),
+//           //             ],
+//           //           ),
+//           //         );
+//           //       }
+
 //           //       return ListView.builder(
 //           //         controller: _scrollController,
 //           //         padding: const EdgeInsets.symmetric(
@@ -402,7 +441,6 @@ class _ChatScreenState extends State<ChatScreen> {
 //           //         itemBuilder: (context, index) {
 //           //           final msg = messages[index];
 //           //           final isMe = msg['senderId'] == currentUserId;
-
 //           //           return TerminalMessage(
 //           //             username: isMe ? "You" : (receiverName ?? "User"),
 //           //             message: msg['text'],
@@ -430,60 +468,10 @@ class _ChatScreenState extends State<ChatScreen> {
 //                 });
 
 //                 if (messages.isEmpty) {
-//                   final now = DateTime.now();
-//                   final formattedDate =
-//                       "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} "
-//                       "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
-
-//                   return SingleChildScrollView(
-//                     padding: const EdgeInsets.symmetric(
-//                       horizontal: 10,
-//                       vertical: 12,
-//                     ),
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         Text(
-//                           "CSCC Team [Version 11.0.22631.xxxx]",
-//                           style: GoogleFonts.robotoMono(
-//                             fontSize: 14,
-//                             color: Colors.grey.shade400,
-//                           ),
-//                         ),
-//                         Text(
-//                           "(c) CSCC Corporation. All rights reserved.",
-//                           style: GoogleFonts.robotoMono(
-//                             fontSize: 14,
-//                             color: Colors.grey.shade400,
-//                           ),
-//                         ),
-//                         const SizedBox(height: 16),
-//                         Text(
-//                           "System booted on $formattedDate",
-//                           style: GoogleFonts.robotoMono(
-//                             fontSize: 13,
-//                             color: Colors.grey.shade500,
-//                           ),
-//                         ),
-//                         const SizedBox(height: 12),
-//                         Text(
-//                           receiverName != null
-//                               ? "Connecting to ${receiverName!}@cscc_terminal..."
-//                               : "Connecting to remote terminal...",
-//                           style: GoogleFonts.robotoMono(
-//                             fontSize: 13,
-//                             color: primaryColor,
-//                           ),
-//                         ),
-//                         const SizedBox(height: 12),
-//                         Text(
-//                           "C:\\Users\\You>",
-//                           style: GoogleFonts.robotoMono(
-//                             fontSize: 14,
-//                             color: primaryColor,
-//                           ),
-//                         ),
-//                       ],
+//                   return const Center(
+//                     child: Text(
+//                       "No messages yet",
+//                       style: TextStyle(color: Colors.grey),
 //                     ),
 //                   );
 //                 }
@@ -498,10 +486,21 @@ class _ChatScreenState extends State<ChatScreen> {
 //                   itemBuilder: (context, index) {
 //                     final msg = messages[index];
 //                     final isMe = msg['senderId'] == currentUserId;
-//                     return TerminalMessage(
-//                       username: isMe ? "You" : (receiverName ?? "User"),
-//                       message: msg['text'],
-//                       isMe: isMe,
+
+//                     return Padding(
+//                       padding: const EdgeInsets.symmetric(vertical: 2),
+//                       child: Align(
+//                         alignment: isMe
+//                             ? Alignment.centerRight
+//                             : Alignment.centerLeft,
+//                         child: Text(
+//                           "${isMe ? 'You' : (receiverName ?? 'User')}: ${msg['text']}",
+//                           style: GoogleFonts.robotoMono(
+//                             fontSize: 14,
+//                             color: isMe ? primaryColor : Colors.white,
+//                           ),
+//                         ),
+//                       ),
 //                     );
 //                   },
 //                 );
