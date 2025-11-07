@@ -32,6 +32,40 @@ class TerminalMessage extends StatelessWidget {
   }
 }
 
+// import 'package:cscc_app/cores/colors.dart';
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+
+// class TerminalMessage extends StatelessWidget {
+//   final String username;
+//   final String message;
+//   final bool isMe;
+
+//   const TerminalMessage({
+//     super.key,
+//     required this.username,
+//     required this.message,
+//     required this.isMe,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+//       child: Align(
+//         alignment: Alignment.centerLeft,
+//         child: Text(
+//           "C:\\Users\\$username> $message",
+//           style: GoogleFonts.robotoMono(
+//             fontSize: 14,
+//             color: isMe ? primaryColor : Colors.white.withOpacity(0.9),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 // import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
@@ -84,8 +118,6 @@ class TerminalMessage extends StatelessWidget {
 //     );
 //   }
 // }
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';

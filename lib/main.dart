@@ -66,6 +66,7 @@ class MyApp extends ConsumerWidget {
         progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),
       ),
       themeMode: appThemeState.themeMode,
+      // home: HomePage(),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
