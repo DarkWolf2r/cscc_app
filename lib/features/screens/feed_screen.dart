@@ -168,13 +168,13 @@ class _FeedScreenState extends State<FeedScreen> {
                         },
                       ),
 
-                      IconButton(
-                        icon: const Icon(
-                          Icons.messenger_outline,
-                          color: Colors.white,
-                        ),
-                        onPressed: _goToMessages,
-                      ),
+                      // IconButton(
+                      //   icon: const Icon(
+                      //     Icons.messenger_outline,
+                      //     color: Colors.white,
+                      //   ),
+                      //   onPressed: _goToMessages,
+                      // ),
                     ],
                   ),
                   SliverToBoxAdapter(
@@ -280,10 +280,10 @@ class _FeedScreenState extends State<FeedScreen> {
             ),
 
             // ---- Messages Page ----
-            Container(
-              color: Theme.of(context).colorScheme.surface,
-              child: const MessagesScreen(),
-            ),
+            // Container(
+            //   color: Theme.of(context).colorScheme.surface,
+            //   child: const MessagesScreen(),
+            // ),
           ],
         ),
       ),
