@@ -8,7 +8,7 @@ class UserModel {
   final String? description;
   final String type;
   int followers = 0;
-  int following = 0;
+  final List<String>? following ;
   
 
   UserModel({

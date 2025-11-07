@@ -57,7 +57,7 @@ class FireStoreMethods {
           'postId': postId,
           'title': title,
           'place': '',
-          'description':description,
+          'description': description,
           'date': '',
           'teams': [
             {'name': 'Logistics', 'description': 'Organisation', 'members': []},

@@ -7,6 +7,7 @@ class ProjectService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
+
   Stream<List<ProjectModel>> getProjects() {
     return _firestore.collection('projects').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -14,7 +15,15 @@ class ProjectService {
       }).toList();
     });
   }
-
+  Stream<List<ProjectModel>?> getCurrentUserProjects(String senderName) {
+    return _firestore.collection('projects').where('senderName',isEqualTo: senderName)
+    
+    .snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return ProjectModel.fromMap(doc.data(), doc.id);
+      }).toList();
+    });
+  }
   Future<List<String>> _uploadFiles(
       List<File> files, String folderName) async {
     final urls = <String>[];

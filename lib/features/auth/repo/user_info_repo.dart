@@ -23,7 +23,7 @@ class UserDataService {
     String? profilePic,
     String? description,
     int followers = 0,
-    int following = 0,
+    List<String>? following   ,
     required List<String> department,
     required String type,
     required BuildContext context,
