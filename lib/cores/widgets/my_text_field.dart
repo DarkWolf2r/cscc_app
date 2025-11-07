@@ -38,6 +38,8 @@ class MyTextField extends StatelessWidget {
       controller: contoller,
       obscureText: obscureText,
       maxLines: maxLines ?? 1,
+      // maxLines: maxLines,
+      // maxLines: obscureText ? 1 : (maxLines ?? 1),
       // InputBorder? focusedBorder,
       cursorColor: Color(0xFF4A8BFF),
       style: TextStyle(

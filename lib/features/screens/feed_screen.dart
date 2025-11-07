@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/features/screens/animated_list_wrapper.dart';
 import 'package:cscc_app/features/screens/filter_bottom_sheet.dart';
-import 'package:cscc_app/features/screens/messages_screen.dart';
+import 'package:cscc_app/features/chat/screens/messages_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -168,13 +168,13 @@ class _FeedScreenState extends State<FeedScreen> {
                         },
                       ),
 
-                      IconButton(
-                        icon: const Icon(
-                          Icons.messenger_outline,
-                          color: Colors.white,
-                        ),
-                        onPressed: _goToMessages,
-                      ),
+                      // IconButton(
+                      //   icon: const Icon(
+                      //     Icons.messenger_outline,
+                      //     color: Colors.white,
+                      //   ),
+                      //   onPressed: _goToMessages,
+                      // ),
                     ],
                   ),
                   SliverToBoxAdapter(
@@ -280,10 +280,10 @@ class _FeedScreenState extends State<FeedScreen> {
             ),
 
             // ---- Messages Page ----
-            Container(
-              color: Theme.of(context).colorScheme.surface,
-              child: const MessagesScreen(),
-            ),
+            // Container(
+            //   color: Theme.of(context).colorScheme.surface,
+            //   child: const MessagesScreen(),
+            // ),
           ],
         ),
       ),
