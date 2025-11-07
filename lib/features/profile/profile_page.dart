@@ -59,7 +59,7 @@ class ProfilePage extends ConsumerWidget {
                                 Container(
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey.shade100,
+                                    color: Theme.of(context).colorScheme.surface,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   // PROFILE AND NAME ROW
@@ -87,7 +87,7 @@ class ProfilePage extends ConsumerWidget {
                                                     .fontFamily,
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.w800,
-                                                color: Colors.black,
+                                                color: Theme.of(context).colorScheme.inverseSurface,
                                               ),
                                             ),
                                           ],
@@ -109,7 +109,7 @@ class ProfilePage extends ConsumerWidget {
                                                     .fontFamily,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w800,
-                                                color: Colors.black,
+                                                color: Theme.of(context).colorScheme.inverseSurface,
                                               ),
                                             ),
                                             const SizedBox(height: 10),
@@ -178,7 +178,7 @@ class ProfilePage extends ConsumerWidget {
                                                 GoogleFonts.lato().fontFamily,
                                             fontSize: 26,
                                             fontWeight: FontWeight.w800,
-                                            color: Colors.black,
+                                            color: Theme.of(context).colorScheme.inverseSurface,
                                           ),
                                         ),
                                         Text(
@@ -190,7 +190,7 @@ class ProfilePage extends ConsumerWidget {
                                                 GoogleFonts.lato().fontFamily,
                                             fontSize: 26,
                                             fontWeight: FontWeight.w500,
-                                            color: Colors.black,
+                                            color: Theme.of(context).colorScheme.inverseSurface,
                                           ),
                                         ),
                                       ],
@@ -202,7 +202,7 @@ class ProfilePage extends ConsumerWidget {
                                 Container(
                                   width: MediaQuery.sizeOf(context).width,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey.shade100,
+                                    color: Theme.of(context).colorScheme.surface,
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   child: Padding(
@@ -216,7 +216,7 @@ class ProfilePage extends ConsumerWidget {
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.black,
+                                            color: Theme.of(context).colorScheme.inverseSurface,
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -228,7 +228,7 @@ class ProfilePage extends ConsumerWidget {
                                           overflow: TextOverflow.visible,
                                           style: TextStyle(
                                             fontSize: 16,
-                                            color: Colors.grey[800],
+                                            color: Theme.of(context).colorScheme.inverseSurface,
                                           ),
                                         ),
                                       ],
