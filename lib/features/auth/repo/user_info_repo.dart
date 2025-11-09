@@ -23,7 +23,7 @@ class UserDataService {
     String? profilePic,
     String? description,
     int followers = 0,
-    List<String>? following   ,
+    List<String>? following,
     required List<String> department,
     required String type,
     required BuildContext context,
@@ -40,7 +40,6 @@ class UserDataService {
       departement: department,
       profilePic: profilePic,
     );
-
     showDialog(
       context: context,
       builder: (context) => Center(child: CircularProgressIndicator()),
@@ -51,12 +50,12 @@ class UserDataService {
           .collection("users")
           .doc(auth.currentUser!.uid)
           .set(user.toMap());
+      Navigator.of(context).pop();
     } catch (e) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Failed : ${e.toString()}")));
     }
-    Navigator.of(context).pop();
   }
 
   Future<UserModel> fetchCurrentUserData() async {

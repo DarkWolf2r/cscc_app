@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cscc_app/cores/colors.dart';
-import 'package:cscc_app/cores/dark_theme/theme_provider.dart';
 import 'package:cscc_app/features/auth/provider/providers.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:cscc_app/features/profile/my_project_page.dart';
