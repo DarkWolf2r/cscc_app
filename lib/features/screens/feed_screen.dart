@@ -188,6 +188,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         color: Theme.of(context).colorScheme.surface,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(16),
+                          // topRight: Radius.circular(16),
                         ),
                       ),
                       child: StreamBuilder(

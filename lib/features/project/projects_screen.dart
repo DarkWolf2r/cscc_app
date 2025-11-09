@@ -277,9 +277,9 @@ class ProjectCard extends StatelessWidget {
                 icon: const Icon(Icons.link),
                 label: const Text("View Project"),
               ),
-              
 
             // const Divider(),
+            const SizedBox(height: 10),
 
             // Sender info
             Row(

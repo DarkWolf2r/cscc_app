@@ -73,95 +73,95 @@ class _SettingPageState extends ConsumerState<SettingPage> {
               ),
             ]),
 
-            const SizedBox(height: 25),
-            Text(
-              "Account",
-              style: GoogleFonts.lato(
-                textStyle: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: primaryColor,
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            _buildSectionContainer(context, [
-              ListTile(
-                leading: const Icon(Icons.info_outline),
-                title: const Text("About the App"),
-                onTap: () {
-                  _showInfoDialog(
-                    context,
-                    "About the App",
-                    "This app helps manage CSCC members and their activities efficiently.",
-                  );
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.help_outline),
-                title: const Text("Help & Support"),
-                onTap: () {
-                  _showInfoDialog(
-                    context,
-                    "Help",
-                    "For support, please contact cscc.team@gmail.com",
-                  );
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.feedback),
-                title: const Text("Feed-back"),
-                onTap: () {
-                  _showInfoDialog(
-                    context,
-                    "Feedback",
-                    "We will be happy to get your feedback !  contact us :  cht1485@gmail.com / laouar.romaissa.info@gmail.com",
-                  );
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.lock_reset),
-                title: const Text("Reset Password"),
-                onTap: () {
-                  _showInfoDialog(
-                    context,
-                    "Reset Password",
-                    "Check your registered email to reset your password.",
-                  );
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.logout, color: Colors.redAccent),
-                title: const Text("Logout"),
-                onTap: () => _showConfirmDialog(
-                  context,
-                  "Logout",
-                  "Are you sure you want to logout?",
-                  () async {
-                    await ref.read(authServiceProvider).signOutUser();
-                    if (mounted) Navigator.pop(context);
-                  },
-                ),
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.delete_forever, color: Colors.red),
-                title: const Text("Delete Account"),
-                onTap: () => _showConfirmDialog(
-                  context,
-                  "Delete Account",
-                  "This action is irreversible. Do you want to continue?",
-                  () {
-                    // Add delete account logic here
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ]),
+            //   const SizedBox(height: 25),
+            //   Text(
+            //     "Account",
+            //     style: GoogleFonts.lato(
+            //       textStyle: TextStyle(
+            //         fontSize: 20,
+            //         fontWeight: FontWeight.bold,
+            //         color: primaryColor,
+            //       ),
+            //     ),
+            //   ),
+            //   const SizedBox(height: 8),
+            //   _buildSectionContainer(context, [
+            //     ListTile(
+            //       leading: const Icon(Icons.info_outline),
+            //       title: const Text("About the App"),
+            //       onTap: () {
+            //         _showInfoDialog(
+            //           context,
+            //           "About the App",
+            //           "This app helps manage CSCC members and their activities efficiently.",
+            //         );
+            //       },
+            //     ),
+            //     const Divider(),
+            //     ListTile(
+            //       leading: const Icon(Icons.help_outline),
+            //       title: const Text("Help & Support"),
+            //       onTap: () {
+            //         _showInfoDialog(
+            //           context,
+            //           "Help",
+            //           "For support, please contact cscc.team@gmail.com",
+            //         );
+            //       },
+            //     ),
+            //     const Divider(),
+            //     ListTile(
+            //       leading: const Icon(Icons.feedback),
+            //       title: const Text("Feed-back"),
+            //       onTap: () {
+            //         _showInfoDialog(
+            //           context,
+            //           "Feedback",
+            //           "We will be happy to get your feedback !  contact us :  cht1485@gmail.com / laouar.romaissa.info@gmail.com",
+            //         );
+            //       },
+            //     ),
+            //     const Divider(),
+            //     ListTile(
+            //       leading: const Icon(Icons.lock_reset),
+            //       title: const Text("Reset Password"),
+            //       onTap: () {
+            //         _showInfoDialog(
+            //           context,
+            //           "Reset Password",
+            //           "Check your registered email to reset your password.",
+            //         );
+            //       },
+            //     ),
+            //     const Divider(),
+            //     ListTile(
+            //       leading: const Icon(Icons.logout, color: Colors.redAccent),
+            //       title: const Text("Logout"),
+            //       onTap: () => _showConfirmDialog(
+            //         context,
+            //         "Logout",
+            //         "Are you sure you want to logout?",
+            //         () async {
+            //           await ref.read(authServiceProvider).signOutUser();
+            //           if (mounted) Navigator.pop(context);
+            //         },
+            //       ),
+            //     ),
+            //     const Divider(),
+            //     ListTile(
+            //       leading: const Icon(Icons.delete_forever, color: Colors.red),
+            //       title: const Text("Delete Account"),
+            //       onTap: () => _showConfirmDialog(
+            //         context,
+            //         "Delete Account",
+            //         "This action is irreversible. Do you want to continue?",
+            //         () {
+            //           // Add delete account logic here
+            //           Navigator.pop(context);
+            //         },
+            //       ),
+            //     ),
+            //   ]),
           ],
         ),
       ),
@@ -197,7 +197,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.15),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -207,58 +207,58 @@ class _SettingPageState extends ConsumerState<SettingPage> {
     );
   }
 
-  void _showConfirmDialog(
-    BuildContext context,
-    String title,
-    String message,
-    VoidCallback onConfirm,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: Text(
-          title,
-          style: GoogleFonts.lato(fontWeight: FontWeight.bold),
-        ),
-        content: Text(message, style: GoogleFonts.lato(fontSize: 16)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: onConfirm,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text("Confirm"),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _showConfirmDialog(
+  //   BuildContext context,
+  //   String title,
+  //   String message,
+  //   VoidCallback onConfirm,
+  // ) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+  //       title: Text(
+  //         title,
+  //         style: GoogleFonts.lato(fontWeight: FontWeight.bold),
+  //       ),
+  //       content: Text(message, style: GoogleFonts.lato(fontSize: 16)),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: const Text("Cancel"),
+  //         ),
+  //         ElevatedButton(
+  //           onPressed: onConfirm,
+  //           style: ElevatedButton.styleFrom(
+  //             backgroundColor: Colors.redAccent,
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(8),
+  //             ),
+  //           ),
+  //           child: const Text("Confirm"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  void _showInfoDialog(BuildContext context, String title, String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: Text(
-          title,
-          style: GoogleFonts.lato(fontWeight: FontWeight.bold),
-        ),
-        content: Text(message, style: GoogleFonts.lato(fontSize: 16)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("OK"),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _showInfoDialog(BuildContext context, String title, String message) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+  //       title: Text(
+  //         title,
+  //         style: GoogleFonts.lato(fontWeight: FontWeight.bold),
+  //       ),
+  //       content: Text(message, style: GoogleFonts.lato(fontSize: 16)),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: const Text("OK"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

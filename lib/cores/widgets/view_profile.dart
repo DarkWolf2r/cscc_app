@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/firestore_methods.dart';
 import 'package:cscc_app/features/screens/chat_screen.dart';
+// import 'package:cscc_app/features/screens/chat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,7 +36,7 @@ class ViewProfilePage extends StatelessWidget {
           final stats = {
             "Followers": data['followersCount'] ?? 0,
             "Following": data['followingCount'] ?? 0,
-            "Events": data['eventsCount'] ?? 0,
+            "Projects": data['eventsCount'] ?? 0,
           };
 
           return SafeArea(
