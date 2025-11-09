@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/dark_theme/theme_provider.dart';
 import 'package:cscc_app/features/auth/provider/providers.dart';
+import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:cscc_app/features/profile/my_project_page.dart';
 import 'package:cscc_app/features/profile/setting_page.dart';
 import 'package:flutter/material.dart';
@@ -1080,7 +1081,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                     "Logout",
                                     "Are you sure you want to logout?",
                                     () async {
-                                      // await ref.read(authServiceProvider).signOutUser();
+                                      await ref
+                                          .read(authServiceProvider)
+                                          .signOutUser();
                                       if (mounted) Navigator.pop(context);
                                     },
                                   ),
@@ -1151,7 +1154,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _showInfoDialog(
+                                    context,
+                                    "GitHub",
+                                    data.github ?? "No Github account provided",
+                                  );
+                                },
                                 icon: Image.asset(
                                   'assets/github.png',
                                   width: 30,
@@ -1159,7 +1168,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _showInfoDialog(
+                                    context,
+                                    "Email",
+                                    data.email ?? "No Email account provided",
+                                  );
+                                },
                                 icon: Image.asset(
                                   'assets/icons8-google.png',
                                   width: 30,
