@@ -1,19 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/constants.dart';
+import 'package:cscc_app/cores/method.dart';
+import 'package:cscc_app/cores/widgets/flat_button.dart';
+import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-
-import 'package:cscc_app/cores/method.dart';
-import 'package:cscc_app/cores/widgets/flat_button.dart';
-import 'package:cscc_app/features/auth/repo/user_info_repo.dart';
 
 class UserInfoPage extends ConsumerStatefulWidget {
   final String? email;
@@ -165,9 +165,9 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                       // Type selection
                       Row(
                         children: [
-                          Text(
+                          const Text(
                             "Select your Type : ",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w900,
                               color: Color(0xFF4A8BFF),
@@ -385,7 +385,6 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                             randomNumber,
                             "image",
                           );
-                         
 
                           await ref
                               .read(userDataServiceProvider)
@@ -401,9 +400,6 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                                 profilePic: profilePic,
                                 description: descriptionController.text.trim(),
                               );
-                        
-                           
-                          
                         },
                       ),
                     ],

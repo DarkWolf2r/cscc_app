@@ -41,7 +41,7 @@ class MyTextField extends StatelessWidget {
       // maxLines: maxLines,
       // maxLines: obscureText ? 1 : (maxLines ?? 1),
       // InputBorder? focusedBorder,
-      cursorColor: Color(0xFF4A8BFF),
+      cursorColor: const Color(0xFF4A8BFF),
       style: TextStyle(
         color: Theme.of(context).colorScheme.inverseSurface,
         fontSize: 16,
@@ -50,24 +50,24 @@ class MyTextField extends StatelessWidget {
         suffixIcon: suffixIcon,
         labelText: labelText,
         hintText: hintText,
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           borderSide: BorderSide(color: Colors.red),
         ),
-        focusedErrorBorder: OutlineInputBorder(
+        focusedErrorBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           borderSide: BorderSide(color: Colors.red),
         ),
-        prefixIcon: Icon(prefixIcon, color: Color(0xFF4A8BFF)),
-        enabledBorder: OutlineInputBorder(
+        prefixIcon: Icon(prefixIcon, color: const Color(0xFF4A8BFF)),
+        enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           borderSide: BorderSide(color: Color(0xFF4A8BFF)),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           borderSide: BorderSide(color: Color(0xFF4A8BFF)),
         ),
-        floatingLabelStyle: TextStyle(color: Color(0xFF4A8BFF)),
+        floatingLabelStyle: const TextStyle(color: Color(0xFF4A8BFF)),
         // filled: true,
         fillColor: Theme.of(context).colorScheme.surface,
       ),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/dark_theme/theme_page.dart';
 import 'package:cscc_app/cores/dark_theme/theme_provider.dart';
@@ -7,11 +8,11 @@ import 'package:cscc_app/features/auth/pages/verify_email_page.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:cscc_app/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
@@ -24,7 +25,7 @@ void main() async {
     ),
   );
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
@@ -44,12 +45,14 @@ class MyApp extends ConsumerWidget {
             statusBarIconBrightness: Brightness.light,
           ),
         ),
-        colorScheme: ColorScheme.light(
+        colorScheme: const ColorScheme.light(
           primary: primaryColor,
           surface: Colors.white,
           inverseSurface: Colors.black,
         ),
-        progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: primaryColor,
+        ),
       ),
       darkTheme: darkTheme.copyWith(
         appBarTheme: const AppBarTheme(
@@ -58,12 +61,14 @@ class MyApp extends ConsumerWidget {
             statusBarIconBrightness: Brightness.light,
           ),
         ),
-        colorScheme: ColorScheme.dark(
+        colorScheme: const ColorScheme.dark(
           primary: primaryColor,
-          surface: const Color.fromRGBO(24, 27, 46, 1),
+          surface: Color.fromRGBO(24, 27, 46, 1),
           inverseSurface: Colors.white,
         ),
-        progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: primaryColor,
+        ),
       ),
       themeMode: appThemeState.themeMode,
       // home: HomePage(),
@@ -71,9 +76,9 @@ class MyApp extends ConsumerWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (!snapshot.hasData) {
-            return SignInPage();
+            return const SignInPage();
           } else if (!(snapshot.data!.emailVerified) &&
               !(snapshot.data!.providerData.any(
                 (p) =>
@@ -89,7 +94,7 @@ class MyApp extends ConsumerWidget {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 final githubLink = ref.watch(githubLinkProvider);
 
@@ -97,10 +102,8 @@ class MyApp extends ConsumerWidget {
                 if (!(snapshot.hasData && snapshot.data!.exists)) {
                   return UserInfoPage(user?.email, githubLink);
                 }
-                return HomePage();
+                return const HomePage();
               },
- 
- 
             );
           }
         },

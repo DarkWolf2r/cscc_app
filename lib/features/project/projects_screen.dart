@@ -137,9 +137,9 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
         child: IconButton(
           onPressed: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddProjectScreen()),
+            MaterialPageRoute(builder: (context) => const AddProjectScreen()),
           ),
-          icon: Icon(Iconsax.add),
+          icon: const Icon(Iconsax.add),
         ),
       ),
     );

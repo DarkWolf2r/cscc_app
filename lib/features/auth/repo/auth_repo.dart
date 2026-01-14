@@ -37,7 +37,7 @@ class AuthService {
   ) async {
     showDialog(
       context: context,
-      builder: (context) => Center(child: CircularProgressIndicator()),
+      builder: (context) => const Center(child: CircularProgressIndicator()),
     );
     try {
       await auth.signInWithEmailAndPassword(
@@ -89,7 +89,7 @@ class AuthService {
   ) async {
     showDialog(
       context: context,
-      builder: (context) => Center(child: CircularProgressIndicator()),
+      builder: (context) => const Center(child: CircularProgressIndicator()),
     );
     try {
       // Create user account

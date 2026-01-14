@@ -24,7 +24,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -112,7 +112,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            cursorColor: Color(0xFF4A8BFF),
+                            cursorColor: const Color(0xFF4A8BFF),
                             style: TextStyle(
                               color: Theme.of(
                                 context,
@@ -134,7 +134,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 Icons.email,
                                 color: Color(0xFF4A8BFF),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
@@ -142,7 +142,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   color: Color(0xFF4A8BFF),
                                 ),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
@@ -150,7 +150,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   color: Color(0xFF4A8BFF),
                                 ),
                               ),
-                              floatingLabelStyle: TextStyle(
+                              floatingLabelStyle: const TextStyle(
                                 color: Color(0xFF4A8BFF),
                               ),
                               filled: true,
@@ -166,7 +166,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 ? 'Enter a password with at least 6 characters'
                                 : null,
                             keyboardType: TextInputType.visiblePassword,
-                            cursorColor: Color(0xFF4A8BFF),
+                            cursorColor: const Color(0xFF4A8BFF),
                             style: TextStyle(
                               color: Theme.of(
                                 context,
@@ -190,10 +190,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   _obscurePassword
                                       ? Icons.visibility_off
                                       : Icons.visibility,
-                                  color: Color(0xFF4A8BFF),
+                                  color: const Color(0xFF4A8BFF),
                                 ),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
@@ -201,7 +201,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   color: Color(0xFF4A8BFF),
                                 ),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
@@ -209,7 +209,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   color: Color(0xFF4A8BFF),
                                 ),
                               ),
-                              floatingLabelStyle: TextStyle(
+                              floatingLabelStyle: const TextStyle(
                                 color: Color(0xFF4A8BFF),
                               ),
                               filled: true,
@@ -221,7 +221,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           TextFormField(
                             controller: _confirmPasswordController,
                             keyboardType: TextInputType.visiblePassword,
-                            cursorColor: Color(0xFF4A8BFF),
+                            cursorColor: const Color(0xFF4A8BFF),
                             style: TextStyle(
                               color: Theme.of(
                                 context,
@@ -241,7 +241,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 Icons.lock,
                                 color: Color(0xFF4A8BFF),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
@@ -249,7 +249,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   color: Color(0xFF4A8BFF),
                                 ),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
@@ -257,7 +257,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   color: Color(0xFF4A8BFF),
                                 ),
                               ),
-                              floatingLabelStyle: TextStyle(
+                              floatingLabelStyle: const TextStyle(
                                 color: Color(0xFF4A8BFF),
                               ),
                               filled: true,
@@ -292,14 +292,16 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             child: Text(
                               "Sign Up",
                               style: GoogleFonts.lato(
-                                textStyle: TextStyle(fontSize: 18),
+                                textStyle: const TextStyle(fontSize: 18),
                               ),
                             ),
                           ),
                           const SizedBox(height: 20),
                           Row(
                             children: [
-                              Expanded(child: Divider(color: Colors.grey)),
+                              const Expanded(
+                                child: Divider(color: Colors.grey),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 10,
@@ -307,11 +309,15 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                 child: Text(
                                   "Or login with",
                                   style: GoogleFonts.lato(
-                                    textStyle: TextStyle(color: Colors.grey),
+                                    textStyle: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ),
                               ),
-                              Expanded(child: Divider(color: Colors.grey)),
+                              const Expanded(
+                                child: Divider(color: Colors.grey),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 25),
@@ -323,7 +329,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   color: Colors.white,
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(16),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       color: Colors.black12,
                                       blurRadius: 4,
@@ -351,7 +357,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   color: Colors.white,
                                   shape: BoxShape.rectangle,
                                   borderRadius: BorderRadius.circular(16),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       color: Colors.black12,
                                       blurRadius: 4,
@@ -386,8 +392,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 child: IconButton(
                   icon: Row(
                     children: [
-                      Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
-                      SizedBox(width: 2),
+                      const Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
+                      const SizedBox(width: 2),
                       Text(
                         "Back to Login",
                         style: GoogleFonts.lato(

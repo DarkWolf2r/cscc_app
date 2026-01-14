@@ -1,15 +1,16 @@
 import 'dart:typed_data';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cscc_app/cores/colors.dart';
+import 'package:cscc_app/cores/firestore_methods.dart';
+import 'package:cscc_app/cores/utils.dart' show pickImage, showSnackBar;
 import 'package:cscc_app/cores/widgets/my_text_field.dart';
 import 'package:cscc_app/features/screens/full_screen_image_viewer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:cscc_app/cores/utils.dart' show pickImage, showSnackBar;
-import 'package:cscc_app/cores/firestore_methods.dart';
-import 'package:cscc_app/cores/colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddPostScreen extends ConsumerStatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -314,7 +315,9 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     bool isPostEnabled =
-        _descriptionController.text.trim().isNotEmpty || _files.isNotEmpty || _titleController.text.trim().isNotEmpty;
+        _descriptionController.text.trim().isNotEmpty ||
+        _files.isNotEmpty ||
+        _titleController.text.trim().isNotEmpty;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -680,7 +683,7 @@ class _AddPostScreenState extends ConsumerState<AddPostScreen> {
                     style: TextButton.styleFrom(
                       backgroundColor: isPostEnabled
                           ? primaryColor
-                          : Color.fromARGB(255, 43, 43, 43),
+                          : const Color.fromARGB(255, 43, 43, 43),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),

@@ -341,7 +341,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                     children: [
                       if (members.isEmpty)
                         Padding(
-                          padding: EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(12),
                           child: Text(
                             "No members yet.",
                             style: TextStyle(color: Colors.grey.shade400),

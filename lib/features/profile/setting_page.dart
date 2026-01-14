@@ -1,7 +1,5 @@
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/dark_theme/theme_provider.dart';
-// import 'package:cscc_app/cores/widgets/container_tile.dart';
-import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,7 +30,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
             Text(
               "Appearance",
               style: GoogleFonts.lato(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: primaryColor,
@@ -50,7 +48,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
             Text(
               "Preferences",
               style: GoogleFonts.lato(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: primaryColor,

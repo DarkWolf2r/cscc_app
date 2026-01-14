@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cscc_app/cores/colors.dart';
 import 'package:cscc_app/cores/widgets/my_text_field.dart';
 import 'package:cscc_app/features/auth/provider/providers.dart';
@@ -122,13 +123,13 @@ class _AddProjectScreenState extends ConsumerState<AddProjectScreen> {
                           .toList(),
                       onChanged: (val) => setState(() => department = val!),
                       decoration: InputDecoration(
-                        labelStyle: TextStyle(color: primaryColor),
+                        labelStyle: const TextStyle(color: primaryColor),
                         fillColor: Theme.of(context).colorScheme.surface,
                         filled: true,
 
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: primaryColor),
+                          borderSide: const BorderSide(color: primaryColor),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),

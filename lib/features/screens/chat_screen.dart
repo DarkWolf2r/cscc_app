@@ -74,13 +74,13 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     // final bgColor = Theme.of(context).colorScheme.surface;
-    final bgColor = Color.fromRGBO(24, 27, 46, 1);
-    final inputColor = const Color.fromARGB(255, 39, 43, 56);
+    const bgColor = Color.fromRGBO(24, 27, 46, 1);
+    const inputColor = Color.fromARGB(255, 39, 43, 56);
 
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(28, 31, 57, 1),
+        backgroundColor: const Color.fromRGBO(28, 31, 57, 1),
         elevation: 0,
         title: Text(
           receiverName != null

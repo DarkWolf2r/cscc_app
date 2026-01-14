@@ -40,7 +40,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -145,7 +145,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             }
                             return null;
                           },
-                          cursorColor: Color(0xFF4A8BFF),
+                          cursorColor: const Color(0xFF4A8BFF),
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.inverseSurface,
                             fontSize: 16,
@@ -157,19 +157,19 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                               Icons.email,
                               color: Color(0xFF4A8BFF),
                             ),
-                            enabledBorder: OutlineInputBorder(
+                            enabledBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),
                               borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                             ),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),
                               borderSide: BorderSide(color: Color(0xFF4A8BFF)),
                             ),
-                            floatingLabelStyle: TextStyle(
+                            floatingLabelStyle: const TextStyle(
                               color: Color(0xFF4A8BFF),
                             ),
                             filled: true,
@@ -198,7 +198,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         child: Text(
                           "Send Email",
                           style: GoogleFonts.lato(
-                            textStyle: TextStyle(fontSize: 18),
+                            textStyle: const TextStyle(fontSize: 18),
                           ),
                         ),
                       ),
@@ -212,8 +212,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 child: IconButton(
                   icon: Row(
                     children: [
-                      Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
-                      SizedBox(width: 2),
+                      const Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
+                      const SizedBox(width: 2),
                       Text(
                         "Back to Login",
                         style: GoogleFonts.lato(
@@ -228,7 +228,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => SignInPage()),
+                      MaterialPageRoute(
+                        builder: (context) => const SignInPage(),
+                      ),
                     );
                   },
                 ),

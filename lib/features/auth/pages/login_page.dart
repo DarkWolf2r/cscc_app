@@ -1,14 +1,14 @@
 import 'package:cscc_app/cores/widgets/flat_button.dart';
 import 'package:cscc_app/cores/widgets/my_text_field.dart';
 import 'package:cscc_app/features/auth/pages/forget_password.dart';
+import 'package:cscc_app/features/auth/pages/sign_up_page.dart';
 import 'package:cscc_app/features/auth/repo/auth_repo.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cscc_app/features/auth/pages/sign_up_page.dart';
 
 // ignore: must_be_immutable
 class SignInPage extends ConsumerStatefulWidget {
@@ -34,7 +34,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+      const SystemUiOverlayStyle(
         systemNavigationBarColor: Color(0xFFF4F4F4),
         statusBarColor: Colors.transparent,
       ),
@@ -150,7 +150,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                               obscurePassword
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Color(0xFF4A8BFF),
+                              color: const Color(0xFF4A8BFF),
                             ),
                             onPressed: () {
                               setState(() {
@@ -182,7 +182,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                                 child: Text(
                                   "Forgot Password ?   ",
                                   style: GoogleFonts.lato(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                       color: Color(0xFF4A8BFF),
                                       fontWeight: FontWeight.w900,
                                     ),
@@ -215,7 +215,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                         const SizedBox(height: 20),
                         Row(
                           children: [
-                            Expanded(child: Divider(color: Colors.grey)),
+                            const Expanded(child: Divider(color: Colors.grey)),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
@@ -223,11 +223,13 @@ class SignInPageState extends ConsumerState<SignInPage> {
                               child: Text(
                                 "Or login with",
                                 style: GoogleFonts.lato(
-                                  textStyle: TextStyle(color: Colors.grey),
+                                  textStyle: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
                             ),
-                            Expanded(child: Divider(color: Colors.grey)),
+                            const Expanded(child: Divider(color: Colors.grey)),
                           ],
                         ),
                         const SizedBox(height: 25),
@@ -239,7 +241,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                                 color: Colors.white,
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(16),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     color: Colors.black12,
                                     blurRadius: 4,
@@ -266,7 +268,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                                 color: Colors.white,
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(16),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     color: Colors.black12,
                                     blurRadius: 4,
@@ -283,7 +285,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                                 onPressed: () {
                                   ref
                                       .read(authServiceProvider)
-                                      .signInWithGitHub(context,ref);
+                                      .signInWithGitHub(context, ref);
                                 },
                               ),
                             ),
@@ -296,7 +298,7 @@ class SignInPageState extends ConsumerState<SignInPage> {
                             Text(
                               "Don't have account ?  ",
                               style: GoogleFonts.lato(
-                                textStyle: TextStyle(color: Colors.grey),
+                                textStyle: const TextStyle(color: Colors.grey),
                               ),
                             ),
                             GestureDetector(
@@ -304,14 +306,14 @@ class SignInPageState extends ConsumerState<SignInPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SignUpPage(),
+                                    builder: (context) => const SignUpPage(),
                                   ),
                                 );
                               },
                               child: Text(
                                 "Sign Up",
                                 style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                     color: Color(0xFF4A8BFF),
                                     fontWeight: FontWeight.w900,
                                   ),

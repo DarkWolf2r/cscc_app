@@ -3,12 +3,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cscc_app/cores/colors.dart';
+import 'package:cscc_app/features/auth/pages/login_page.dart';
+import 'package:cscc_app/features/auth/pages/user_info_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:cscc_app/features/auth/pages/login_page.dart';
-import 'package:cscc_app/features/auth/pages/user_info_page.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   final String? email;
@@ -36,7 +35,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       });
 
       resendTimer = Timer.periodic(
-        Duration(seconds: 10),
+        const Duration(seconds: 10),
         (_) => setState(() {
           canResendEmail = true;
         }),
@@ -68,7 +67,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       if (isEmailVerified) {
         showDialog(
           context: context,
-          builder: (context) => Center(child: CircularProgressIndicator()),
+          builder: (context) =>
+              const Center(child: CircularProgressIndicator()),
         );
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -84,7 +84,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           ),
         );
       } else if (!isEmailVerified) {
-        sleep(Duration(seconds: 10));
+        sleep(const Duration(seconds: 10));
         checkEmailVerification();
       }
       // Save verification state
@@ -177,10 +177,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 children: [
                   const SizedBox(height: 40),
 
-                  
                   if (isEmailVerified)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: LinearProgressIndicator(color: primaryColor),
                     ),
                   const SizedBox(height: 80),
@@ -237,7 +236,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     child: Text(
                       "Send Email Verification",
                       style: GoogleFonts.lato(
-                        textStyle: TextStyle(fontSize: 18),
+                        textStyle: const TextStyle(fontSize: 18),
                       ),
                     ),
                   ),
@@ -251,8 +250,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
             child: IconButton(
               icon: Row(
                 children: [
-                  Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
-                  SizedBox(width: 2),
+                  const Icon(Icons.arrow_left, color: Color(0xFF4A8BFF)),
+                  const SizedBox(width: 2),
                   Text(
                     "Back to Sign Up",
                     style: GoogleFonts.lato(
@@ -267,7 +266,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => SignInPage()),
+                  MaterialPageRoute(builder: (context) => const SignInPage()),
                 );
               },
             ),

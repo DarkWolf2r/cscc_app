@@ -36,7 +36,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       builder: (context, scrollController) => Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView(
@@ -157,7 +157,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               children: visibilities.map((v) {
                 return RadioListTile<String>(
                   value: v,
-                  
+
                   groupValue: selectedVisibility,
                   onChanged: (val) {
                     setState(() => selectedVisibility = val!);

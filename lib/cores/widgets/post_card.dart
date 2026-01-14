@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cscc_app/cores/colors.dart';
+import 'package:cscc_app/cores/firestore_methods.dart';
 import 'package:cscc_app/cores/widgets/like_animation.dart';
 import 'package:cscc_app/cores/widgets/view_profile.dart';
 import 'package:cscc_app/features/profile/profile_page.dart';
@@ -7,7 +8,6 @@ import 'package:cscc_app/features/screens/comments_screen.dart';
 import 'package:cscc_app/features/screens/edit_post_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cscc_app/cores/firestore_methods.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -487,7 +487,7 @@ class _PostCardState extends State<PostCard> {
                   child: Text(
                     snap['type'].toString().toUpperCase(),
                     style: GoogleFonts.lato(
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                         color: primaryColor,
                         fontWeight: FontWeight.w700,
                         fontSize: 11,
